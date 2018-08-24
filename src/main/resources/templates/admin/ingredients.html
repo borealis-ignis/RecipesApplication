@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title th:text="#{title.admin.ingredients}"></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<div th:replace="~{admin/fragments/common.html :: common-css}"/>
+	<link rel="stylesheet" th:href="@{/css/admin/common.css}" />
+	<link rel="stylesheet" th:href="@{/css/admin/ingredients.css}" />
+	<div th:replace="~{admin/fragments/common.html :: common-js}"/>
+	<script th:src="@{/js/ingredients.js}">
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			loadIngredientsPage();
+		});
+	</script>
+</head>
+<body>
+	<div class="container">
+		
+		<div th:replace="~{admin/fragments/common.html :: header}"></div>
+		
+		<div class="content-wrap">
+			<div>
+				<div class="left-column-top">
+					<a th:href="@{/recipes}" th:text="#{back.to.recipes.page}"></a>
+				</div>
+				<div class="errors-column">
+					Errors area
+				</div>
+				<br clear="all"/>
+			</div>
+			<div class="left-column">
+				<input type="button" th:value="#{admin.ingredients.new.ingredient}">
+				<div class="left-items-container">
+					<div class="item active"><span class="item-link">Картофель</span><span class="remove-from-list">x</span></div>
+					<div class="item"><span class="item-link">Капуста</span><span class="remove-from-list">x</span></div>
+					<br clear="all"/>
+				</div>
+				<br clear="all"/>
+			</div>
+			<div class="right-inputs-column">
+				<input type="text" name="ingredient_name" class="item-name" th:placeholder="#{admin.input.ingredientname.caption}" />
+				<p/>
+				
+				<fieldset class="inputs-set">
+					<legend th:text="#{admin.fieldset.components.caption}"></legend>
+					<input type="text" name="component_name" class="component-name" th:placeholder="#{admin.input.componentname.caption}" />
+					<input type="button" th:value="#{admin.button.add.component}" />
+					<br/>
+					<div id="components-list" class="selected-list">
+						<div class="item">
+							<input type="text" class="component-item" value="Железо"/>
+							<input type="button" class="remove-from-list" value="x" />
+						</div>
+						<div class="item">
+							<input type="text" class="component-item" value="Кальций"/>
+							<input type="button" class="remove-from-list" value="x" />
+						</div>
+					</div>
+				</fieldset>
+				<br/>
+				
+				<input type="button" th:value="#{admin.button.save.ingredient}" />
+			</div>
+			
+			<br clear="all"/>
+		</div>
+	</div>
+</body>
+</html>

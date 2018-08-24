@@ -1,0 +1,28 @@
+.wrap-wrap {
+	width:270px;
+	margin:100px auto;
+	padding: 30px;
+	background: #fff;
+}
+.submit-wrap {
+	width:250px;
+	border:1px solid #444;
+	border-radius:10px;
+	padding:10px;
+	float:left;
+}
+.mb_5 {
+	margin-bottom:5px;
+}
+.label {
+	width:70px;
+	float:left;
+	color:#444;
+}
+.cred-submit {
+	float:right;
+	margin-right:34px;
+}
+.error {
+	color:#BB1010;
+}

@@ -1,0 +1,44 @@
+div.filters-column, div.recipes-column {
+	float:left;
+}
+div.filters-column {
+	width: 320px;
+	margin-top: 10px;
+}
+div.recipes-column {
+	width: 880px;
+	background-color: #fff;
+	padding-bottom: 10px;
+}
+div.recipes-column div.recipe-container {
+	width: 840px;
+	margin-right: 10px;
+	margin-left: 10px;
+	margin-top: 10px;
+	border: 1px solid #008;
+	padding: 10px;
+}
+input.recipename {
+	width: 300px;
+}
+select.select-input {
+	width: 305px;
+}
+select.fieldset-select-input {
+	width: 280px;
+}
+div.selected-list div.item {
+	width: 275px;
+	background-color: #fcc26d;
+	border:1px solid #444;
+	border-radius: 5px;
+	margin-top: 1px;
+	padding: 2px;
+}
+div.selected-list div.item span.remove-from-list {
+	float:right;
+	cursor: pointer;
+}
+fieldset.inputs-set {
+	width: 280px;
+}

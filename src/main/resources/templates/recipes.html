@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title th:text="#{title.recipes}"></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<div th:replace="~{fragments/common.html :: common-css}"/>
+	<link rel="stylesheet" th:href="@{/css/recipes.css}" />
+	<div th:replace="~{fragments/common.html :: common-js}"/>
+</head>
+<body>
+	<div class="container">
+		
+		<div th:replace="~{fragments/common.html :: header}"></div>
+		
+		<div class="content-wrap">
+			<div class="filters-column">
+				<input type="text" name="name" class="recipename" th:placeholder="#{filters.input.recipename.caption}" />
+				<p/>
+				<select name="dishtype" class="select-input">
+					<option value="0" th:text="#{filters.select.dishtype.caption}"></option>
+					<option value="1">Суп</option>
+					<option value="2">Салат</option>
+				</select>
+				<p/>
+				<fieldset class="inputs-set">
+					<legend th:text="#{filters.fieldset.ingredients.caption}"></legend>
+					<select class="fieldset-select-input" name="ingredients">
+						<option value="0" th:text="#{filters.select.ingredients.caption}"></option>
+						<option value="1">Капуста</option>
+						<option value="2">Морковь</option>
+					</select>
+					<br/>
+					<div id="ingredients-list" class="selected-list">
+						<div class="item"><span>Картофель</span><span class="remove-from-list">x</span></div>
+						<div class="item"><span>Сметана</span><span class="remove-from-list">x</span></div>
+						<br clear="all"/>
+					</div>
+				</fieldset>
+				<p/>
+				<fieldset class="inputs-set">
+					<legend th:text="#{filters.fieldset.components.caption}"></legend>
+					<select class="fieldset-select-input" name="components">
+						<option value="0" th:text="#{filters.select.components.caption}"></option>
+						<option value="1">Калий</option>
+						<option value="2">Фосфор</option>
+					</select>
+					<br/>
+					<div id="components-list" class="selected-list">
+						<!-- <div class="item"><span>Железо</span><span class="remove-from-list">x</span></div>
+						<div class="item"><span>Кальций</span><span class="remove-from-list">x</span></div> -->
+						<br clear="all"/>
+					</div>
+				</fieldset>
+				<p/>
+				<input type="button" th:value="#{filters.button.search}" />
+				<br clear="all"/>
+			</div>
+			<div class="recipes-column">
+				<div class="recipe-container">
+					<div class="recipe-name">
+						<a th:href="@{/recipe}" target="_blank">Single Recipe #1</a>
+					</div>
+					<p/>
+					<div class="recipe-ingredients">
+						Морковь, картошка
+					</div>
+					<br clear="all"/>
+				</div>
+				<div class="recipe-container">
+					<div class="recipe-name">
+						<a th:href="@{/recipe}" target="_blank">Single Recipe #2</a>
+					</div>
+					<p/>
+					<div class="recipe-ingredients">
+						Морковь, картошка
+					</div>
+					<br clear="all"/>
+				</div>
+			</div>
+			
+			<br clear="all"/>
+		</div>
+	</div>
+</body>
+</html>

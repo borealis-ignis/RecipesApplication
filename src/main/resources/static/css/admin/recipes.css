@@ -1,0 +1,37 @@
+div.right-inputs-column select.select-input {
+	width: 305px;
+}
+div.selected-list div.item {
+	width: 600px;
+	background-color: #fcc26d;
+	border: 1px solid #aaa;
+	border-radius: 5px;
+	margin-top: 1px;
+	padding: 2px;
+}
+input.ingredient-count {
+	width: 100px;
+}
+select.ingredient_count_measure {
+	width: 120px;
+}
+div.measure-container span.whitespace {
+	padding-left: 10px;
+}
+div.selected-list div.item div.measure-container {
+	float: right;
+}
+div.selected-list div.item div.measure-container span.remove-from-list {
+	float: right;
+}
+div.right-inputs-column div.html-editor {
+	width: 100%;
+	overflow: hidden;
+	max-height: 371px;
+	background-color: #fff;
+}
+div.right-inputs-column div.html-editor div.inner-area {
+	overflow-y: scroll;
+	height: 371px;
+    max-height: 371px;
+}

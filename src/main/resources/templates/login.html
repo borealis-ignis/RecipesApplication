@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title th:text="#{title.login}"></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	
+	<link rel="stylesheet" type="text/css" th:href="@{/css/login.css}">
+</head>
+<body>
+	<div class="wrap-wrap">
+		<span th:if="${param.error}" th:with="errorMsg=#{authentication.error}">
+			<span class="error" th:text="${errorMsg}"></span>
+			<br/>
+		</span>
+		<div class="submit-wrap">
+			<form name="auth_form" th:action="@{/login}" method="post">
+				<div class="mb_5">
+					<div class="label" th:text="#{authentication.field.label.login}"></div><input th:placeholder="#{authentication.field.login}" name="username" id="username" type="text" required="true" autofocus="true" value=""/>
+					<br/>
+				</div>
+				<div class="mb_5">
+					<div class="label" th:text="#{authentication.field.label.password}"></div><input th:placeholder="#{authentication.field.password}" name="password" id="password" type="password" required="true" value=""/>
+					<br/>
+				</div>
+				<input type="submit" th:value="#{authentication.button.submit}" class="cred-submit"/>
+			</form>
+		</div>
+		<p/>
+		<div>
+			<a th:href="@{/recipes}" th:text="#{back.to.recipes.page}"></a>
+		</div>
+		<br clear="all"/>
+	</div>
+</body>
+</html>

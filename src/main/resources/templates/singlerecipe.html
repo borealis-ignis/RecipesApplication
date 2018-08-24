@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title th:text="#{title.singlerecipe}"></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<div th:replace="~{fragments/common.html :: common-css}"/>
+	<link rel="stylesheet" th:href="@{/css/singlerecipe.css}" />
+</head>
+<body>
+	<div class="container">
+		
+		<div th:replace="~{fragments/common.html :: header}"></div>
+		
+		<div class="content-wrap">
+			<div class="recipe-name">
+				<h2>Soup Recipe name #1</h2>
+			</div>
+			<div class="recipe-ingredients">
+				<span th:text="#{recipe.ingredients.list}"></span>
+				<ul>
+					<li>Вода - 2.5л</li>
+					<li>Картофель - 300гр</li>
+					<li>Морковь - 300гр</li>
+					<li>Болгарский перец - 200гр</li>
+					<li>Броколли - 500гр</li>
+					<li>Cоль/специи - по вкусу</li>
+				</ul>
+			</div>
+			<div class="recipe-steps">
+				<div class="step">
+					1. Почистить, порезать картофель и морковь. Варить минут 40. После отваривания дать постоять минут 10-15 остыть.
+				</div>
+				<div class="step">
+					2. Измельчить отваренные овощи блендером.
+				</div>
+				<div class="step">
+					3. Добавить нарезанные болгарский перец. Варить минут 30.
+				</div>
+				<div class="step">
+					4. Добавить броколли. Варить еще минут 20.
+				</div>
+				<div class="step">
+					5. Добавить соль/специи по вкусу.
+				</div>
+				<div class="step">
+					Приятного аппетита.
+				</div>
+			</div>
+			
+			<br clear="all"/>
+		</div>
+	</div>
+</body>
+</html>

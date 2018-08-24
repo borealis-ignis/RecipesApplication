@@ -1,0 +1,50 @@
+div.left-column-top, div.errors-column, div.left-column, div.right-inputs-column {
+	float:left;
+}
+div.left-column-top {
+	width: 420px;
+	padding-bottom: 10px;
+}
+div.errors-column {
+	width: 780px;
+	padding-bottom: 10px;
+	color: #d10000;
+}
+div.left-column {
+	width: 420px;
+	margin-top: 10px;
+}
+div.right-inputs-column {
+	width: 768px;
+	padding-bottom: 10px;
+	padding-top: 10px;
+	border: 1px solid #aaa;
+	padding: 5px;
+}
+div.left-column div.left-items-container {
+	width: 410px;
+	padding-top: 10px;
+}
+
+div.left-column div.left-items-container div.item {
+	width: 400px;
+	background-color: #fcc26d;
+	border: 1px solid #aaa;
+	border-radius: 5px;
+	margin-top: 1px;
+	padding: 2px;
+}
+div.left-column div.left-items-container div.item.active {
+	background-color: #ffeccf;
+}
+div.left-column div.left-items-container div.item span.item-link {
+	cursor: pointer;
+	text-decoration: underline;
+}
+div.item span.remove-from-list {
+	float: right;
+	cursor: pointer;
+}
+input.item-name {
+	width: 400px;
+}

@@ -1,0 +1,16 @@
+input.component-name {
+	width: 300px;
+}
+div.selected-list div.item {
+	width: 340px;
+	border: 1px solid #aaa;
+	border-radius: 5px;
+	margin-top: 2px;
+	padding: 2px;
+}
+div.selected-list div.item input.component-item {
+	width: 300px;
+}
+div.selected-list div.item input.remove-from-list {
+	float: right;
+}

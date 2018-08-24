@@ -1,0 +1,3 @@
+function loadIngredientsPage() {
+	makeActiveTab('ingredients');
+}

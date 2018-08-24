@@ -1,0 +1,24 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<div th:fragment="common-css">
+			<link rel="stylesheet" th:href="@{/css/common.css}" />
+		</div>
+		<div th:fragment="common-js">
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+			</script>
+		</div>
+	</head>
+	<body>
+		<div class="top" th:fragment="header">
+			<div sec:authorize="isAuthenticated()">
+				<form th:action="@{/logout}" method="post">
+					<a sec:authentication="name" th:href="@{/admin/ingredients}"></a>
+					<input type="submit" th:value="#{button.logout}" />
+				</form>
+			</div>
+			<div sec:authorize="isAnonymous()">
+				<a th:href="@{/login}" th:text="#{button.login}"></a>
+			</div>
+		</div>
+	</body>
+</html>
