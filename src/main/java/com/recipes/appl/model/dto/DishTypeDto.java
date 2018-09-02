@@ -1,7 +1,5 @@
 package com.recipes.appl.model.dto;
 
-import java.util.List;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,10 +8,7 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-public class Ingredient {
+public class DishTypeDto {
 	private Long id;
 	private String name;
-	private Double count;
-	private String measure;
-	private List<Component> components;
 }

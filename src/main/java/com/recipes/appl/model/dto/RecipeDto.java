@@ -10,10 +10,10 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-public class Recipe {
+public class RecipeDto {
 	private Long id;
-	private String dishType;
+	private DishTypeDto dishType;
 	private String name;
-	private List<Ingredient> ingredients;
+	private List<IngredientDto> ingredients;
 	private String description;
 }

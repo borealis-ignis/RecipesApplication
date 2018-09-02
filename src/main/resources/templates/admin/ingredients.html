@@ -6,7 +6,10 @@
 	<div th:replace="~{admin/fragments/common.html :: common-css}"/>
 	<link rel="stylesheet" th:href="@{/css/admin/common.css}" />
 	<link rel="stylesheet" th:href="@{/css/admin/ingredients.css}" />
+	<link rel="stylesheet" th:href="@{/js/jquery/jquery-ui.1.12.1.css}" />
 	<div th:replace="~{admin/fragments/common.html :: common-js}"/>
+	<script th:src="@{/js/jquery/jquery-ui.1.12.1.js}">
+	</script>
 	<script th:src="@{/js/ingredients.js}">
 	</script>
 	<script type="text/javascript">
@@ -26,42 +29,44 @@
 					<a th:href="@{/recipes}" th:text="#{back.to.recipes.page}"></a>
 				</div>
 				<div class="errors-column">
-					Errors area
 				</div>
 				<br clear="all"/>
 			</div>
 			<div class="left-column">
-				<input type="button" th:value="#{admin.ingredients.new.ingredient}">
+				<input type="button" onclick="cleanInputs(); return false;" th:title="#{admin.ingredients.new.ingredient.title}" th:value="#{admin.ingredients.new.ingredient}">
 				<div class="left-items-container">
-					<div class="item active"><span class="item-link">Картофель</span><span class="remove-from-list">x</span></div>
-					<div class="item"><span class="item-link">Капуста</span><span class="remove-from-list">x</span></div>
+					<div th:each="ingredient: ${ingredients}" class="item">
+						<span class="item-link" th:id="${ingredient.id}" th:text="${ingredient.name}"></span>
+						<span class="remove-from-list">x</span>
+					</div>
 					<br clear="all"/>
 				</div>
 				<br clear="all"/>
 			</div>
 			<div class="right-inputs-column">
+				<input type="hidden" name="ingredient_id" value=""/>
 				<input type="text" name="ingredient_name" class="item-name" th:placeholder="#{admin.input.ingredientname.caption}" />
 				<p/>
 				
 				<fieldset class="inputs-set">
 					<legend th:text="#{admin.fieldset.components.caption}"></legend>
-					<input type="text" name="component_name" class="component-name" th:placeholder="#{admin.input.componentname.caption}" />
-					<input type="button" th:value="#{admin.button.add.component}" />
-					<br/>
-					<div id="components-list" class="selected-list">
-						<div class="item">
-							<input type="text" class="component-item" value="Железо"/>
-							<input type="button" class="remove-from-list" value="x" />
-						</div>
-						<div class="item">
-							<input type="text" class="component-item" value="Кальций"/>
-							<input type="button" class="remove-from-list" value="x" />
-						</div>
+					<div class="ui-widget">
+						<input id="component_names" type="text" name="component_name" class="component-name" th:placeholder="#{admin.input.componentname.caption}" />
 					</div>
+					
+					<input type="button" onclick="addComponent(); return false;" th:value="#{admin.button.add.component}" />
+					<p></p>
+					<span th:text="#{admin.ingredient.components.list}"></span>
+					<div id="components-list" class="selected-list">
+					</div>
+					
+					<items>
+						<item th:each="component: ${components}" th:id="${component.id}" th:name="${component.name}"></item>
+					</items>
 				</fieldset>
 				<br/>
 				
-				<input type="button" th:value="#{admin.button.save.ingredient}" />
+				<input type="button" onclick="saveIngredient(); return false;" th:value="#{admin.button.save.ingredient}" />
 			</div>
 			
 			<br clear="all"/>

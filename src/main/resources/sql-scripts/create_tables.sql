@@ -14,16 +14,16 @@ CREATE TABLE IF NOT EXISTS `recipes_db`.`DishType` (
   UNIQUE INDEX `Name_UNIQUE` (`Name`))
 ENGINE = InnoDB;
 
-insert into `recipes_db`.`DishType` (`Name`) values ("суп");
-insert into `recipes_db`.`DishType` (`Name`) values ("салат");
-insert into `recipes_db`.`DishType` (`Name`) values ("горячее блюдо");
-insert into `recipes_db`.`DishType` (`Name`) values ("соус");
-insert into `recipes_db`.`DishType` (`Name`) values ("холодная закуска");
-insert into `recipes_db`.`DishType` (`Name`) values ("блины");
-insert into `recipes_db`.`DishType` (`Name`) values ("печенье");
-insert into `recipes_db`.`DishType` (`Name`) values ("паста");
-insert into `recipes_db`.`DishType` (`Name`) values ("пицца");
-insert into `recipes_db`.`DishType` (`Name`) values ("пирог");
+insert into `recipes_db`.`DishType` (`Name`) values ("Суп");
+insert into `recipes_db`.`DishType` (`Name`) values ("Салат");
+insert into `recipes_db`.`DishType` (`Name`) values ("Горячее блюдо");
+insert into `recipes_db`.`DishType` (`Name`) values ("Соус");
+insert into `recipes_db`.`DishType` (`Name`) values ("Холодная закуска");
+insert into `recipes_db`.`DishType` (`Name`) values ("Блины");
+insert into `recipes_db`.`DishType` (`Name`) values ("Печенье");
+insert into `recipes_db`.`DishType` (`Name`) values ("Паста");
+insert into `recipes_db`.`DishType` (`Name`) values ("Пицца");
+insert into `recipes_db`.`DishType` (`Name`) values ("Пирог");
 
 
 -- -----------------------------------------------------

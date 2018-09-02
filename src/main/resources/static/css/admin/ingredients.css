@@ -14,3 +14,7 @@ div.selected-list div.item input.component-item {
 div.selected-list div.item input.remove-from-list {
 	float: right;
 }
+
+input.ui-autocomplete-input, ul.ui-menu li.ui-menu-item {
+	font-size: 10pt !important;
+}

@@ -48,3 +48,7 @@ div.item span.remove-from-list {
 input.item-name {
 	width: 400px;
 }
+
+div.hidden {
+	display: none;
+}

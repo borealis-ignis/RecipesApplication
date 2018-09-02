@@ -12,3 +12,16 @@ function selectTab(selectedTab) {
 			break;
 	}
 }
+
+var errorsHandlerEvent = function (response) {
+	var errorText = response.responseJSON.errorMessage;
+	$("div.errors-column").text(errorText);
+};
+
+function cleanErrorsArea() {
+	$("div.errors-column").text("");
+}
+
+function cleanActiveness() {
+	$("div.left-items-container div.item").removeClass("active");
+}

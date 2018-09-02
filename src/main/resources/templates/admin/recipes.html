@@ -3,13 +3,15 @@
 <head>
 	<title th:text="#{title.admin.recipes}"></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<div th:replace="~{admin/fragments/common.html :: common-css}"/>
+	<div th:replace="~{admin/fragments/common.html :: common-css}"></div>
 	<link rel="stylesheet" th:href="@{/css/admin/common.css}" />
 	<link rel="stylesheet" th:href="@{/css/admin/recipes.css}" />
-	<div th:replace="~{admin/fragments/common.html :: common-js}"/>
+	<script th:src="@{/js/editor/nicEdit.js}">
+	</script>
+	<div th:replace="~{admin/fragments/common.html :: common-js}"></div>
 	<script th:src="@{/js/recipes.js}">
 	</script>
-	<script th:src="@{/js/editor/nicEdit.js}">
+	<script th:src="@{/js/underscore-min.js}">
 	</script>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -28,79 +30,49 @@
 					<a th:href="@{/recipes}" th:text="#{back.to.recipes.page}"></a>
 				</div>
 				<div class="errors-column">
-					Errors area
 				</div>
 				<br clear="all"/>
 			</div>
 			<div class="left-column">
-				<input type="button" th:value="#{admin.ingredients.new.recipe}">
+				<input type="button" onclick="cleanInputs(); return false;" th:title="#{admin.ingredients.new.recipe.title}" th:value="#{admin.ingredients.new.recipe}">
 				<div class="left-items-container">
-					<div class="item active"><span class="item-link">Горячее блюдо Запеченный картофель</span><span class="remove-from-list">x</span></div>
-					<div class="item"><span class="item-link">Салат "Тигрица"</span><span class="remove-from-list">x</span></div>
+					<div th:each="recipe : ${recipes}" class="item">
+						<span class="item-link" th:id="${recipe.id}" th:text="${recipe.dishType.name + ' ' + recipe.name}"></span>
+						<span class="remove-from-list">x</span>
+					</div>
 					<br clear="all"/>
 				</div>
 				<br clear="all"/>
 			</div>
 			<div class="right-inputs-column">
-				<input type="text" name="ingredient_name" class="item-name" th:placeholder="#{admin.input.recipename.caption}" />
-				<p/>
+				<input type="hidden" name="recipe_id" value=""/>
+				<input type="text" name="recipe_name" class="item-name" th:placeholder="#{admin.input.recipename.caption}" />
+				<p></p>
 				<select name="dishtype" class="select-input">
-					<option value="0" th:text="#{admin.select.dishtype.caption}"></option>
-					<option value="1">Суп</option>
-					<option value="2">Салат</option>
+					<option value="null" selected="selected" disabled="disabled" th:text="#{admin.select.dishtype.caption}"></option>
+					<option th:each="dishType : ${dishTypes}" th:value="${dishType.id}" th:text="${dishType.name}"></option>
 				</select>
-				<p/>
+				<p></p>
 				
 				<fieldset class="inputs-set">
 					<legend th:text="#{admin.fieldset.ingredients.caption}"></legend>
-					<select name="ingredient" class="select-input">
-						<option value="0" th:text="#{admin.select.ingredient.caption}"></option>
-						<option value="1">Картофель</option>
-						<option value="2">Морковь</option>
+					<select name="ingredient" id="ingredients" class="select-input">
+						<option value="null" selected="selected" disabled="disabled" th:text="#{admin.select.ingredient.caption}"></option>
+						<option th:each="ingredient : ${ingredients}" th:value="${ingredient.id}" th:text="${ingredient.name}"></option>
 					</select>
 					<br/>
-					<input type="text" name="ingredient_count" class="ingredient-count" th:placeholder="#{admin.input.ingredientcount.caption}" />
-					<select name="ingredient_count_measure" class="ingredient_count_measure">
-						<option value="0" th:text="#{admin.select.ingredient.measure.caption}"></option>
-						<option value="1">шт</option>
-						<option value="2">гр</option>
-						<option value="2">л</option>
-						<option value="3">столовых ложек</option>
-					</select>
-					<br/>
-					<input type="button" th:value="#{admin.button.add.ingredient}" />
-					<p/>
+					
+					<div class="hidden">
+						<select name="ingredient_count_measure" class="ingredient_count_measure" id="ingredient_count_measure">
+							<option value="null" selected="selected" disabled="disabled" th:text="#{admin.select.ingredient.measure.caption}"></option>
+							<option th:each="ingredientMeasure : ${ingredientMeasures}" th:value="${ingredientMeasure.id}" th:text="${ingredientMeasure.name}"></option>
+						</select>
+					</div>
+					
+					<input type="button" onclick="addIngredient(); return false;" th:value="#{admin.button.add.ingredient}" />
+					<p></p>
+					<span th:text="#{admin.recipe.ingredients.list}"></span>
 					<div id="ingredients-list" class="selected-list">
-						<div class="item">
-							<span>Картофель</span>
-							<div class="measure-container">
-								<input type="text" name="ingredient_count" class="ingredient-count" th:placeholder="#{admin.input.ingredientcount.caption}" />
-								<select name="ingredient_count_measure" class="ingredient_count_measure">
-									<option value="0" th:text="#{admin.select.ingredient.measure.caption}"></option>
-									<option value="1">шт</option>
-									<option value="2">гр</option>
-									<option value="2">л</option>
-									<option value="3">столовых ложек</option>
-								</select>
-								<span class="whitespace"> </span>
-								<span class="remove-from-list">x</span>
-							</div>
-						</div>
-						<div class="item">
-							<span>Морковь</span>
-							<div class="measure-container">
-								<input type="text" name="ingredient_count" class="ingredient-count" th:placeholder="#{admin.input.ingredientcount.caption}" />
-								<select name="ingredient_count_measure" class="ingredient_count_measure">
-									<option value="0" th:text="#{admin.select.ingredient.measure.caption}"></option>
-									<option value="1">шт</option>
-									<option value="2">гр</option>
-									<option value="2">л</option>
-									<option value="3">столовых ложек</option>
-								</select>
-								<span class="whitespace"> </span>
-								<span class="remove-from-list">x</span>
-							</div>
-						</div>
 					</div>
 				</fieldset>
 				<br/>
@@ -112,7 +84,7 @@
 				</div>
 				<br/>
 				
-				<input type="button" th:value="#{admin.button.save.recipe}" />
+				<input type="button" onclick="saveRecipe(); return false;" th:value="#{admin.button.save.recipe}" />
 			</div>
 			
 			<br clear="all"/>
