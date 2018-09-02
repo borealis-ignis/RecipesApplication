@@ -5,6 +5,19 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<div th:replace="~{fragments/common.html :: common-css}"></div>
 	<link rel="stylesheet" th:href="@{/css/singlerecipe.css}" />
+	<script th:src="@{/js/jquery/jquery.min.3.1.1.js}">
+	</script>
+	<script th:src="@{/js/underscore-min.js}">
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			var $unescapedDescriptionDiv = $("div#unescaped-html");
+			var description = $unescapedDescriptionDiv.text();
+			var unescapedDescription = _.unescape(description);
+			$("div.recipe-steps").append($.parseHTML(unescapedDescription));
+			$unescapedDescriptionDiv.remove();
+		});
+	</script>
 </head>
 <body>
 	<div class="container">
@@ -13,38 +26,16 @@
 		
 		<div class="content-wrap">
 			<div class="recipe-name">
-				<h2>Soup Recipe name #1</h2>
+				<h2 th:text="${recipe.dishType.name + ' ' + recipe.name}"></h2>
 			</div>
 			<div class="recipe-ingredients">
 				<span th:text="#{recipe.ingredients.list}"></span>
 				<ul>
-					<li>Вода - 2.5л</li>
-					<li>Картофель - 300гр</li>
-					<li>Морковь - 300гр</li>
-					<li>Болгарский перец - 200гр</li>
-					<li>Броколли - 500гр</li>
-					<li>Cоль/специи - по вкусу</li>
+					<li th:each="ingredient : ${recipe.ingredients}" th:text="${ingredient.name + ' - ' + ingredient.count + ' ' + ingredient.measure.name}"></li>
 				</ul>
 			</div>
+			<div class="invisible" id="unescaped-html" th:text="${recipe.description}"></div>
 			<div class="recipe-steps">
-				<div class="step">
-					1. Почистить, порезать картофель и морковь. Варить минут 40. После отваривания дать постоять минут 10-15 остыть.
-				</div>
-				<div class="step">
-					2. Измельчить отваренные овощи блендером.
-				</div>
-				<div class="step">
-					3. Добавить нарезанные болгарский перец. Варить минут 30.
-				</div>
-				<div class="step">
-					4. Добавить броколли. Варить еще минут 20.
-				</div>
-				<div class="step">
-					5. Добавить соль/специи по вкусу.
-				</div>
-				<div class="step">
-					Приятного аппетита.
-				</div>
 			</div>
 			
 			<br clear="all"/>

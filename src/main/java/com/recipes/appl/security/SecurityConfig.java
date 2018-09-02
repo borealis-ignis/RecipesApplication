@@ -1,6 +1,7 @@
 package com.recipes.appl.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,6 +20,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	private AuthenticationSuccessHandler successHandler;
+	
+	@Value("${security.admin.login}")
+	private String adminLogin;
+	
+	@Value("${security.admin.password}")
+	private String adminPassword;
+	
 	
 	@Override
 	protected void configure(final HttpSecurity http) throws Exception {
@@ -44,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	public void configureGlobal(final AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication().withUser("admin").password("{noop}admin").roles("ADMIN");
+		auth.inMemoryAuthentication().withUser(adminLogin).password("{noop}" + adminPassword).roles("ADMIN");
 	}
 	
 }

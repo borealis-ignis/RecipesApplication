@@ -46,8 +46,8 @@
 					</select>
 					<br/>
 					<div id="components-list" class="selected-list">
-						<!-- <div class="item"><span>Железо</span><span class="remove-from-list">x</span></div>
-						<div class="item"><span>Кальций</span><span class="remove-from-list">x</span></div> -->
+						<div class="item"><span>Железо</span><span class="remove-from-list">x</span></div>
+						<div class="item"><span>Кальций</span><span class="remove-from-list">x</span></div>
 						<br clear="all"/>
 					</div>
 				</fieldset>
@@ -56,23 +56,14 @@
 				<br clear="all"/>
 			</div>
 			<div class="recipes-column">
-				<div class="recipe-container">
+				<div th:each="recipe : ${recipes}" class="recipe-container">
 					<div class="recipe-name">
-						<a th:href="@{/recipe}" target="_blank">Single Recipe #1</a>
+						<a th:href="@{'/recipe?id=' + ${recipe.id}}" target="_blank" th:text="${recipe.dishType.name + ' ' + recipe.name}"></a>
 					</div>
-					<p/>
+					<p></p>
 					<div class="recipe-ingredients">
-						Морковь, картошка
-					</div>
-					<br clear="all"/>
-				</div>
-				<div class="recipe-container">
-					<div class="recipe-name">
-						<a th:href="@{/recipe}" target="_blank">Single Recipe #2</a>
-					</div>
-					<p/>
-					<div class="recipe-ingredients">
-						Морковь, картошка
+						<th:block th:each="ingredient,status : ${recipe.ingredients}" 
+								  th:text="${ingredient.name} + ((${#lists.size(recipe.ingredients)} == ${status.index + 1})? '' : ', ')"/>
 					</div>
 					<br clear="all"/>
 				</div>
