@@ -39,8 +39,8 @@ public class IngredientsAdminController {
 	}
 	
 	@GetMapping(path="/ingredient/components")
-	public ResponseEntity<List<ComponentDto>> getComponents(@RequestParam(required = true, name = "id") Long componentId) {
-		return ResponseEntity.status(HttpStatus.OK).body(ingredientsService.getComponents(componentId));
+	public ResponseEntity<List<ComponentDto>> getComponents(@RequestParam(required = true, name = "id") Long ingredientId) {
+		return ResponseEntity.status(HttpStatus.OK).body(ingredientsService.getComponents(ingredientId));
 	}
 	
 	@GetMapping(path="/ingredient/allcomponents")
