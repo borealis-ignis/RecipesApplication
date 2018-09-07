@@ -8,6 +8,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.isA;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -25,15 +26,16 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.recipes.appl.MockData;
 import com.recipes.appl.model.dto.IngredientDto;
+import com.recipes.appl.model.dto.errors.IngredientError;
 import com.recipes.appl.service.IngredientsService;
+import com.recipes.appl.utils.ConvertersUtil;
 
 import net.minidev.json.JSONArray;
 
@@ -95,7 +97,7 @@ public class IngredientsAdminControllerTest {
 		mvc.perform(get("/admin/ingredient/components").param("id", ingredientId.toString()))
 				.andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
 				.andExpect(jsonPath("$", isA(JSONArray.class)))
 				.andExpect(jsonPath("$.length()", is(2)))
 				.andExpect(jsonPath("$[0].name", is(equalTo("Кальций"))))
@@ -111,7 +113,7 @@ public class IngredientsAdminControllerTest {
 		mvc.perform(get("/admin/ingredient/allcomponents"))
 				.andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
 				.andExpect(jsonPath("$", isA(JSONArray.class)))
 				.andExpect(jsonPath("$.length()", is(2)))
 				.andExpect(jsonPath("$[0].name", is(equalTo("Кальций"))))
@@ -127,7 +129,7 @@ public class IngredientsAdminControllerTest {
 		mvc.perform(post("/admin/ingredient/save")
 				.with(csrf())
 				.contentType(MediaType.APPLICATION_JSON_UTF8)
-				.content(json(newIngredient)))
+				.content(ConvertersUtil.json(newIngredient)))
 				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -145,7 +147,7 @@ public class IngredientsAdminControllerTest {
 		mvc.perform(post("/admin/ingredient/save")
 				.with(csrf())
 				.contentType(MediaType.APPLICATION_JSON_UTF8)
-				.content(json(newIngredient)))
+				.content(ConvertersUtil.json(newIngredient)))
 				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -161,14 +163,30 @@ public class IngredientsAdminControllerTest {
 	
 	@Test
 	@WithMockUser(username="admin", password="admin", roles="ADMIN")
-	public void updateNewIngredientWithoutComponents() throws Exception {
-		final IngredientDto newIngredient = MockData.dtoAlmondIngredient(false, true);
-		when(ingredientsService.saveIngredient(newIngredient)).thenReturn(newIngredient);
+	public void saveNewIngredientBadRequest() throws Exception {
+		final IngredientDto newIngredient = MockData.dtoAlmondIngredient(false, false);
+		when(ingredientsService.validateIngredient(newIngredient)).thenReturn(new ResponseEntity<IngredientDto>(new IngredientError("Validation error message"), HttpStatus.BAD_REQUEST));
 		
 		mvc.perform(post("/admin/ingredient/save")
 				.with(csrf())
 				.contentType(MediaType.APPLICATION_JSON_UTF8)
-				.content(json(newIngredient)))
+				.content(ConvertersUtil.json(newIngredient)))
+				.andDo(print())
+				.andExpect(status().isBadRequest())
+				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$.errorMessage", is("Validation error message")));
+	}
+	
+	@Test
+	@WithMockUser(username="admin", password="admin", roles="ADMIN")
+	public void updateNewIngredientWithoutComponents() throws Exception {
+		final IngredientDto ingredient = MockData.dtoAlmondIngredient(false, true);
+		when(ingredientsService.saveIngredient(ingredient)).thenReturn(ingredient);
+		
+		mvc.perform(post("/admin/ingredient/save")
+				.with(csrf())
+				.contentType(MediaType.APPLICATION_JSON_UTF8)
+				.content(ConvertersUtil.json(ingredient)))
 				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -180,13 +198,13 @@ public class IngredientsAdminControllerTest {
 	@Test
 	@WithMockUser(username="admin", password="admin", roles="ADMIN")
 	public void updateIngredientWithComponents() throws Exception {
-		final IngredientDto newIngredient = MockData.dtoAlmondIngredient(true, true);
-		when(ingredientsService.saveIngredient(newIngredient)).thenReturn(newIngredient);
+		final IngredientDto ingredient = MockData.dtoAlmondIngredient(true, true);
+		when(ingredientsService.saveIngredient(ingredient)).thenReturn(ingredient);
 		
 		mvc.perform(post("/admin/ingredient/save")
 				.with(csrf())
 				.contentType(MediaType.APPLICATION_JSON_UTF8)
-				.content(json(newIngredient)))
+				.content(ConvertersUtil.json(ingredient)))
 				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -200,6 +218,45 @@ public class IngredientsAdminControllerTest {
 				.andExpect(jsonPath("$.components[1].name", is(equalTo("Магний"))));
 	}
 	
+	@Test
+	@WithMockUser(username="admin", password="admin", roles="ADMIN")
+	public void updateIngredientBadRequest() throws Exception {
+		final IngredientDto ingredient = MockData.dtoAlmondIngredient(false, true);
+		when(ingredientsService.validateIngredient(ingredient)).thenReturn(new ResponseEntity<IngredientDto>(new IngredientError("Validation error message"), HttpStatus.BAD_REQUEST));
+		
+		mvc.perform(post("/admin/ingredient/save")
+				.with(csrf())
+				.contentType(MediaType.APPLICATION_JSON_UTF8)
+				.content(ConvertersUtil.json(ingredient)))
+				.andDo(print())
+				.andExpect(status().isBadRequest())
+				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$.errorMessage", is("Validation error message")));
+	}
+	
+	@Test
+	@WithMockUser(username="admin", password="admin", roles="ADMIN")
+	public void deleteIngredient() throws Exception {
+		final Long ingredientId = 1L;
+		final IngredientDto dto = new IngredientDto();
+		dto.setId(ingredientId);
+		
+		when(ingredientsService.deleteIngredient(ingredientId)).thenReturn(dto);
+		
+		mvc.perform(delete("/admin/ingredient/delete").param("id", ingredientId.toString()).with(csrf()))
+				.andDo(print())
+				.andExpect(status().isAccepted())
+				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
+				.andExpect(jsonPath("$.id", is(1)));
+	}
+	
+	@Test
+	@WithMockUser(username="admin", password="admin", roles="ADMIN")
+	public void getAllComponentsIncorrectHttpMethod() throws Exception {
+		mvc.perform(post("/admin/ingredient/allcomponents"))
+		.andDo(print())
+		.andExpect(status().is(HttpStatus.FORBIDDEN.value()));
+	}
 	
 	@Test
 	public void getAllComponentsNotAuthorized() throws Exception {
@@ -208,8 +265,4 @@ public class IngredientsAdminControllerTest {
 		.andExpect(status().is(HttpStatus.UNAUTHORIZED.value()));
 	}
 	
-	private String json(final Object object) throws JsonProcessingException {
-		final ObjectMapper mapperObj = new ObjectMapper();
-		return mapperObj.writeValueAsString(object);
-	}
 }
