@@ -7,7 +7,10 @@ import java.util.Optional;
 import com.recipes.appl.model.dbo.Component;
 import com.recipes.appl.model.dbo.Ingredient;
 import com.recipes.appl.model.dto.ComponentDto;
+import com.recipes.appl.model.dto.DishTypeDto;
 import com.recipes.appl.model.dto.IngredientDto;
+import com.recipes.appl.model.dto.IngredientMeasureDto;
+import com.recipes.appl.model.dto.RecipeDto;
 
 /**
  * @author Kastalski Sergey
@@ -66,6 +69,98 @@ public class MockData {
 		component.setId(2L);
 		component.setName("Магний");
 		return component;
+	}
+	
+	
+	public static List<DishTypeDto> listDtoDishTypes() {
+		final List<DishTypeDto> dishTypes = new ArrayList<>();
+		dishTypes.add(dtoSoupDishType());
+		dishTypes.add(dtoSauceDishType());
+		return dishTypes;
+	}
+	
+	public static DishTypeDto dtoSoupDishType() {
+		final DishTypeDto dishType = new DishTypeDto();
+		dishType.setId(1L);
+		dishType.setName("Суп");
+		return dishType;
+	}
+	
+	public static DishTypeDto dtoSauceDishType() {
+		final DishTypeDto dishType = new DishTypeDto();
+		dishType.setId(2L);
+		dishType.setName("Соус");
+		return dishType;
+	}
+	
+	
+	public static List<IngredientMeasureDto> listDtoIngredientMeasures() {
+		final List<IngredientMeasureDto> ingredientMeasures = new ArrayList<>();
+		ingredientMeasures.add(dtoMlIngredientMeasure());
+		ingredientMeasures.add(dtoSpoonsIngredientMeasure());
+		return ingredientMeasures;
+	}
+	
+	public static IngredientMeasureDto dtoMlIngredientMeasure() {
+		final IngredientMeasureDto ingredientMeasure = new IngredientMeasureDto();
+		ingredientMeasure.setId(1L);
+		ingredientMeasure.setName("мл");
+		return ingredientMeasure;
+	}
+	
+	public static IngredientMeasureDto dtoSpoonsIngredientMeasure() {
+		final IngredientMeasureDto ingredientMeasure = new IngredientMeasureDto();
+		ingredientMeasure.setId(2L);
+		ingredientMeasure.setName("чайных ложек");
+		return ingredientMeasure;
+	}
+	
+	
+	public static List<RecipeDto> listDtoRecipes() {
+		final List<RecipeDto> recipes = new ArrayList<>();
+		recipes.add(dtoSauceRecipe(true));
+		recipes.add(dtoSoupRecipe(true));
+		return recipes;
+	}
+	
+	public static RecipeDto dtoSauceRecipe(final boolean withId) {
+		final RecipeDto dtoRecipe = new RecipeDto();
+		if (withId) {
+			dtoRecipe.setId(1L);
+		}
+		dtoRecipe.setDishType(dtoSauceDishType());
+		dtoRecipe.setName("Recipe#1");
+		dtoRecipe.setDescription("Description");
+		
+		final List<IngredientDto> ingredients = new ArrayList<>();
+		final IngredientDto ingredient = dtoAlmondIngredient(false, true);
+		ingredient.setIngredientNameId(1L);
+		ingredient.setCount(2.0);
+		ingredient.setMeasure(dtoMlIngredientMeasure());
+		ingredients.add(ingredient);
+		
+		dtoRecipe.setIngredients(ingredients);
+		return dtoRecipe;
+	}
+	
+	public static RecipeDto dtoSoupRecipe(final boolean withId) {
+		final RecipeDto dtoRecipe = new RecipeDto();
+		if (withId) {
+			dtoRecipe.setId(2L);
+		}
+		dtoRecipe.setDishType(dtoSauceDishType());
+		dtoRecipe.setName("Recipe#2");
+		dtoRecipe.setDescription("Description");
+		
+		final List<IngredientDto> ingredients = new ArrayList<>();
+		final IngredientDto ingredient = dtoCornIngredient(false, true);
+		ingredient.setIngredientNameId(1L);
+		ingredient.setCount(2.0);
+		ingredient.setMeasure(dtoMlIngredientMeasure());
+		ingredients.add(ingredient);
+		
+		dtoRecipe.setIngredients(ingredients);
+		return dtoRecipe;
 	}
 	
 	// dbo data

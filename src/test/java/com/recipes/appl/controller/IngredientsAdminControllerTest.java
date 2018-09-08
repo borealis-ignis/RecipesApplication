@@ -132,7 +132,7 @@ public class IngredientsAdminControllerTest {
 				.content(ConvertersUtil.json(newIngredient)))
 				.andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
 				.andExpect(jsonPath("$.id", is(1)))
 				.andExpect(jsonPath("$.name", is("Миндаль")))
 				.andExpect(jsonPath("$.components").value(IsNull.nullValue()));
@@ -150,7 +150,7 @@ public class IngredientsAdminControllerTest {
 				.content(ConvertersUtil.json(newIngredient)))
 				.andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
 				.andExpect(jsonPath("$.id", is(1)))
 				.andExpect(jsonPath("$.name", is("Миндаль")))
 				.andExpect(jsonPath("$.components", isA(JSONArray.class)))
@@ -173,13 +173,13 @@ public class IngredientsAdminControllerTest {
 				.content(ConvertersUtil.json(newIngredient)))
 				.andDo(print())
 				.andExpect(status().isBadRequest())
-				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
 				.andExpect(jsonPath("$.errorMessage", is("Validation error message")));
 	}
 	
 	@Test
 	@WithMockUser(username="admin", password="admin", roles="ADMIN")
-	public void updateNewIngredientWithoutComponents() throws Exception {
+	public void updateIngredientWithoutComponents() throws Exception {
 		final IngredientDto ingredient = MockData.dtoAlmondIngredient(false, true);
 		when(ingredientsService.saveIngredient(ingredient)).thenReturn(ingredient);
 		
@@ -189,7 +189,7 @@ public class IngredientsAdminControllerTest {
 				.content(ConvertersUtil.json(ingredient)))
 				.andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
 				.andExpect(jsonPath("$.id", is(1)))
 				.andExpect(jsonPath("$.name", is("Миндаль")))
 				.andExpect(jsonPath("$.components").value(IsNull.nullValue()));
@@ -207,7 +207,7 @@ public class IngredientsAdminControllerTest {
 				.content(ConvertersUtil.json(ingredient)))
 				.andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
 				.andExpect(jsonPath("$.id", is(1)))
 				.andExpect(jsonPath("$.name", is("Миндаль")))
 				.andExpect(jsonPath("$.components", isA(JSONArray.class)))
@@ -230,7 +230,7 @@ public class IngredientsAdminControllerTest {
 				.content(ConvertersUtil.json(ingredient)))
 				.andDo(print())
 				.andExpect(status().isBadRequest())
-				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
 				.andExpect(jsonPath("$.errorMessage", is("Validation error message")));
 	}
 	
@@ -253,9 +253,9 @@ public class IngredientsAdminControllerTest {
 	@Test
 	@WithMockUser(username="admin", password="admin", roles="ADMIN")
 	public void getAllComponentsIncorrectHttpMethod() throws Exception {
-		mvc.perform(post("/admin/ingredient/allcomponents"))
+		mvc.perform(post("/admin/ingredient/allcomponents").with(csrf()))
 		.andDo(print())
-		.andExpect(status().is(HttpStatus.FORBIDDEN.value()));
+		.andExpect(status().is(HttpStatus.METHOD_NOT_ALLOWED.value()));
 	}
 	
 	@Test
