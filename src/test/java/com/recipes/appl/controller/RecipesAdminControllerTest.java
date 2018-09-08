@@ -66,50 +66,50 @@ public class RecipesAdminControllerTest {
 		when(ingredientsService.getIngredients()).thenReturn(MockData.listDtoIngredients(false));
 		
 		mvc.perform(get("/admin/recipes"))
-				.andDo(print())
-				.andExpect(status().isOk())
-				.andExpect(model().attribute("dishTypes", hasItem(
-					allOf(
-						hasProperty("id", is(1L)),
-						hasProperty("name", is("Суп"))
-					))))
-				.andExpect(model().attribute("dishTypes", hasItem(
-					allOf(
-						hasProperty("id", is(2L)),
-						hasProperty("name", is("Соус"))
-					))))
-				.andExpect(model().attribute("ingredientMeasures", hasItem(
-					allOf(
-						hasProperty("id", is(1L)),
-						hasProperty("name", is("мл"))
-					))))
-				.andExpect(model().attribute("ingredientMeasures", hasItem(
-					allOf(
-						hasProperty("id", is(2L)),
-						hasProperty("name", is("чайных ложек"))
-					))))
-				.andExpect(model().attribute("recipes", hasItem(
-					allOf(
-						hasProperty("id", is(1L)),
-						hasProperty("name", is("Recipe#1"))
-					))))
-				.andExpect(model().attribute("recipes", hasItem(
-					allOf(
-						hasProperty("id", is(2L)),
-						hasProperty("name", is("Recipe#2"))
-					))))
-				.andExpect(model().attribute("ingredients", hasItem(
-					allOf(
-						hasProperty("id", is(1L)),
-						hasProperty("name", is("Миндаль"))
-					))))
-				.andExpect(model().attribute("ingredients", hasItem(
-					allOf(
-						hasProperty("id", is(2L)),
-						hasProperty("name", is("Кукуруза"))
-					))))
-				.andExpect(model().size(4))
-				.andExpect(view().name("admin/recipes"));
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(model().attribute("dishTypes", hasItem(
+				allOf(
+					hasProperty("id", is(1L)),
+					hasProperty("name", is("Суп"))
+				))))
+			.andExpect(model().attribute("dishTypes", hasItem(
+				allOf(
+					hasProperty("id", is(2L)),
+					hasProperty("name", is("Соус"))
+				))))
+			.andExpect(model().attribute("ingredientMeasures", hasItem(
+				allOf(
+					hasProperty("id", is(1L)),
+					hasProperty("name", is("мл"))
+				))))
+			.andExpect(model().attribute("ingredientMeasures", hasItem(
+				allOf(
+					hasProperty("id", is(2L)),
+					hasProperty("name", is("чайных ложек"))
+				))))
+			.andExpect(model().attribute("recipes", hasItem(
+				allOf(
+					hasProperty("id", is(1L)),
+					hasProperty("name", is("Recipe#1"))
+				))))
+			.andExpect(model().attribute("recipes", hasItem(
+				allOf(
+					hasProperty("id", is(2L)),
+					hasProperty("name", is("Recipe#2"))
+				))))
+			.andExpect(model().attribute("ingredients", hasItem(
+				allOf(
+					hasProperty("id", is(1L)),
+					hasProperty("name", is("Миндаль"))
+				))))
+			.andExpect(model().attribute("ingredients", hasItem(
+				allOf(
+					hasProperty("id", is(2L)),
+					hasProperty("name", is("Кукуруза"))
+				))))
+			.andExpect(model().size(4))
+			.andExpect(view().name("admin/recipes"));
 		
 	}
 	
@@ -121,22 +121,22 @@ public class RecipesAdminControllerTest {
 		when(recipesService.getRecipe(recipeId)).thenReturn(MockData.dtoSauceRecipe(true));
 		
 		mvc.perform(get("/admin/recipe").param("id", recipeId.toString()))
-				.andDo(print())
-				.andExpect(status().isOk())
-				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
-				.andExpect(jsonPath("$.id", is(equalTo(1))))
-				.andExpect(jsonPath("$.name", is(equalTo("Recipe#1"))))
-				.andExpect(jsonPath("$.dishType.id", is(equalTo(2))))
-				.andExpect(jsonPath("$.dishType.name", is(equalTo("Соус"))))
-				.andExpect(jsonPath("$.description", is(equalTo("Description"))))
-				.andExpect(jsonPath("$.ingredients", isA(JSONArray.class)))
-				.andExpect(jsonPath("$.ingredients.length()", is(1)))
-				.andExpect(jsonPath("$.ingredients[0].id", is(equalTo(1))))
-				.andExpect(jsonPath("$.ingredients[0].ingredientNameId", is(equalTo(1))))
-				.andExpect(jsonPath("$.ingredients[0].name", is(equalTo("Миндаль"))))
-				.andExpect(jsonPath("$.ingredients[0].count", is(equalTo(2.0))))
-				.andExpect(jsonPath("$.ingredients[0].measure.id", is(equalTo(1))))
-				.andExpect(jsonPath("$.ingredients[0].measure.name", is(equalTo("мл"))));
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
+			.andExpect(jsonPath("$.id", is(equalTo(1))))
+			.andExpect(jsonPath("$.name", is(equalTo("Recipe#1"))))
+			.andExpect(jsonPath("$.dishType.id", is(equalTo(2))))
+			.andExpect(jsonPath("$.dishType.name", is(equalTo("Соус"))))
+			.andExpect(jsonPath("$.description", is(equalTo("Description"))))
+			.andExpect(jsonPath("$.ingredients", isA(JSONArray.class)))
+			.andExpect(jsonPath("$.ingredients.length()", is(1)))
+			.andExpect(jsonPath("$.ingredients[0].id", is(equalTo(1))))
+			.andExpect(jsonPath("$.ingredients[0].ingredientNameId", is(equalTo(1))))
+			.andExpect(jsonPath("$.ingredients[0].name", is(equalTo("Миндаль"))))
+			.andExpect(jsonPath("$.ingredients[0].count", is(equalTo(2.0))))
+			.andExpect(jsonPath("$.ingredients[0].measure.id", is(equalTo(1))))
+			.andExpect(jsonPath("$.ingredients[0].measure.name", is(equalTo("мл"))));
 	}
 	
 	@Test
@@ -146,25 +146,25 @@ public class RecipesAdminControllerTest {
 		when(recipesService.saveRecipe(newRecipe)).thenReturn(MockData.dtoSauceRecipe(true));
 		
 		mvc.perform(post("/admin/recipe/save")
-				.with(csrf())
-				.contentType(MediaType.APPLICATION_JSON_UTF8)
-				.content(ConvertersUtil.json(newRecipe)))
-				.andDo(print())
-				.andExpect(status().isOk())
-				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
-				.andExpect(jsonPath("$.id", is(equalTo(1))))
-				.andExpect(jsonPath("$.name", is(equalTo("Recipe#1"))))
-				.andExpect(jsonPath("$.dishType.id", is(equalTo(2))))
-				.andExpect(jsonPath("$.dishType.name", is(equalTo("Соус"))))
-				.andExpect(jsonPath("$.description", is(equalTo("Description"))))
-				.andExpect(jsonPath("$.ingredients", isA(JSONArray.class)))
-				.andExpect(jsonPath("$.ingredients.length()", is(1)))
-				.andExpect(jsonPath("$.ingredients[0].id", is(equalTo(1))))
-				.andExpect(jsonPath("$.ingredients[0].ingredientNameId", is(equalTo(1))))
-				.andExpect(jsonPath("$.ingredients[0].name", is(equalTo("Миндаль"))))
-				.andExpect(jsonPath("$.ingredients[0].count", is(equalTo(2.0))))
-				.andExpect(jsonPath("$.ingredients[0].measure.id", is(equalTo(1))))
-				.andExpect(jsonPath("$.ingredients[0].measure.name", is(equalTo("мл"))));
+			.with(csrf())
+			.contentType(MediaType.APPLICATION_JSON_UTF8)
+			.content(ConvertersUtil.json(newRecipe)))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
+			.andExpect(jsonPath("$.id", is(equalTo(1))))
+			.andExpect(jsonPath("$.name", is(equalTo("Recipe#1"))))
+			.andExpect(jsonPath("$.dishType.id", is(equalTo(2))))
+			.andExpect(jsonPath("$.dishType.name", is(equalTo("Соус"))))
+			.andExpect(jsonPath("$.description", is(equalTo("Description"))))
+			.andExpect(jsonPath("$.ingredients", isA(JSONArray.class)))
+			.andExpect(jsonPath("$.ingredients.length()", is(1)))
+			.andExpect(jsonPath("$.ingredients[0].id", is(equalTo(1))))
+			.andExpect(jsonPath("$.ingredients[0].ingredientNameId", is(equalTo(1))))
+			.andExpect(jsonPath("$.ingredients[0].name", is(equalTo("Миндаль"))))
+			.andExpect(jsonPath("$.ingredients[0].count", is(equalTo(2.0))))
+			.andExpect(jsonPath("$.ingredients[0].measure.id", is(equalTo(1))))
+			.andExpect(jsonPath("$.ingredients[0].measure.name", is(equalTo("мл"))));
 	}
 	
 	@Test
@@ -174,13 +174,13 @@ public class RecipesAdminControllerTest {
 		when(recipesService.validateRecipe(newRecipe)).thenReturn(new ResponseEntity<RecipeDto>(new RecipeError("Validation error message"), HttpStatus.BAD_REQUEST));
 		
 		mvc.perform(post("/admin/recipe/save")
-				.with(csrf())
-				.contentType(MediaType.APPLICATION_JSON_UTF8)
-				.content(ConvertersUtil.json(newRecipe)))
-				.andDo(print())
-				.andExpect(status().isBadRequest())
-				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
-				.andExpect(jsonPath("$.errorMessage", is("Validation error message")));
+			.with(csrf())
+			.contentType(MediaType.APPLICATION_JSON_UTF8)
+			.content(ConvertersUtil.json(newRecipe)))
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+			.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
+			.andExpect(jsonPath("$.errorMessage", is("Validation error message")));
 	}
 	
 	@Test
@@ -190,25 +190,25 @@ public class RecipesAdminControllerTest {
 		when(recipesService.saveRecipe(recipe)).thenReturn(recipe);
 		
 		mvc.perform(post("/admin/recipe/save")
-				.with(csrf())
-				.contentType(MediaType.APPLICATION_JSON_UTF8)
-				.content(ConvertersUtil.json(recipe)))
-				.andDo(print())
-				.andExpect(status().isOk())
-				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
-				.andExpect(jsonPath("$.id", is(equalTo(1))))
-				.andExpect(jsonPath("$.name", is(equalTo("Recipe#1"))))
-				.andExpect(jsonPath("$.dishType.id", is(equalTo(2))))
-				.andExpect(jsonPath("$.dishType.name", is(equalTo("Соус"))))
-				.andExpect(jsonPath("$.description", is(equalTo("Description"))))
-				.andExpect(jsonPath("$.ingredients", isA(JSONArray.class)))
-				.andExpect(jsonPath("$.ingredients.length()", is(1)))
-				.andExpect(jsonPath("$.ingredients[0].id", is(equalTo(1))))
-				.andExpect(jsonPath("$.ingredients[0].ingredientNameId", is(equalTo(1))))
-				.andExpect(jsonPath("$.ingredients[0].name", is(equalTo("Миндаль"))))
-				.andExpect(jsonPath("$.ingredients[0].count", is(equalTo(2.0))))
-				.andExpect(jsonPath("$.ingredients[0].measure.id", is(equalTo(1))))
-				.andExpect(jsonPath("$.ingredients[0].measure.name", is(equalTo("мл"))));
+			.with(csrf())
+			.contentType(MediaType.APPLICATION_JSON_UTF8)
+			.content(ConvertersUtil.json(recipe)))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
+			.andExpect(jsonPath("$.id", is(equalTo(1))))
+			.andExpect(jsonPath("$.name", is(equalTo("Recipe#1"))))
+			.andExpect(jsonPath("$.dishType.id", is(equalTo(2))))
+			.andExpect(jsonPath("$.dishType.name", is(equalTo("Соус"))))
+			.andExpect(jsonPath("$.description", is(equalTo("Description"))))
+			.andExpect(jsonPath("$.ingredients", isA(JSONArray.class)))
+			.andExpect(jsonPath("$.ingredients.length()", is(1)))
+			.andExpect(jsonPath("$.ingredients[0].id", is(equalTo(1))))
+			.andExpect(jsonPath("$.ingredients[0].ingredientNameId", is(equalTo(1))))
+			.andExpect(jsonPath("$.ingredients[0].name", is(equalTo("Миндаль"))))
+			.andExpect(jsonPath("$.ingredients[0].count", is(equalTo(2.0))))
+			.andExpect(jsonPath("$.ingredients[0].measure.id", is(equalTo(1))))
+			.andExpect(jsonPath("$.ingredients[0].measure.name", is(equalTo("мл"))));
 	}
 	
 	@Test
@@ -218,13 +218,13 @@ public class RecipesAdminControllerTest {
 		when(recipesService.validateRecipe(newRecipe)).thenReturn(new ResponseEntity<RecipeDto>(new RecipeError("Validation error message"), HttpStatus.BAD_REQUEST));
 		
 		mvc.perform(post("/admin/recipe/save")
-				.with(csrf())
-				.contentType(MediaType.APPLICATION_JSON_UTF8)
-				.content(ConvertersUtil.json(newRecipe)))
-				.andDo(print())
-				.andExpect(status().isBadRequest())
-				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
-				.andExpect(jsonPath("$.errorMessage", is("Validation error message")));
+			.with(csrf())
+			.contentType(MediaType.APPLICATION_JSON_UTF8)
+			.content(ConvertersUtil.json(newRecipe)))
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+			.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
+			.andExpect(jsonPath("$.errorMessage", is("Validation error message")));
 	}
 	
 	@Test
@@ -237,24 +237,24 @@ public class RecipesAdminControllerTest {
 		when(recipesService.deleteRecipe(recipeId)).thenReturn(dto);
 		
 		mvc.perform(delete("/admin/recipe/delete").param("id", recipeId.toString()).with(csrf()))
-				.andDo(print())
-				.andExpect(status().isAccepted())
-				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
-				.andExpect(jsonPath("$.id", is(1)));
+			.andDo(print())
+			.andExpect(status().isAccepted())
+			.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
+			.andExpect(jsonPath("$.id", is(1)));
 	}
 	
 	@Test
 	@WithMockUser(username="admin", password="admin", roles="ADMIN")
 	public void getRecipeIncorrectHttpMethod() throws Exception {
 		mvc.perform(post("/admin/recipe").param("id", "1").with(csrf()))
-		.andDo(print())
-		.andExpect(status().is(HttpStatus.METHOD_NOT_ALLOWED.value()));
+			.andDo(print())
+			.andExpect(status().is(HttpStatus.METHOD_NOT_ALLOWED.value()));
 	}
 	
 	@Test
 	public void getRecipeNotAuthorized() throws Exception {
 		mvc.perform(get("/admin/recipe").param("id", "1").with(csrf()))
-		.andDo(print())
-		.andExpect(status().is(HttpStatus.UNAUTHORIZED.value()));
+			.andDo(print())
+			.andExpect(status().is(HttpStatus.UNAUTHORIZED.value()));
 	}
 }

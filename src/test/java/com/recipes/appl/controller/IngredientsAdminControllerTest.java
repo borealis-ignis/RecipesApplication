@@ -61,30 +61,30 @@ public class IngredientsAdminControllerTest {
 		when(ingredientsService.getComponents()).thenReturn(MockData.listDtoComponents());
 		
 		mvc.perform(get("/admin/ingredients"))
-				.andDo(print())
-				.andExpect(status().isOk())
-				.andExpect(model().attribute("ingredients", hasItem(
-					allOf(
-						hasProperty("id", is(1L)),
-						hasProperty("name", is("Миндаль"))
-					))))
-				.andExpect(model().attribute("ingredients", hasItem(
-					allOf(
-						hasProperty("id", is(2L)),
-						hasProperty("name", is("Кукуруза"))
-					))))
-				.andExpect(model().attribute("components", hasItem(
-					allOf(
-						hasProperty("id", is(1L)),
-						hasProperty("name", is("Кальций"))
-					))))
-				.andExpect(model().attribute("components", hasItem(
-					allOf(
-						hasProperty("id", is(2L)),
-						hasProperty("name", is("Магний"))
-					))))
-				.andExpect(model().size(2))
-				.andExpect(view().name("admin/ingredients"));
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(model().attribute("ingredients", hasItem(
+				allOf(
+					hasProperty("id", is(1L)),
+					hasProperty("name", is("Миндаль"))
+				))))
+			.andExpect(model().attribute("ingredients", hasItem(
+				allOf(
+					hasProperty("id", is(2L)),
+					hasProperty("name", is("Кукуруза"))
+				))))
+			.andExpect(model().attribute("components", hasItem(
+				allOf(
+					hasProperty("id", is(1L)),
+					hasProperty("name", is("Кальций"))
+				))))
+			.andExpect(model().attribute("components", hasItem(
+				allOf(
+					hasProperty("id", is(2L)),
+					hasProperty("name", is("Магний"))
+				))))
+			.andExpect(model().size(2))
+			.andExpect(view().name("admin/ingredients"));
 	}
 	
 	@Test
@@ -95,13 +95,13 @@ public class IngredientsAdminControllerTest {
 		when(ingredientsService.getComponents(ingredientId)).thenReturn(MockData.listDtoComponents());
 		
 		mvc.perform(get("/admin/ingredient/components").param("id", ingredientId.toString()))
-				.andDo(print())
-				.andExpect(status().isOk())
-				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
-				.andExpect(jsonPath("$", isA(JSONArray.class)))
-				.andExpect(jsonPath("$.length()", is(2)))
-				.andExpect(jsonPath("$[0].name", is(equalTo("Кальций"))))
-				.andExpect(jsonPath("$[1].name", is(equalTo("Магний"))));
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
+			.andExpect(jsonPath("$", isA(JSONArray.class)))
+			.andExpect(jsonPath("$.length()", is(2)))
+			.andExpect(jsonPath("$[0].name", is(equalTo("Кальций"))))
+			.andExpect(jsonPath("$[1].name", is(equalTo("Магний"))));
 	}
 	
 	@Test
@@ -111,13 +111,13 @@ public class IngredientsAdminControllerTest {
 		when(ingredientsService.getComponents()).thenReturn(MockData.listDtoComponents());
 		
 		mvc.perform(get("/admin/ingredient/allcomponents"))
-				.andDo(print())
-				.andExpect(status().isOk())
-				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
-				.andExpect(jsonPath("$", isA(JSONArray.class)))
-				.andExpect(jsonPath("$.length()", is(2)))
-				.andExpect(jsonPath("$[0].name", is(equalTo("Кальций"))))
-				.andExpect(jsonPath("$[1].name", is(equalTo("Магний"))));
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
+			.andExpect(jsonPath("$", isA(JSONArray.class)))
+			.andExpect(jsonPath("$.length()", is(2)))
+			.andExpect(jsonPath("$[0].name", is(equalTo("Кальций"))))
+			.andExpect(jsonPath("$[1].name", is(equalTo("Магний"))));
 	}
 	
 	@Test
@@ -127,15 +127,15 @@ public class IngredientsAdminControllerTest {
 		when(ingredientsService.saveIngredient(newIngredient)).thenReturn(MockData.dtoAlmondIngredient(false, true));
 		
 		mvc.perform(post("/admin/ingredient/save")
-				.with(csrf())
-				.contentType(MediaType.APPLICATION_JSON_UTF8)
-				.content(ConvertersUtil.json(newIngredient)))
-				.andDo(print())
-				.andExpect(status().isOk())
-				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
-				.andExpect(jsonPath("$.id", is(1)))
-				.andExpect(jsonPath("$.name", is("Миндаль")))
-				.andExpect(jsonPath("$.components").value(IsNull.nullValue()));
+			.with(csrf())
+			.contentType(MediaType.APPLICATION_JSON_UTF8)
+			.content(ConvertersUtil.json(newIngredient)))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
+			.andExpect(jsonPath("$.id", is(1)))
+			.andExpect(jsonPath("$.name", is("Миндаль")))
+			.andExpect(jsonPath("$.components").value(IsNull.nullValue()));
 	}
 	
 	@Test
@@ -145,20 +145,20 @@ public class IngredientsAdminControllerTest {
 		when(ingredientsService.saveIngredient(newIngredient)).thenReturn(MockData.dtoAlmondIngredient(true, true));
 		
 		mvc.perform(post("/admin/ingredient/save")
-				.with(csrf())
-				.contentType(MediaType.APPLICATION_JSON_UTF8)
-				.content(ConvertersUtil.json(newIngredient)))
-				.andDo(print())
-				.andExpect(status().isOk())
-				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
-				.andExpect(jsonPath("$.id", is(1)))
-				.andExpect(jsonPath("$.name", is("Миндаль")))
-				.andExpect(jsonPath("$.components", isA(JSONArray.class)))
-				.andExpect(jsonPath("$.components.length()", is(2)))
-				.andExpect(jsonPath("$.components[0].id", is(equalTo(1))))
-				.andExpect(jsonPath("$.components[0].name", is(equalTo("Кальций"))))
-				.andExpect(jsonPath("$.components[1].id", is(equalTo(2))))
-				.andExpect(jsonPath("$.components[1].name", is(equalTo("Магний"))));
+			.with(csrf())
+			.contentType(MediaType.APPLICATION_JSON_UTF8)
+			.content(ConvertersUtil.json(newIngredient)))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
+			.andExpect(jsonPath("$.id", is(1)))
+			.andExpect(jsonPath("$.name", is("Миндаль")))
+			.andExpect(jsonPath("$.components", isA(JSONArray.class)))
+			.andExpect(jsonPath("$.components.length()", is(2)))
+			.andExpect(jsonPath("$.components[0].id", is(equalTo(1))))
+			.andExpect(jsonPath("$.components[0].name", is(equalTo("Кальций"))))
+			.andExpect(jsonPath("$.components[1].id", is(equalTo(2))))
+			.andExpect(jsonPath("$.components[1].name", is(equalTo("Магний"))));
 	}
 	
 	@Test
@@ -168,13 +168,13 @@ public class IngredientsAdminControllerTest {
 		when(ingredientsService.validateIngredient(newIngredient)).thenReturn(new ResponseEntity<IngredientDto>(new IngredientError("Validation error message"), HttpStatus.BAD_REQUEST));
 		
 		mvc.perform(post("/admin/ingredient/save")
-				.with(csrf())
-				.contentType(MediaType.APPLICATION_JSON_UTF8)
-				.content(ConvertersUtil.json(newIngredient)))
-				.andDo(print())
-				.andExpect(status().isBadRequest())
-				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
-				.andExpect(jsonPath("$.errorMessage", is("Validation error message")));
+			.with(csrf())
+			.contentType(MediaType.APPLICATION_JSON_UTF8)
+			.content(ConvertersUtil.json(newIngredient)))
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+			.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
+			.andExpect(jsonPath("$.errorMessage", is("Validation error message")));
 	}
 	
 	@Test
@@ -184,15 +184,15 @@ public class IngredientsAdminControllerTest {
 		when(ingredientsService.saveIngredient(ingredient)).thenReturn(ingredient);
 		
 		mvc.perform(post("/admin/ingredient/save")
-				.with(csrf())
-				.contentType(MediaType.APPLICATION_JSON_UTF8)
-				.content(ConvertersUtil.json(ingredient)))
-				.andDo(print())
-				.andExpect(status().isOk())
-				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
-				.andExpect(jsonPath("$.id", is(1)))
-				.andExpect(jsonPath("$.name", is("Миндаль")))
-				.andExpect(jsonPath("$.components").value(IsNull.nullValue()));
+			.with(csrf())
+			.contentType(MediaType.APPLICATION_JSON_UTF8)
+			.content(ConvertersUtil.json(ingredient)))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
+			.andExpect(jsonPath("$.id", is(1)))
+			.andExpect(jsonPath("$.name", is("Миндаль")))
+			.andExpect(jsonPath("$.components").value(IsNull.nullValue()));
 	}
 	
 	@Test
@@ -202,20 +202,20 @@ public class IngredientsAdminControllerTest {
 		when(ingredientsService.saveIngredient(ingredient)).thenReturn(ingredient);
 		
 		mvc.perform(post("/admin/ingredient/save")
-				.with(csrf())
-				.contentType(MediaType.APPLICATION_JSON_UTF8)
-				.content(ConvertersUtil.json(ingredient)))
-				.andDo(print())
-				.andExpect(status().isOk())
-				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
-				.andExpect(jsonPath("$.id", is(1)))
-				.andExpect(jsonPath("$.name", is("Миндаль")))
-				.andExpect(jsonPath("$.components", isA(JSONArray.class)))
-				.andExpect(jsonPath("$.components.length()", is(2)))
-				.andExpect(jsonPath("$.components[0].id", is(equalTo(1))))
-				.andExpect(jsonPath("$.components[0].name", is(equalTo("Кальций"))))
-				.andExpect(jsonPath("$.components[1].id", is(equalTo(2))))
-				.andExpect(jsonPath("$.components[1].name", is(equalTo("Магний"))));
+			.with(csrf())
+			.contentType(MediaType.APPLICATION_JSON_UTF8)
+			.content(ConvertersUtil.json(ingredient)))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
+			.andExpect(jsonPath("$.id", is(1)))
+			.andExpect(jsonPath("$.name", is("Миндаль")))
+			.andExpect(jsonPath("$.components", isA(JSONArray.class)))
+			.andExpect(jsonPath("$.components.length()", is(2)))
+			.andExpect(jsonPath("$.components[0].id", is(equalTo(1))))
+			.andExpect(jsonPath("$.components[0].name", is(equalTo("Кальций"))))
+			.andExpect(jsonPath("$.components[1].id", is(equalTo(2))))
+			.andExpect(jsonPath("$.components[1].name", is(equalTo("Магний"))));
 	}
 	
 	@Test
@@ -225,13 +225,13 @@ public class IngredientsAdminControllerTest {
 		when(ingredientsService.validateIngredient(ingredient)).thenReturn(new ResponseEntity<IngredientDto>(new IngredientError("Validation error message"), HttpStatus.BAD_REQUEST));
 		
 		mvc.perform(post("/admin/ingredient/save")
-				.with(csrf())
-				.contentType(MediaType.APPLICATION_JSON_UTF8)
-				.content(ConvertersUtil.json(ingredient)))
-				.andDo(print())
-				.andExpect(status().isBadRequest())
-				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
-				.andExpect(jsonPath("$.errorMessage", is("Validation error message")));
+			.with(csrf())
+			.contentType(MediaType.APPLICATION_JSON_UTF8)
+			.content(ConvertersUtil.json(ingredient)))
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+			.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
+			.andExpect(jsonPath("$.errorMessage", is("Validation error message")));
 	}
 	
 	@Test
@@ -244,25 +244,25 @@ public class IngredientsAdminControllerTest {
 		when(ingredientsService.deleteIngredient(ingredientId)).thenReturn(dto);
 		
 		mvc.perform(delete("/admin/ingredient/delete").param("id", ingredientId.toString()).with(csrf()))
-				.andDo(print())
-				.andExpect(status().isAccepted())
-				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
-				.andExpect(jsonPath("$.id", is(1)));
+			.andDo(print())
+			.andExpect(status().isAccepted())
+			.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
+			.andExpect(jsonPath("$.id", is(1)));
 	}
 	
 	@Test
 	@WithMockUser(username="admin", password="admin", roles="ADMIN")
 	public void getAllComponentsIncorrectHttpMethod() throws Exception {
 		mvc.perform(post("/admin/ingredient/allcomponents").with(csrf()))
-		.andDo(print())
-		.andExpect(status().is(HttpStatus.METHOD_NOT_ALLOWED.value()));
+			.andDo(print())
+			.andExpect(status().is(HttpStatus.METHOD_NOT_ALLOWED.value()));
 	}
 	
 	@Test
 	public void getAllComponentsNotAuthorized() throws Exception {
 		mvc.perform(get("/admin/ingredient/allcomponents"))
-		.andDo(print())
-		.andExpect(status().is(HttpStatus.UNAUTHORIZED.value()));
+			.andDo(print())
+			.andExpect(status().is(HttpStatus.UNAUTHORIZED.value()));
 	}
 	
 }
