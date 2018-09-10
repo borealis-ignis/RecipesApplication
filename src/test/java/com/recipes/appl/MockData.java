@@ -5,7 +5,11 @@ import java.util.List;
 import java.util.Optional;
 
 import com.recipes.appl.model.dbo.Component;
+import com.recipes.appl.model.dbo.DishType;
 import com.recipes.appl.model.dbo.Ingredient;
+import com.recipes.appl.model.dbo.IngredientMeasure;
+import com.recipes.appl.model.dbo.Recipe;
+import com.recipes.appl.model.dbo.RecipeIngredient;
 import com.recipes.appl.model.dto.ComponentDto;
 import com.recipes.appl.model.dto.DishTypeDto;
 import com.recipes.appl.model.dto.IngredientDto;
@@ -164,12 +168,33 @@ public class MockData {
 	}
 	
 	// dbo data
+	public static List<Ingredient> listDboIngredientsWithComponents() {
+		final List<Ingredient> ingredients = new ArrayList<>();
+		ingredients.add(dboAlmondIngredientWithComponents(true));
+		return ingredients;
+	}
+	
 	public static Optional<Ingredient> optionalDboIngredientWithComponents() {
+		return Optional.of(dboAlmondIngredientWithComponents(true));
+	}
+	
+	public static Ingredient dboAlmondIngredientWithComponents(final boolean withId) {
 		final Ingredient ingredient = new Ingredient();
-		ingredient.setId(1L);
+		if (withId) {
+			ingredient.setId(1L);
+		}
 		ingredient.setName("Миндаль");
 		ingredient.setComponents(listDboComponents());
-		return Optional.of(ingredient);
+		return ingredient;
+	}
+	
+	public static Ingredient dboAlmondIngredientWithoutComponents(final boolean withId) {
+		final Ingredient ingredient = new Ingredient();
+		if (withId) {
+			ingredient.setId(1L);
+		}
+		ingredient.setName("Миндаль");
+		return ingredient;
 	}
 	
 	public static List<Component> listDboComponents() {
@@ -193,4 +218,112 @@ public class MockData {
 		return component;
 	}
 	
+	
+	
+	public static List<DishType> listDboDishTypes() {
+		final List<DishType> dishTypes = new ArrayList<>();
+		dishTypes.add(dboSoupDishType());
+		dishTypes.add(dboSauceDishType());
+		return dishTypes;
+	}
+	
+	public static DishType dboSoupDishType() {
+		final DishType dishType = new DishType();
+		dishType.setId(1L);
+		dishType.setName("Суп");
+		return dishType;
+	}
+	
+	public static DishType dboSauceDishType() {
+		final DishType dishType = new DishType();
+		dishType.setId(2L);
+		dishType.setName("Соус");
+		return dishType;
+	}
+	
+	
+	public static List<IngredientMeasure> listDboIngredientMeasures() {
+		final List<IngredientMeasure> ingredientMeasures = new ArrayList<>();
+		ingredientMeasures.add(dboMlIngredientMeasure());
+		ingredientMeasures.add(dboSpoonsIngredientMeasure());
+		return ingredientMeasures;
+	}
+	
+	public static IngredientMeasure dboMlIngredientMeasure() {
+		final IngredientMeasure ingredientMeasure = new IngredientMeasure();
+		ingredientMeasure.setId(1L);
+		ingredientMeasure.setName("мл");
+		return ingredientMeasure;
+	}
+	
+	public static IngredientMeasure dboSpoonsIngredientMeasure() {
+		final IngredientMeasure ingredientMeasure = new IngredientMeasure();
+		ingredientMeasure.setId(2L);
+		ingredientMeasure.setName("чайных ложек");
+		return ingredientMeasure;
+	}
+	
+	
+	public static List<Recipe> listDboRecipes() {
+		final List<Recipe> recipes = new ArrayList<>();
+		recipes.add(dboSauceRecipe(true));
+		recipes.add(dboSoupRecipe(true));
+		return recipes;
+	}
+	
+	public static Recipe dboSauceRecipe(final boolean withId) {
+		final Recipe recipe = new Recipe();
+		if (withId) {
+			recipe.setId(1L);
+		}
+		recipe.setDishType(dboSauceDishType());
+		recipe.setName("Recipe#1");
+		recipe.setDescription("Description");
+		
+		final List<RecipeIngredient> recipeIngredients = new ArrayList<>();
+		final RecipeIngredient ingredient = new RecipeIngredient();
+		ingredient.setId(1L);
+		ingredient.setIngredient(dboAlmondIngredientWithoutComponents(true));
+		ingredient.setCount(2.0);
+		
+		IngredientMeasure ingredientMeasure = new IngredientMeasure();
+		ingredientMeasure.setId(1L);
+		ingredientMeasure.setName("мл");
+		ingredient.setIngredientMeasure(ingredientMeasure);
+		
+		recipeIngredients.add(ingredient);
+		
+		recipe.setRecipeIngredients(recipeIngredients);
+		return recipe;
+	}
+	
+	public static Optional<Recipe> optionalDboSauceRecipe(final boolean withId) {
+		return Optional.of(dboSauceRecipe(withId));
+	}
+	
+	public static Recipe dboSoupRecipe(final boolean withId) {
+		final Recipe recipe = new Recipe();
+		if (withId) {
+			recipe.setId(2L);
+		}
+		recipe.setDishType(dboSoupDishType());
+		recipe.setName("Recipe#2");
+		recipe.setDescription("Description");
+		
+		final List<RecipeIngredient> recipeIngredients = new ArrayList<>();
+		final RecipeIngredient ingredient = new RecipeIngredient();
+		ingredient.setId(2L);
+		ingredient.setIngredient(dboAlmondIngredientWithoutComponents(true));
+		ingredient.setCount(2.0);
+		
+		IngredientMeasure ingredientMeasure = new IngredientMeasure();
+		ingredientMeasure.setId(1L);
+		ingredientMeasure.setName("мл");
+		ingredient.setIngredientMeasure(ingredientMeasure);
+		
+		recipeIngredients.add(ingredient);
+		
+		recipe.setRecipeIngredients(recipeIngredients);
+		return recipe;
+	}
 }
