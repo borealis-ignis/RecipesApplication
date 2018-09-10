@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -42,6 +43,7 @@ public class Recipe {
 	private String name;
 	
 	@NotNull
+	@EqualsAndHashCode.Exclude
 	@OneToMany(mappedBy = "recipe", orphanRemoval = true, fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH})
 	private List<RecipeIngredient> recipeIngredients;
 	

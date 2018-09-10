@@ -10,7 +10,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -175,22 +174,51 @@ public class RecipesServiceTest {
 	}
 	
 	@Test
-	@Ignore("doesn't work: Problem with when().thenReturn()-structure due to Recipe contains itself")
 	public void saveNewRecipe() {
-		/*
-		public RecipeDto saveRecipe(RecipeDto recipe) {
-			return RecipesConverter.convertDboToDto(recipesDAO.saveAndFlush(RecipesConverter.convertDtoToDbo(recipe)));
-		}
-		*/
-		
 		final Recipe dboRecipe = MockData.dboSauceRecipe(true);
 		
-		final Recipe dbo = MockData.dboSauceRecipe(false);
-		dbo.getRecipeIngredients().get(0).setRecipe(dbo);
+		final Recipe dboNewRecipe = MockData.dboSauceRecipe(false);
+		dboNewRecipe.getRecipeIngredients().get(0).setRecipe(dboNewRecipe);
 		
-		when(recipesDAO.saveAndFlush(dbo)).thenReturn(dboRecipe);
+		when(recipesDAO.saveAndFlush(dboNewRecipe)).thenReturn(dboRecipe);
 		
 		final RecipeDto dtoRecipe = recipesService.saveRecipe(MockData.dtoSauceRecipe(false));
+		
+		assertNotNull(dtoRecipe.getId());
+		assertNotNull(dtoRecipe.getDishType());
+		assertEquals(dboRecipe.getDishType().getId(), dtoRecipe.getDishType().getId());
+		assertEquals(dboRecipe.getDishType().getName(), dtoRecipe.getDishType().getName());
+		assertEquals(dboRecipe.getName(), dtoRecipe.getName());
+		assertEquals(dboRecipe.getDescription(), dtoRecipe.getDescription());
+		
+		final List<RecipeIngredient> dboIngredients = dboRecipe.getRecipeIngredients();
+		final List<IngredientDto> dtoIngredients = dtoRecipe.getIngredients();
+		
+		assertEquals(dboIngredients.size(), dtoIngredients.size());
+		assertTrue(dtoIngredients.size() > 0);
+		
+		for (int j = 0; j < dtoIngredients.size(); j++) {
+			final RecipeIngredient dboIngredient = dboIngredients.get(j);
+			final IngredientDto dtoIngredient = dtoIngredients.get(j);
+			
+			assertEquals(dboIngredient.getId(), dtoIngredient.getId());
+			assertEquals(dboIngredient.getIngredient().getId(), dtoIngredient.getIngredientNameId());
+			assertEquals(dboIngredient.getIngredient().getName(), dtoIngredient.getName());
+			assertEquals(dboIngredient.getCount(), dtoIngredient.getCount());
+			assertNotNull(dtoIngredient.getMeasure());
+			assertEquals(dboIngredient.getIngredientMeasure().getId(), dtoIngredient.getMeasure().getId());
+			assertEquals(dboIngredient.getIngredientMeasure().getName(), dtoIngredient.getMeasure().getName());
+		}
+	}
+	
+	@Test
+	public void updateRecipe() {
+		final Recipe dboRecipe = MockData.dboSauceRecipe(true);
+		dboRecipe.getRecipeIngredients().get(0).setRecipe(dboRecipe);
+		
+		when(recipesDAO.saveAndFlush(dboRecipe)).thenReturn(dboRecipe);
+		
+		final RecipeDto dtoRecipe = recipesService.saveRecipe(MockData.dtoSauceRecipe(true));
 		
 		assertNotNull(dtoRecipe.getId());
 		assertNotNull(dtoRecipe.getDishType());
