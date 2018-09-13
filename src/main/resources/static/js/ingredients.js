@@ -54,7 +54,7 @@ var removeIngredientEvent = function() {
 	var id = $this.parent().find("span.item-link").attr("id");
 	
 	$.ajax({
-		url: '/admin/ingredient/delete?' + $.param( {"id": id} ),
+		url: '/admin/ingredient?' + $.param( {"id": id} ),
 		method: 'delete',
 		success: function (response) {
 			var $foundItem = $("div.left-items-container div.item span.item-link[id = " + id + "]").parent();
@@ -98,7 +98,7 @@ function saveIngredient() {
 	});
 	
 	$.ajax({
-		url: '/admin/ingredient/save',
+		url: '/admin/ingredient',
 		method: 'post',
 		data: JSON.stringify(data),
 		contentType: 'application/json; charset=utf-8',

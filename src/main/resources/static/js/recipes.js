@@ -12,7 +12,7 @@ var removeRecipeEvent = function() {
 	var id = $this.parent().find("span.item-link").attr("id");
 	
 	$.ajax({
-		url: '/admin/recipe/delete?' + $.param( {"id": id} ),
+		url: '/admin/recipe?' + $.param( {"id": id} ),
 		method: 'delete',
 		success: function (response) {
 			var $foundItem = $("div.left-items-container div.item span.item-link[id = " + id + "]").parent();
@@ -137,7 +137,7 @@ function saveRecipe() {
 	});
 	
 	$.ajax({
-		url: '/admin/recipe/save',
+		url: '/admin/recipe',
 		method: 'post',
 		data: JSON.stringify(data),
 		contentType: 'application/json; charset=utf-8',

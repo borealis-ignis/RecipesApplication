@@ -48,7 +48,7 @@ public class IngredientsAdminController {
 		return ResponseEntity.status(HttpStatus.OK).body(ingredientsService.getComponents());
 	}
 	
-	@PostMapping(path="/ingredient/save")
+	@PostMapping(path="/ingredient")
 	public ResponseEntity<IngredientDto> saveIngredient(@RequestBody(required = true) IngredientDto ingredient) {
 		final ResponseEntity<IngredientDto> ingredientError = ingredientsService.validateIngredient(ingredient);
 		if (ingredientError != null) {
@@ -58,7 +58,7 @@ public class IngredientsAdminController {
 		return ResponseEntity.status(HttpStatus.OK).body(ingredientsService.saveIngredient(ingredient));
 	}
 	
-	@DeleteMapping(path="/ingredient/delete")
+	@DeleteMapping(path="/ingredient")
 	public ResponseEntity<IngredientDto> deleteIngredient(@RequestParam(required = true, name = "id") Long id) {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(ingredientsService.deleteIngredient(id));
 	}

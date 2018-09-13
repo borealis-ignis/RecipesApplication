@@ -47,7 +47,7 @@ public class RecipesAdminController {
 		return ResponseEntity.status(HttpStatus.OK).body(recipesService.getRecipe(id));
 	}
 	
-	@PostMapping(path="/recipe/save")
+	@PostMapping(path="/recipe")
 	public ResponseEntity<RecipeDto> saveRecipe(@RequestBody(required = true) RecipeDto recipe) {
 		final ResponseEntity<RecipeDto> recipeError = recipesService.validateRecipe(recipe);
 		if (recipeError != null) {
@@ -57,7 +57,7 @@ public class RecipesAdminController {
 		return ResponseEntity.status(HttpStatus.OK).body(recipesService.saveRecipe(recipe));
 	}
 	
-	@DeleteMapping(path = "/recipe/delete")
+	@DeleteMapping(path = "/recipe")
 	public ResponseEntity<RecipeDto> deleteRecipe(@RequestParam(required = true, name = "id") Long id) {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(recipesService.deleteRecipe(id));
 	}
