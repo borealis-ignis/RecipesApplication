@@ -1,4 +1,4 @@
-package com.recipes.appl.model.repository;
+package com.recipes.appl.repository;
 
 import java.util.List;
 
@@ -11,6 +11,6 @@ import com.recipes.appl.model.dbo.DishType;
  */
 public interface DishTypesDAO extends JpaRepository<DishType, Long> {
 	
-	public List<DishType> findAllByOrderByIdAsc();
+	List<DishType> findAllByOrderByIdAsc();
 	
 }

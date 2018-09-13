@@ -1,6 +1,8 @@
 package com.recipes.appl.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,9 +15,9 @@ import com.recipes.appl.model.dto.DishTypeDto;
 import com.recipes.appl.model.dto.IngredientMeasureDto;
 import com.recipes.appl.model.dto.RecipeDto;
 import com.recipes.appl.model.dto.errors.RecipeError;
-import com.recipes.appl.model.repository.DishTypesDAO;
-import com.recipes.appl.model.repository.IngredientMeasuresDAO;
-import com.recipes.appl.model.repository.RecipesDAO;
+import com.recipes.appl.repository.DishTypesDAO;
+import com.recipes.appl.repository.IngredientMeasuresDAO;
+import com.recipes.appl.repository.RecipesDAO;
 import com.recipes.appl.utils.converters.DishTypesConverter;
 import com.recipes.appl.utils.converters.IngredientMeasuresConverter;
 import com.recipes.appl.utils.converters.RecipesConverter;
@@ -46,6 +48,11 @@ public class RecipesService extends AbstractService {
 	
 	public List<RecipeDto> getRecipes() {
 		return RecipesConverter.convertDboToDto(recipesDAO.findAll());
+	}
+	
+	public List<RecipeDto> searchRecipes(Map<String, Object> params) {
+		//TODO
+		return new ArrayList<>();
 	}
 
 	public RecipeDto getRecipe(final Long id) {
@@ -89,4 +96,5 @@ public class RecipesService extends AbstractService {
 		
 		return null;
 	}
+	
 }

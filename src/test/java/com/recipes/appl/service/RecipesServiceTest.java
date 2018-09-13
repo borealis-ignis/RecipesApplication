@@ -29,9 +29,9 @@ import com.recipes.appl.model.dto.IngredientDto;
 import com.recipes.appl.model.dto.IngredientMeasureDto;
 import com.recipes.appl.model.dto.RecipeDto;
 import com.recipes.appl.model.dto.errors.RecipeError;
-import com.recipes.appl.model.repository.DishTypesDAO;
-import com.recipes.appl.model.repository.IngredientMeasuresDAO;
-import com.recipes.appl.model.repository.RecipesDAO;
+import com.recipes.appl.repository.DishTypesDAO;
+import com.recipes.appl.repository.IngredientMeasuresDAO;
+import com.recipes.appl.repository.RecipesDAO;
 
 /**
  * @author Kastalski Sergey

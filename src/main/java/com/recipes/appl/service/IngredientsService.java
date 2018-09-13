@@ -11,8 +11,8 @@ import com.recipes.appl.model.dbo.Ingredient;
 import com.recipes.appl.model.dto.ComponentDto;
 import com.recipes.appl.model.dto.IngredientDto;
 import com.recipes.appl.model.dto.errors.IngredientError;
-import com.recipes.appl.model.repository.ComponentsDAO;
-import com.recipes.appl.model.repository.IngredientsDAO;
+import com.recipes.appl.repository.ComponentsDAO;
+import com.recipes.appl.repository.IngredientsDAO;
 import com.recipes.appl.utils.converters.ComponentsConverter;
 import com.recipes.appl.utils.converters.IngredientsConverter;
 

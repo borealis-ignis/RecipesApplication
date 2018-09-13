@@ -1,4 +1,4 @@
-package com.recipes.appl.model.repository;
+package com.recipes.appl.repository;
 
 import java.util.List;
 
@@ -14,6 +14,6 @@ import com.recipes.appl.model.dbo.Recipe;
 public interface RecipesDAO extends JpaRepository<Recipe, Long> {
 	
 	@Query("select r from Recipe r inner join r.dishType d where r.name = :recipeName and d.id = :identificator")
-	public List<Recipe> findAllByNameAndDishType(@Param("recipeName") String name, @Param("identificator") Long id);
+	List<Recipe> findAllByNameAndDishType(@Param("recipeName") String name, @Param("identificator") Long id);
 	
 }

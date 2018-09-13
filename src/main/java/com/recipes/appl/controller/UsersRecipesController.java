@@ -1,9 +1,11 @@
 package com.recipes.appl.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -20,8 +22,28 @@ public class UsersRecipesController {
 	
 	
 	@GetMapping(path="/recipes")
-	public String getRecipesPage(final Map<String, Object> model) {
-		model.put("recipes", recipesService.getRecipes());
+	public String getRecipesPage(final Map<String, Object> model,
+			@RequestParam(name="name", required=false) String name,
+			@RequestParam(name="dishtype", required=false) Long dishTypeId,
+			@RequestParam(name="ingredients", required=false) String ingredientsIds,
+			@RequestParam(name="components", required=false) String componentsIds) {
+		// TODO
+		final Map<String, Object> params = new HashMap<>();
+		if (!StringUtils.isEmpty(name)) {
+			params.put("name", name);
+		}
+		if (dishTypeId != null) {
+			params.put("dishtype", dishTypeId);
+		}
+		if (!StringUtils.isEmpty(ingredientsIds)) {
+			params.put("ingredients", ingredientsIds);
+		}
+		if (!StringUtils.isEmpty(componentsIds)) {
+			params.put("components", componentsIds);
+		}
+		
+		model.put("recipes", recipesService.searchRecipes(params));
+		
 		return "recipes";
 	}
 	

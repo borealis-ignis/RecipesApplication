@@ -6,6 +6,20 @@
 	<div th:replace="~{fragments/common.html :: common-css}"></div>
 	<link rel="stylesheet" th:href="@{/css/recipes.css}" />
 	<div th:replace="~{fragments/common.html :: common-js}"></div>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("div.filters-column input#search-button").click(function() {
+				// TODO
+				/* var name = "Recipe#1";
+				
+				var uri = "/recipes?name=" + encodeURIComponent(name);
+				
+				console.log("aaaaaaaaaaa" + uri); */
+				
+				//window.location = uri;
+			});
+		});
+	</script>
 </head>
 <body>
 	<div class="container">
@@ -52,7 +66,7 @@
 					</div>
 				</fieldset>
 				<p/>
-				<input type="button" th:value="#{filters.button.search}" />
+				<input type="button" id="search-button" th:value="#{filters.button.search}" />
 				<br clear="all"/>
 			</div>
 			<div class="recipes-column">

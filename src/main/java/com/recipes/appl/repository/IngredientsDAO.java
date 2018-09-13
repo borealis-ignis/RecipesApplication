@@ -1,4 +1,4 @@
-package com.recipes.appl.model.repository;
+package com.recipes.appl.repository;
 
 import java.util.List;
 
@@ -13,8 +13,8 @@ import com.recipes.appl.model.dbo.Ingredient;
 public interface IngredientsDAO extends JpaRepository<Ingredient, Long> {
 	
 	@Query("select i from Ingredient i order by i.name asc")
-	public List<Ingredient> selectIngredients();
+	List<Ingredient> selectIngredients();
 	
-	public List<Ingredient> findAllByName(String name);
+	List<Ingredient> findAllByName(String name);
 	
 }

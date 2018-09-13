@@ -1,4 +1,4 @@
-package com.recipes.appl.model.repository;
+package com.recipes.appl.repository;
 
 import java.util.List;
 
@@ -10,6 +10,6 @@ import com.recipes.appl.model.dbo.IngredientMeasure;
  */
 public interface IngredientMeasuresDAO extends JpaRepository<IngredientMeasure, Long> {
 	
-	public List<IngredientMeasure> findAllByOrderByIdAsc();
+	List<IngredientMeasure> findAllByOrderByIdAsc();
 	
 }
