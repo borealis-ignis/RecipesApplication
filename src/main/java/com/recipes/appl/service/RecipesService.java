@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import com.recipes.appl.model.dbo.Recipe;
+import com.recipes.appl.model.dbo.RecipeDbo;
 import com.recipes.appl.model.dto.DishTypeDto;
 import com.recipes.appl.model.dto.IngredientMeasureDto;
 import com.recipes.appl.model.dto.RecipeDto;
@@ -28,14 +28,18 @@ import com.recipes.appl.utils.converters.RecipesConverter;
 @Service
 public class RecipesService extends AbstractService {
 	
-	@Autowired
 	private DishTypesDAO dishTypesDAO;
 	
-	@Autowired
 	private IngredientMeasuresDAO ingredientMeasuresDAO;
 	
-	@Autowired
 	private RecipesDAO recipesDAO;
+	
+	@Autowired
+	public RecipesService(final DishTypesDAO dishTypesDAO, final IngredientMeasuresDAO ingredientMeasuresDAO, final RecipesDAO recipesDAO) {
+		this.dishTypesDAO = dishTypesDAO;
+		this.ingredientMeasuresDAO = ingredientMeasuresDAO;
+		this.recipesDAO = recipesDAO;
+	}
 	
 	
 	public List<DishTypeDto> getDishTypes() {
@@ -56,7 +60,7 @@ public class RecipesService extends AbstractService {
 	}
 
 	public RecipeDto getRecipe(final Long id) {
-		return RecipesConverter.convertDboToDto(recipesDAO.findById(id).orElse(new Recipe()));
+		return RecipesConverter.convertDboToDto(recipesDAO.findById(id).orElse(new RecipeDbo()));
 	}
 	
 	public RecipeDto saveRecipe(RecipeDto recipe) {
@@ -84,7 +88,7 @@ public class RecipesService extends AbstractService {
 		
 		// add new recipe
 		if (recipe.getId() == null) {
-			final List<Recipe> foundRecipes = recipesDAO.findAllByNameAndDishType(recipeName, dishType.getId());
+			final List<RecipeDbo> foundRecipes = recipesDAO.findAllByNameAndDishType(recipeName, dishType.getId());
 			if (!foundRecipes.isEmpty()) {
 				return getErrorResponseMessage("admin.recipe.error.notunique.name", RecipeError.class);
 			}

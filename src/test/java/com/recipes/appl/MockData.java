@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.recipes.appl.model.dbo.Component;
-import com.recipes.appl.model.dbo.DishType;
-import com.recipes.appl.model.dbo.Ingredient;
-import com.recipes.appl.model.dbo.IngredientMeasure;
-import com.recipes.appl.model.dbo.Recipe;
-import com.recipes.appl.model.dbo.RecipeIngredient;
+import com.recipes.appl.model.dbo.ComponentDbo;
+import com.recipes.appl.model.dbo.DishTypeDbo;
+import com.recipes.appl.model.dbo.IngredientDbo;
+import com.recipes.appl.model.dbo.IngredientMeasureDbo;
+import com.recipes.appl.model.dbo.RecipeDbo;
+import com.recipes.appl.model.dbo.RecipeIngredientDbo;
 import com.recipes.appl.model.dto.ComponentDto;
 import com.recipes.appl.model.dto.DishTypeDto;
 import com.recipes.appl.model.dto.IngredientDto;
@@ -22,14 +22,14 @@ import com.recipes.appl.model.dto.RecipeDto;
 public class MockData {
 	
 	// dto data
-	public static List<IngredientDto> listDtoIngredients(boolean withComponents) {
+	public static List<IngredientDto> listDtoIngredients(final boolean withComponents) {
 		final List<IngredientDto> ingredients = new ArrayList<>();
 		ingredients.add(dtoAlmondIngredient(withComponents, true));
 		ingredients.add(dtoCornIngredient(withComponents, true));
 		return ingredients;
 	}
 	
-	public static IngredientDto dtoAlmondIngredient(boolean withComponents, boolean withId) {
+	public static IngredientDto dtoAlmondIngredient(final boolean withComponents, final boolean withId) {
 		final IngredientDto ingredient = new IngredientDto();
 		if (withId) {
 			ingredient.setId(1L);
@@ -41,7 +41,7 @@ public class MockData {
 		return ingredient;
 	}
 	
-	public static IngredientDto dtoCornIngredient(boolean withComponents, boolean withId) {
+	public static IngredientDto dtoCornIngredient(final boolean withComponents, final boolean withId) {
 		final IngredientDto ingredient = new IngredientDto();
 		if (withId) {
 			ingredient.setId(2L);
@@ -168,18 +168,18 @@ public class MockData {
 	}
 	
 	// dbo data
-	public static List<Ingredient> listDboIngredientsWithComponents() {
-		final List<Ingredient> ingredients = new ArrayList<>();
+	public static List<IngredientDbo> listDboIngredientsWithComponents() {
+		final List<IngredientDbo> ingredients = new ArrayList<>();
 		ingredients.add(dboAlmondIngredientWithComponents(true));
 		return ingredients;
 	}
 	
-	public static Optional<Ingredient> optionalDboIngredientWithComponents() {
+	public static Optional<IngredientDbo> optionalDboIngredientWithComponents() {
 		return Optional.of(dboAlmondIngredientWithComponents(true));
 	}
 	
-	public static Ingredient dboAlmondIngredientWithComponents(final boolean withId) {
-		final Ingredient ingredient = new Ingredient();
+	public static IngredientDbo dboAlmondIngredientWithComponents(final boolean withId) {
+		final IngredientDbo ingredient = new IngredientDbo();
 		if (withId) {
 			ingredient.setId(1L);
 		}
@@ -188,8 +188,8 @@ public class MockData {
 		return ingredient;
 	}
 	
-	public static Ingredient dboAlmondIngredientWithoutComponents(final boolean withId) {
-		final Ingredient ingredient = new Ingredient();
+	public static IngredientDbo dboAlmondIngredientWithoutComponents(final boolean withId) {
+		final IngredientDbo ingredient = new IngredientDbo();
 		if (withId) {
 			ingredient.setId(1L);
 		}
@@ -197,22 +197,22 @@ public class MockData {
 		return ingredient;
 	}
 	
-	public static List<Component> listDboComponents() {
-		final List<Component> components = new ArrayList<>();
+	public static List<ComponentDbo> listDboComponents() {
+		final List<ComponentDbo> components = new ArrayList<>();
 		components.add(dboCalciumComponent());
 		components.add(dboIronComponent());
 		return components;
 	}
 	
-	public static Component dboCalciumComponent() {
-		final Component component = new Component();
+	public static ComponentDbo dboCalciumComponent() {
+		final ComponentDbo component = new ComponentDbo();
 		component.setId(1L);
 		component.setName("Кальций");
 		return component;
 	}
 	
-	public static Component dboIronComponent() {
-		final Component component = new Component();
+	public static ComponentDbo dboIronComponent() {
+		final ComponentDbo component = new ComponentDbo();
 		component.setId(2L);
 		component.setName("Магний");
 		return component;
@@ -220,59 +220,59 @@ public class MockData {
 	
 	
 	
-	public static List<DishType> listDboDishTypes() {
-		final List<DishType> dishTypes = new ArrayList<>();
+	public static List<DishTypeDbo> listDboDishTypes() {
+		final List<DishTypeDbo> dishTypes = new ArrayList<>();
 		dishTypes.add(dboSoupDishType());
 		dishTypes.add(dboSauceDishType());
 		return dishTypes;
 	}
 	
-	public static DishType dboSoupDishType() {
-		final DishType dishType = new DishType();
+	public static DishTypeDbo dboSoupDishType() {
+		final DishTypeDbo dishType = new DishTypeDbo();
 		dishType.setId(1L);
 		dishType.setName("Суп");
 		return dishType;
 	}
 	
-	public static DishType dboSauceDishType() {
-		final DishType dishType = new DishType();
+	public static DishTypeDbo dboSauceDishType() {
+		final DishTypeDbo dishType = new DishTypeDbo();
 		dishType.setId(2L);
 		dishType.setName("Соус");
 		return dishType;
 	}
 	
 	
-	public static List<IngredientMeasure> listDboIngredientMeasures() {
-		final List<IngredientMeasure> ingredientMeasures = new ArrayList<>();
+	public static List<IngredientMeasureDbo> listDboIngredientMeasures() {
+		final List<IngredientMeasureDbo> ingredientMeasures = new ArrayList<>();
 		ingredientMeasures.add(dboMlIngredientMeasure());
 		ingredientMeasures.add(dboSpoonsIngredientMeasure());
 		return ingredientMeasures;
 	}
 	
-	public static IngredientMeasure dboMlIngredientMeasure() {
-		final IngredientMeasure ingredientMeasure = new IngredientMeasure();
+	public static IngredientMeasureDbo dboMlIngredientMeasure() {
+		final IngredientMeasureDbo ingredientMeasure = new IngredientMeasureDbo();
 		ingredientMeasure.setId(1L);
 		ingredientMeasure.setName("мл");
 		return ingredientMeasure;
 	}
 	
-	public static IngredientMeasure dboSpoonsIngredientMeasure() {
-		final IngredientMeasure ingredientMeasure = new IngredientMeasure();
+	public static IngredientMeasureDbo dboSpoonsIngredientMeasure() {
+		final IngredientMeasureDbo ingredientMeasure = new IngredientMeasureDbo();
 		ingredientMeasure.setId(2L);
 		ingredientMeasure.setName("чайных ложек");
 		return ingredientMeasure;
 	}
 	
 	
-	public static List<Recipe> listDboRecipes() {
-		final List<Recipe> recipes = new ArrayList<>();
+	public static List<RecipeDbo> listDboRecipes() {
+		final List<RecipeDbo> recipes = new ArrayList<>();
 		recipes.add(dboSauceRecipe(true));
 		recipes.add(dboSoupRecipe(true));
 		return recipes;
 	}
 	
-	public static Recipe dboSauceRecipe(final boolean withId) {
-		final Recipe recipe = new Recipe();
+	public static RecipeDbo dboSauceRecipe(final boolean withId) {
+		final RecipeDbo recipe = new RecipeDbo();
 		if (withId) {
 			recipe.setId(1L);
 		}
@@ -280,13 +280,13 @@ public class MockData {
 		recipe.setName("Recipe#1");
 		recipe.setDescription("Description");
 		
-		final List<RecipeIngredient> recipeIngredients = new ArrayList<>();
-		final RecipeIngredient ingredient = new RecipeIngredient();
+		final List<RecipeIngredientDbo> recipeIngredients = new ArrayList<>();
+		final RecipeIngredientDbo ingredient = new RecipeIngredientDbo();
 		ingredient.setId(1L);
 		ingredient.setIngredient(dboAlmondIngredientWithoutComponents(true));
 		ingredient.setCount(2.0);
 		
-		IngredientMeasure ingredientMeasure = new IngredientMeasure();
+		IngredientMeasureDbo ingredientMeasure = new IngredientMeasureDbo();
 		ingredientMeasure.setId(1L);
 		ingredientMeasure.setName("мл");
 		ingredient.setIngredientMeasure(ingredientMeasure);
@@ -297,12 +297,12 @@ public class MockData {
 		return recipe;
 	}
 	
-	public static Optional<Recipe> optionalDboSauceRecipe(final boolean withId) {
+	public static Optional<RecipeDbo> optionalDboSauceRecipe(final boolean withId) {
 		return Optional.of(dboSauceRecipe(withId));
 	}
 	
-	public static Recipe dboSoupRecipe(final boolean withId) {
-		final Recipe recipe = new Recipe();
+	public static RecipeDbo dboSoupRecipe(final boolean withId) {
+		final RecipeDbo recipe = new RecipeDbo();
 		if (withId) {
 			recipe.setId(2L);
 		}
@@ -310,13 +310,13 @@ public class MockData {
 		recipe.setName("Recipe#2");
 		recipe.setDescription("Description");
 		
-		final List<RecipeIngredient> recipeIngredients = new ArrayList<>();
-		final RecipeIngredient ingredient = new RecipeIngredient();
+		final List<RecipeIngredientDbo> recipeIngredients = new ArrayList<>();
+		final RecipeIngredientDbo ingredient = new RecipeIngredientDbo();
 		ingredient.setId(2L);
 		ingredient.setIngredient(dboAlmondIngredientWithoutComponents(true));
 		ingredient.setCount(2.0);
 		
-		IngredientMeasure ingredientMeasure = new IngredientMeasure();
+		IngredientMeasureDbo ingredientMeasure = new IngredientMeasureDbo();
 		ingredientMeasure.setId(1L);
 		ingredientMeasure.setName("мл");
 		ingredient.setIngredientMeasure(ingredientMeasure);

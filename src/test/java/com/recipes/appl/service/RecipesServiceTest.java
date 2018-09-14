@@ -20,10 +20,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.recipes.appl.MockData;
-import com.recipes.appl.model.dbo.DishType;
-import com.recipes.appl.model.dbo.IngredientMeasure;
-import com.recipes.appl.model.dbo.Recipe;
-import com.recipes.appl.model.dbo.RecipeIngredient;
+import com.recipes.appl.model.dbo.DishTypeDbo;
+import com.recipes.appl.model.dbo.IngredientMeasureDbo;
+import com.recipes.appl.model.dbo.RecipeDbo;
+import com.recipes.appl.model.dbo.RecipeIngredientDbo;
 import com.recipes.appl.model.dto.DishTypeDto;
 import com.recipes.appl.model.dto.IngredientDto;
 import com.recipes.appl.model.dto.IngredientMeasureDto;
@@ -55,7 +55,7 @@ public class RecipesServiceTest {
 	
 	@Test
 	public void getDishTypes() {
-		final List<DishType> dboDishTypes = MockData.listDboDishTypes();
+		final List<DishTypeDbo> dboDishTypes = MockData.listDboDishTypes();
 		
 		when(dishTypesDAO.findAllByOrderByIdAsc()).thenReturn(dboDishTypes);
 		
@@ -65,7 +65,7 @@ public class RecipesServiceTest {
 		assertTrue(dtoDishTypes.size() > 0);
 		
 		for (int i = 0; i < dtoDishTypes.size(); i++) {
-			final DishType dboDishType = dboDishTypes.get(i);
+			final DishTypeDbo dboDishType = dboDishTypes.get(i);
 			final DishTypeDto dtoDishType = dtoDishTypes.get(i);
 			
 			assertEquals(dboDishType.getId(), dtoDishType.getId());
@@ -75,7 +75,7 @@ public class RecipesServiceTest {
 	
 	@Test
 	public void getIngredientMeasures() {
-		final List<IngredientMeasure> dboIngredientMeasures = MockData.listDboIngredientMeasures();
+		final List<IngredientMeasureDbo> dboIngredientMeasures = MockData.listDboIngredientMeasures();
 		
 		when(ingredientMeasuresDAO.findAllByOrderByIdAsc()).thenReturn(dboIngredientMeasures);
 		
@@ -85,7 +85,7 @@ public class RecipesServiceTest {
 		assertTrue(dtoIngredientMeasures.size() > 0);
 		
 		for (int i = 0; i < dtoIngredientMeasures.size(); i++) {
-			final IngredientMeasure dboIngredientMeasure = dboIngredientMeasures.get(i);
+			final IngredientMeasureDbo dboIngredientMeasure = dboIngredientMeasures.get(i);
 			final IngredientMeasureDto dtoIngredientMeasure = dtoIngredientMeasures.get(i);
 			
 			assertEquals(dboIngredientMeasure.getId(), dtoIngredientMeasure.getId());
@@ -95,7 +95,7 @@ public class RecipesServiceTest {
 	
 	@Test
 	public void getRecipes() {
-		final List<Recipe> dboRecipes = MockData.listDboRecipes();
+		final List<RecipeDbo> dboRecipes = MockData.listDboRecipes();
 		
 		when(recipesDAO.findAll()).thenReturn(dboRecipes);
 		
@@ -105,7 +105,7 @@ public class RecipesServiceTest {
 		assertTrue(dtoRecipes.size() > 0);
 		
 		for (int i = 0; i < dtoRecipes.size(); i++) {
-			final Recipe dboRecipe = dboRecipes.get(i);
+			final RecipeDbo dboRecipe = dboRecipes.get(i);
 			final RecipeDto dtoRecipe = dtoRecipes.get(i);
 			
 			assertEquals(dboRecipe.getId(), dtoRecipe.getId());
@@ -115,14 +115,14 @@ public class RecipesServiceTest {
 			assertEquals(dboRecipe.getName(), dtoRecipe.getName());
 			assertEquals(dboRecipe.getDescription(), dtoRecipe.getDescription());
 			
-			final List<RecipeIngredient> dboIngredients = dboRecipe.getRecipeIngredients();
+			final List<RecipeIngredientDbo> dboIngredients = dboRecipe.getRecipeIngredients();
 			final List<IngredientDto> dtoIngredients = dtoRecipe.getIngredients();
 			
 			assertEquals(dboIngredients.size(), dtoIngredients.size());
 			assertTrue(dtoIngredients.size() > 0);
 			
 			for (int j = 0; j < dtoIngredients.size(); j++) {
-				final RecipeIngredient dboIngredient = dboIngredients.get(j);
+				final RecipeIngredientDbo dboIngredient = dboIngredients.get(j);
 				final IngredientDto dtoIngredient = dtoIngredients.get(j);
 				
 				assertEquals(dboIngredient.getId(), dtoIngredient.getId());
@@ -139,8 +139,8 @@ public class RecipesServiceTest {
 	@Test
 	public void getRecipeById() {
 		final Long id = 1L;
-		final Optional<Recipe> optionalDboRecipe = MockData.optionalDboSauceRecipe(true);
-		final Recipe dboRecipe = optionalDboRecipe.get();
+		final Optional<RecipeDbo> optionalDboRecipe = MockData.optionalDboSauceRecipe(true);
+		final RecipeDbo dboRecipe = optionalDboRecipe.get();
 		
 		when(recipesDAO.findById(id)).thenReturn(optionalDboRecipe);
 		
@@ -153,14 +153,14 @@ public class RecipesServiceTest {
 		assertEquals(dboRecipe.getName(), dtoRecipe.getName());
 		assertEquals(dboRecipe.getDescription(), dtoRecipe.getDescription());
 		
-		final List<RecipeIngredient> dboIngredients = dboRecipe.getRecipeIngredients();
+		final List<RecipeIngredientDbo> dboIngredients = dboRecipe.getRecipeIngredients();
 		final List<IngredientDto> dtoIngredients = dtoRecipe.getIngredients();
 		
 		assertEquals(dboIngredients.size(), dtoIngredients.size());
 		assertTrue(dtoIngredients.size() > 0);
 		
 		for (int j = 0; j < dtoIngredients.size(); j++) {
-			final RecipeIngredient dboIngredient = dboIngredients.get(j);
+			final RecipeIngredientDbo dboIngredient = dboIngredients.get(j);
 			final IngredientDto dtoIngredient = dtoIngredients.get(j);
 			
 			assertEquals(dboIngredient.getId(), dtoIngredient.getId());
@@ -175,9 +175,9 @@ public class RecipesServiceTest {
 	
 	@Test
 	public void saveNewRecipe() {
-		final Recipe dboRecipe = MockData.dboSauceRecipe(true);
+		final RecipeDbo dboRecipe = MockData.dboSauceRecipe(true);
 		
-		final Recipe dboNewRecipe = MockData.dboSauceRecipe(false);
+		final RecipeDbo dboNewRecipe = MockData.dboSauceRecipe(false);
 		dboNewRecipe.getRecipeIngredients().get(0).setRecipe(dboNewRecipe);
 		
 		when(recipesDAO.saveAndFlush(dboNewRecipe)).thenReturn(dboRecipe);
@@ -191,14 +191,14 @@ public class RecipesServiceTest {
 		assertEquals(dboRecipe.getName(), dtoRecipe.getName());
 		assertEquals(dboRecipe.getDescription(), dtoRecipe.getDescription());
 		
-		final List<RecipeIngredient> dboIngredients = dboRecipe.getRecipeIngredients();
+		final List<RecipeIngredientDbo> dboIngredients = dboRecipe.getRecipeIngredients();
 		final List<IngredientDto> dtoIngredients = dtoRecipe.getIngredients();
 		
 		assertEquals(dboIngredients.size(), dtoIngredients.size());
 		assertTrue(dtoIngredients.size() > 0);
 		
 		for (int j = 0; j < dtoIngredients.size(); j++) {
-			final RecipeIngredient dboIngredient = dboIngredients.get(j);
+			final RecipeIngredientDbo dboIngredient = dboIngredients.get(j);
 			final IngredientDto dtoIngredient = dtoIngredients.get(j);
 			
 			assertEquals(dboIngredient.getId(), dtoIngredient.getId());
@@ -213,7 +213,7 @@ public class RecipesServiceTest {
 	
 	@Test
 	public void updateRecipe() {
-		final Recipe dboRecipe = MockData.dboSauceRecipe(true);
+		final RecipeDbo dboRecipe = MockData.dboSauceRecipe(true);
 		dboRecipe.getRecipeIngredients().get(0).setRecipe(dboRecipe);
 		
 		when(recipesDAO.saveAndFlush(dboRecipe)).thenReturn(dboRecipe);
@@ -227,14 +227,14 @@ public class RecipesServiceTest {
 		assertEquals(dboRecipe.getName(), dtoRecipe.getName());
 		assertEquals(dboRecipe.getDescription(), dtoRecipe.getDescription());
 		
-		final List<RecipeIngredient> dboIngredients = dboRecipe.getRecipeIngredients();
+		final List<RecipeIngredientDbo> dboIngredients = dboRecipe.getRecipeIngredients();
 		final List<IngredientDto> dtoIngredients = dtoRecipe.getIngredients();
 		
 		assertEquals(dboIngredients.size(), dtoIngredients.size());
 		assertTrue(dtoIngredients.size() > 0);
 		
 		for (int j = 0; j < dtoIngredients.size(); j++) {
-			final RecipeIngredient dboIngredient = dboIngredients.get(j);
+			final RecipeIngredientDbo dboIngredient = dboIngredients.get(j);
 			final IngredientDto dtoIngredient = dtoIngredients.get(j);
 			
 			assertEquals(dboIngredient.getId(), dtoIngredient.getId());

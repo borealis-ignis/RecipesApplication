@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "ingredientmeasure")
-public class IngredientMeasure {
+public class IngredientMeasureDbo {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,6 +34,6 @@ public class IngredientMeasure {
 	
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ID")
-	private RecipeIngredient recipeIngredient;
+	private RecipeIngredientDbo recipeIngredient;
 	
 }

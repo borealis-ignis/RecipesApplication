@@ -1,7 +1,5 @@
 package com.recipes.appl.model.dbo;
 
-import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,13 +8,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -25,29 +22,30 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "recipe")
-public class Recipe {
+@Table(name = "recipeingredient")
+public class RecipeIngredientDbo {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID")
 	private Long id;
 	
+	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH})
+    @JoinColumn(name = "recipe_ID", nullable = false)
+	private RecipeDbo recipe;
+	
 	@NotNull
 	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "Dishtype_ID", unique=true, nullable=false)
-	private DishType dishType;
+	@JoinColumn(name = "Ingredient_ID", unique=true, nullable=false)
+	private IngredientDbo ingredient;
 	
 	@NotNull
-	@Column(name = "Name")
-	private String name;
+	@Column(name = "Count")
+	private Double count;
 	
 	@NotNull
-	@EqualsAndHashCode.Exclude
-	@OneToMany(mappedBy = "recipe", orphanRemoval = true, fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH})
-	private List<RecipeIngredient> recipeIngredients;
-	
-	@Column(name = "Description")
-	private String description;
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "Ingredientmeasure_ID", unique=true, nullable=false)
+	private IngredientMeasureDbo ingredientMeasure;
 	
 }

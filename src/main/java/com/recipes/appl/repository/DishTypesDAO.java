@@ -4,13 +4,13 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.recipes.appl.model.dbo.DishType;
+import com.recipes.appl.model.dbo.DishTypeDbo;
 
 /**
  * @author Kastalski Sergey
  */
-public interface DishTypesDAO extends JpaRepository<DishType, Long> {
+public interface DishTypesDAO extends JpaRepository<DishTypeDbo, Long> {
 	
-	List<DishType> findAllByOrderByIdAsc();
+	List<DishTypeDbo> findAllByOrderByIdAsc();
 	
 }

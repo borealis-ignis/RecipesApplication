@@ -20,8 +20,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.recipes.appl.MockData;
-import com.recipes.appl.model.dbo.Component;
-import com.recipes.appl.model.dbo.Ingredient;
+import com.recipes.appl.model.dbo.ComponentDbo;
+import com.recipes.appl.model.dbo.IngredientDbo;
 import com.recipes.appl.model.dto.ComponentDto;
 import com.recipes.appl.model.dto.IngredientDto;
 import com.recipes.appl.model.dto.errors.IngredientError;
@@ -47,7 +47,7 @@ public class IngredientsServiceTest {
 	
 	@Test
 	public void getIngredients() {
-		final List<Ingredient> dboIngredients = MockData.listDboIngredientsWithComponents();
+		final List<IngredientDbo> dboIngredients = MockData.listDboIngredientsWithComponents();
 		
 		when(ingredientsDAO.selectIngredients()).thenReturn(dboIngredients);
 		
@@ -58,7 +58,7 @@ public class IngredientsServiceTest {
 		
 		for (int i = 0; i < dtoIngredients.size(); i++) {
 			final IngredientDto dtoIngredient = dtoIngredients.get(i);
-			final Ingredient dboIngredient = dboIngredients.get(i);
+			final IngredientDbo dboIngredient = dboIngredients.get(i);
 			
 			assertEquals(dboIngredient.getId(), dtoIngredient.getId());
 			assertEquals(dboIngredient.getName(), dtoIngredient.getName());
@@ -70,7 +70,7 @@ public class IngredientsServiceTest {
 	
 	@Test
 	public void getComponents() {
-		final List<Component> dboComponents = MockData.listDboComponents();
+		final List<ComponentDbo> dboComponents = MockData.listDboComponents();
 		
 		when(componentsDAO.findAll()).thenReturn(dboComponents);
 		
@@ -81,7 +81,7 @@ public class IngredientsServiceTest {
 		
 		for (int i = 0; i < dtoComponents.size(); i++) {
 			final ComponentDto dtoComponent = dtoComponents.get(i);
-			final Component dboComponent = dboComponents.get(i);
+			final ComponentDbo dboComponent = dboComponents.get(i);
 			
 			assertEquals(dboComponent.getId(), dtoComponent.getId());
 			assertEquals(dboComponent.getName(), dtoComponent.getName());
@@ -90,8 +90,8 @@ public class IngredientsServiceTest {
 	
 	@Test
 	public void getComponentsByIngredientId() {
-		final Optional<Ingredient> dboIngredient = MockData.optionalDboIngredientWithComponents(); 
-		final List<Component> dboComponents = dboIngredient.get().getComponents();
+		final Optional<IngredientDbo> dboIngredient = MockData.optionalDboIngredientWithComponents(); 
+		final List<ComponentDbo> dboComponents = dboIngredient.get().getComponents();
 		final Long id = 1L;
 		
 		when(ingredientsDAO.findById(id)).thenReturn(dboIngredient);
@@ -103,7 +103,7 @@ public class IngredientsServiceTest {
 		
 		for (int i = 0; i < dtoComponents.size(); i++) {
 			final ComponentDto dtoComponent = dtoComponents.get(i);
-			final Component dboComponent = dboComponents.get(i);
+			final ComponentDbo dboComponent = dboComponents.get(i);
 			
 			assertEquals(dboComponent.getId(), dtoComponent.getId());
 			assertEquals(dboComponent.getName(), dtoComponent.getName());
@@ -112,7 +112,7 @@ public class IngredientsServiceTest {
 	
 	@Test
 	public void saveNewIngredient() {
-		final Ingredient dboIngredient = MockData.dboAlmondIngredientWithComponents(true);
+		final IngredientDbo dboIngredient = MockData.dboAlmondIngredientWithComponents(true);
 		
 		when(ingredientsDAO.saveAndFlush(MockData.dboAlmondIngredientWithComponents(false))).thenReturn(dboIngredient);
 		
@@ -127,7 +127,7 @@ public class IngredientsServiceTest {
 	
 	@Test
 	public void updateIngredient() {
-		final Ingredient dboIngredient = MockData.dboAlmondIngredientWithComponents(true);
+		final IngredientDbo dboIngredient = MockData.dboAlmondIngredientWithComponents(true);
 		
 		when(ingredientsDAO.saveAndFlush(dboIngredient)).thenReturn(dboIngredient);
 		

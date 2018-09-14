@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
@@ -15,10 +16,8 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
-	@Autowired
 	private AccessDeniedHandler accessDeniedHandler;
 	
-	@Autowired
 	private AuthenticationSuccessHandler successHandler;
 	
 	@Value("${security.admin.login}")
@@ -27,7 +26,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Value("${security.admin.password}")
 	private String adminPassword;
 	
-	
+	@Autowired
+	public SecurityConfig(final AccessDeniedHandler accessDeniedHandler, final AuthenticationSuccessHandler successHandler) {
+		super();
+		this.accessDeniedHandler = accessDeniedHandler;
+		this.successHandler = successHandler;
+	}
+
 	@Override
 	protected void configure(final HttpSecurity http) throws Exception {
 		http.csrf().disable()
@@ -51,7 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	public void configureGlobal(final AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication().withUser(adminLogin).password("{noop}" + adminPassword).roles("ADMIN");
+		final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		auth.inMemoryAuthentication().passwordEncoder(encoder).withUser(adminLogin).password(adminPassword).roles("ADMIN");
 	}
-	
 }

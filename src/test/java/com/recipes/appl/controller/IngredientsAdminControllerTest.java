@@ -126,7 +126,7 @@ public class IngredientsAdminControllerTest {
 		final IngredientDto newIngredient = MockData.dtoAlmondIngredient(false, false);
 		when(ingredientsService.saveIngredient(newIngredient)).thenReturn(MockData.dtoAlmondIngredient(false, true));
 		
-		mvc.perform(post("/admin/ingredient/save")
+		mvc.perform(post("/admin/ingredient")
 			.with(csrf())
 			.contentType(MediaType.APPLICATION_JSON_UTF8)
 			.content(ConvertersUtil.json(newIngredient)))
@@ -144,7 +144,7 @@ public class IngredientsAdminControllerTest {
 		final IngredientDto newIngredient = MockData.dtoAlmondIngredient(true, false);
 		when(ingredientsService.saveIngredient(newIngredient)).thenReturn(MockData.dtoAlmondIngredient(true, true));
 		
-		mvc.perform(post("/admin/ingredient/save")
+		mvc.perform(post("/admin/ingredient")
 			.with(csrf())
 			.contentType(MediaType.APPLICATION_JSON_UTF8)
 			.content(ConvertersUtil.json(newIngredient)))
@@ -167,7 +167,7 @@ public class IngredientsAdminControllerTest {
 		final IngredientDto newIngredient = MockData.dtoAlmondIngredient(false, false);
 		when(ingredientsService.validateIngredient(newIngredient)).thenReturn(new ResponseEntity<IngredientDto>(new IngredientError("Validation error message"), HttpStatus.BAD_REQUEST));
 		
-		mvc.perform(post("/admin/ingredient/save")
+		mvc.perform(post("/admin/ingredient")
 			.with(csrf())
 			.contentType(MediaType.APPLICATION_JSON_UTF8)
 			.content(ConvertersUtil.json(newIngredient)))
@@ -183,7 +183,7 @@ public class IngredientsAdminControllerTest {
 		final IngredientDto ingredient = MockData.dtoAlmondIngredient(false, true);
 		when(ingredientsService.saveIngredient(ingredient)).thenReturn(ingredient);
 		
-		mvc.perform(post("/admin/ingredient/save")
+		mvc.perform(post("/admin/ingredient")
 			.with(csrf())
 			.contentType(MediaType.APPLICATION_JSON_UTF8)
 			.content(ConvertersUtil.json(ingredient)))
@@ -201,7 +201,7 @@ public class IngredientsAdminControllerTest {
 		final IngredientDto ingredient = MockData.dtoAlmondIngredient(true, true);
 		when(ingredientsService.saveIngredient(ingredient)).thenReturn(ingredient);
 		
-		mvc.perform(post("/admin/ingredient/save")
+		mvc.perform(post("/admin/ingredient")
 			.with(csrf())
 			.contentType(MediaType.APPLICATION_JSON_UTF8)
 			.content(ConvertersUtil.json(ingredient)))
@@ -224,7 +224,7 @@ public class IngredientsAdminControllerTest {
 		final IngredientDto ingredient = MockData.dtoAlmondIngredient(false, true);
 		when(ingredientsService.validateIngredient(ingredient)).thenReturn(new ResponseEntity<IngredientDto>(new IngredientError("Validation error message"), HttpStatus.BAD_REQUEST));
 		
-		mvc.perform(post("/admin/ingredient/save")
+		mvc.perform(post("/admin/ingredient")
 			.with(csrf())
 			.contentType(MediaType.APPLICATION_JSON_UTF8)
 			.content(ConvertersUtil.json(ingredient)))
@@ -243,7 +243,7 @@ public class IngredientsAdminControllerTest {
 		
 		when(ingredientsService.deleteIngredient(ingredientId)).thenReturn(dto);
 		
-		mvc.perform(delete("/admin/ingredient/delete").param("id", ingredientId.toString()).with(csrf()))
+		mvc.perform(delete("/admin/ingredient").param("id", ingredientId.toString()).with(csrf()))
 			.andDo(print())
 			.andExpect(status().isAccepted())
 			.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))

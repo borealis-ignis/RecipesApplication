@@ -27,8 +27,12 @@ import com.recipes.appl.service.IngredientsService;
 @RequestMapping("/admin")
 public class IngredientsAdminController {
 	
-	@Autowired
 	private IngredientsService ingredientsService;
+	
+	@Autowired
+	public IngredientsAdminController(final IngredientsService ingredientsService) {
+		this.ingredientsService = ingredientsService;
+	}
 	
 	
 	@GetMapping(path="/ingredients")
@@ -39,7 +43,7 @@ public class IngredientsAdminController {
 	}
 	
 	@GetMapping(path="/ingredient/components")
-	public ResponseEntity<List<ComponentDto>> getComponents(@RequestParam(required = true, name = "id") Long ingredientId) {
+	public ResponseEntity<List<ComponentDto>> getComponents(@RequestParam(required = true, name = "id") final Long ingredientId) {
 		return ResponseEntity.status(HttpStatus.OK).body(ingredientsService.getComponents(ingredientId));
 	}
 	
@@ -49,7 +53,7 @@ public class IngredientsAdminController {
 	}
 	
 	@PostMapping(path="/ingredient")
-	public ResponseEntity<IngredientDto> saveIngredient(@RequestBody(required = true) IngredientDto ingredient) {
+	public ResponseEntity<IngredientDto> saveIngredient(@RequestBody(required = true) final IngredientDto ingredient) {
 		final ResponseEntity<IngredientDto> ingredientError = ingredientsService.validateIngredient(ingredient);
 		if (ingredientError != null) {
 			return ingredientError;
@@ -59,7 +63,7 @@ public class IngredientsAdminController {
 	}
 	
 	@DeleteMapping(path="/ingredient")
-	public ResponseEntity<IngredientDto> deleteIngredient(@RequestParam(required = true, name = "id") Long id) {
+	public ResponseEntity<IngredientDto> deleteIngredient(@RequestParam(required = true, name = "id") final Long id) {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(ingredientsService.deleteIngredient(id));
 	}
 	

@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.recipes.appl.model.dbo.Ingredient;
+import com.recipes.appl.model.dbo.IngredientDbo;
 import com.recipes.appl.model.dto.ComponentDto;
 import com.recipes.appl.model.dto.IngredientDto;
 import com.recipes.appl.model.dto.errors.IngredientError;
@@ -22,11 +22,15 @@ import com.recipes.appl.utils.converters.IngredientsConverter;
 @Service
 public class IngredientsService extends AbstractService {
 	
-	@Autowired
 	private IngredientsDAO ingredientsDAO;
 	
-	@Autowired
 	private ComponentsDAO componentsDAO;
+	
+	@Autowired
+	public IngredientsService(final IngredientsDAO ingredientsDAO, final ComponentsDAO componentsDAO) {
+		this.ingredientsDAO = ingredientsDAO;
+		this.componentsDAO = componentsDAO;
+	}
 	
 	
 	public List<IngredientDto> getIngredients() {
@@ -38,7 +42,7 @@ public class IngredientsService extends AbstractService {
 	}
 	
 	public List<ComponentDto> getComponents(final Long id) {
-		return ComponentsConverter.convertDboToDto(ingredientsDAO.findById(id).orElse(new Ingredient()).getComponents());
+		return ComponentsConverter.convertDboToDto(ingredientsDAO.findById(id).orElse(new IngredientDbo()).getComponents());
 	}
 	
 	public IngredientDto saveIngredient(final IngredientDto ingredient) {
@@ -61,7 +65,7 @@ public class IngredientsService extends AbstractService {
 		
 		// add new ingredient
 		if (ingredient.getId() == null) {
-			final List<Ingredient> foundIngredients = ingredientsDAO.findAllByName(ingredientName);
+			final List<IngredientDbo> foundIngredients = ingredientsDAO.findAllByName(ingredientName);
 			if (!foundIngredients.isEmpty()) {
 				return getErrorResponseMessage("admin.ingredient.error.notunique.name", IngredientError.class);
 			}

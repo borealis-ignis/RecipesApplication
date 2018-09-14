@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 /**
  * @author Kastalski Sergey
  */
-public class AbstractService {
+public abstract class AbstractService {
 	
 	@Autowired
 	private MessageSource messageSource;

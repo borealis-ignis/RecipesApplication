@@ -11,6 +11,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -145,7 +146,7 @@ public class RecipesAdminControllerTest {
 		final RecipeDto newRecipe = MockData.dtoSauceRecipe(false);
 		when(recipesService.saveRecipe(newRecipe)).thenReturn(MockData.dtoSauceRecipe(true));
 		
-		mvc.perform(post("/admin/recipe/save")
+		mvc.perform(post("/admin/recipe")
 			.with(csrf())
 			.contentType(MediaType.APPLICATION_JSON_UTF8)
 			.content(ConvertersUtil.json(newRecipe)))
@@ -173,7 +174,7 @@ public class RecipesAdminControllerTest {
 		final RecipeDto newRecipe = MockData.dtoSauceRecipe(false);
 		when(recipesService.validateRecipe(newRecipe)).thenReturn(new ResponseEntity<RecipeDto>(new RecipeError("Validation error message"), HttpStatus.BAD_REQUEST));
 		
-		mvc.perform(post("/admin/recipe/save")
+		mvc.perform(post("/admin/recipe")
 			.with(csrf())
 			.contentType(MediaType.APPLICATION_JSON_UTF8)
 			.content(ConvertersUtil.json(newRecipe)))
@@ -189,7 +190,7 @@ public class RecipesAdminControllerTest {
 		final RecipeDto recipe = MockData.dtoSauceRecipe(true);
 		when(recipesService.saveRecipe(recipe)).thenReturn(recipe);
 		
-		mvc.perform(post("/admin/recipe/save")
+		mvc.perform(post("/admin/recipe")
 			.with(csrf())
 			.contentType(MediaType.APPLICATION_JSON_UTF8)
 			.content(ConvertersUtil.json(recipe)))
@@ -217,7 +218,7 @@ public class RecipesAdminControllerTest {
 		final RecipeDto newRecipe = MockData.dtoSauceRecipe(true);
 		when(recipesService.validateRecipe(newRecipe)).thenReturn(new ResponseEntity<RecipeDto>(new RecipeError("Validation error message"), HttpStatus.BAD_REQUEST));
 		
-		mvc.perform(post("/admin/recipe/save")
+		mvc.perform(post("/admin/recipe")
 			.with(csrf())
 			.contentType(MediaType.APPLICATION_JSON_UTF8)
 			.content(ConvertersUtil.json(newRecipe)))
@@ -236,7 +237,7 @@ public class RecipesAdminControllerTest {
 		
 		when(recipesService.deleteRecipe(recipeId)).thenReturn(dto);
 		
-		mvc.perform(delete("/admin/recipe/delete").param("id", recipeId.toString()).with(csrf()))
+		mvc.perform(delete("/admin/recipe").param("id", recipeId.toString()).with(csrf()))
 			.andDo(print())
 			.andExpect(status().isAccepted())
 			.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
@@ -246,7 +247,7 @@ public class RecipesAdminControllerTest {
 	@Test
 	@WithMockUser(username="admin", password="admin", roles="ADMIN")
 	public void getRecipeIncorrectHttpMethod() throws Exception {
-		mvc.perform(post("/admin/recipe").param("id", "1").with(csrf()))
+		mvc.perform(put("/admin/recipes").param("id", "1").with(csrf()))
 			.andDo(print())
 			.andExpect(status().is(HttpStatus.METHOD_NOT_ALLOWED.value()));
 	}

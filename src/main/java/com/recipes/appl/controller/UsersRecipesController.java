@@ -17,16 +17,20 @@ import com.recipes.appl.service.RecipesService;
 @Controller
 public class UsersRecipesController {
 	
-	@Autowired
 	private RecipesService recipesService;
+	
+	@Autowired
+	public UsersRecipesController(final RecipesService recipesService) {
+		this.recipesService = recipesService;
+	}
 	
 	
 	@GetMapping(path="/recipes")
 	public String getRecipesPage(final Map<String, Object> model,
-			@RequestParam(name="name", required=false) String name,
-			@RequestParam(name="dishtype", required=false) Long dishTypeId,
-			@RequestParam(name="ingredients", required=false) String ingredientsIds,
-			@RequestParam(name="components", required=false) String componentsIds) {
+			@RequestParam(name="name", required=false) final String name,
+			@RequestParam(name="dishtype", required=false) final Long dishTypeId,
+			@RequestParam(name="ingredients", required=false) final String ingredientsIds,
+			@RequestParam(name="components", required=false) final String componentsIds) {
 		// TODO
 		final Map<String, Object> params = new HashMap<>();
 		if (!StringUtils.isEmpty(name)) {
@@ -49,7 +53,7 @@ public class UsersRecipesController {
 	
 	@GetMapping(path="/recipe")
 	public String getSingleRecipePage(final Map<String, Object> model,
-			@RequestParam(required = true, name = "id") Long id) {
+			@RequestParam(required = true, name = "id") final Long id) {
 		model.put("recipe", recipesService.getRecipe(id));
 		return "singlerecipe";
 	}

@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "component")
-public class Component {
+public class ComponentDbo {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +35,6 @@ public class Component {
 	private String name;
 	
 	@ManyToMany(mappedBy = "components", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH})
-	private List<Ingredient> ingredients;
+	private List<IngredientDbo> ingredients;
 	
 }
