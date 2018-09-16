@@ -1,0 +1,47 @@
+package com.recipes.appl.repository;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.List;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import com.recipes.appl.MockData;
+import com.recipes.appl.model.dbo.DishTypeDbo;
+
+/**
+ * @author Kastalski Sergey
+ */
+@RunWith(SpringRunner.class)
+@DataJpaTest
+@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
+public class DishTypesDAOTest {
+	
+	@Autowired
+	private TestEntityManager entityManager;
+	
+	@Autowired
+	private DishTypesDAO dishTypesDAO;
+	
+	
+	@Test
+	public void findAllDishTypesByOrderByIdAsc() {
+		final List<DishTypeDbo> dishTypesList = MockData.listDboDishTypes();
+		dishTypesList.forEach(dishType -> {
+			dishType.setId(null);
+			entityManager.persist(dishType);
+		});
+		
+		final List<DishTypeDbo> foundDishTypesList = dishTypesDAO.findAllByOrderByIdAsc();
+		
+		assertThat(foundDishTypesList).isNotEmpty().containsExactlyElementsOf(dishTypesList);
+	}
+	
+}

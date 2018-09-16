@@ -20,6 +20,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.recipes.appl.security.RolesEnum;
+
 /**
  * @author Kastalski Sergey
  */
@@ -44,7 +46,7 @@ public class FormLoginLogoutTest {
 			.andDo(print())
 			.andExpect(status().is3xxRedirection())
 			.andExpect(redirectedUrl("/admin/ingredients"))
-			.andExpect(authenticated().withUsername("admin").withRoles("ADMIN"));
+			.andExpect(authenticated().withUsername("admin").withRoles(RolesEnum.ADMIN_ROLE.getValue()));
 	}
 	
 	@Test

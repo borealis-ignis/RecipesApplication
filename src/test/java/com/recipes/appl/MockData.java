@@ -188,6 +188,12 @@ public class MockData {
 		return ingredient;
 	}
 	
+	public static IngredientDbo dboAlmondIngredientWithComponentsWithoutIds() {
+		final IngredientDbo almond = MockData.dboAlmondIngredientWithoutComponents(false);
+		almond.setComponents(MockData.listDboComponentsWithoutIds());
+		return almond;
+	}
+	
 	public static IngredientDbo dboAlmondIngredientWithoutComponents(final boolean withId) {
 		final IngredientDbo ingredient = new IngredientDbo();
 		if (withId) {
@@ -199,21 +205,32 @@ public class MockData {
 	
 	public static List<ComponentDbo> listDboComponents() {
 		final List<ComponentDbo> components = new ArrayList<>();
-		components.add(dboCalciumComponent());
-		components.add(dboIronComponent());
+		components.add(dboCalciumComponent(true));
+		components.add(dboIronComponent(true));
 		return components;
 	}
 	
-	public static ComponentDbo dboCalciumComponent() {
+	public static List<ComponentDbo> listDboComponentsWithoutIds() {
+		final List<ComponentDbo> components = new ArrayList<>();
+		components.add(dboCalciumComponent(false));
+		components.add(dboIronComponent(false));
+		return components;
+	}
+	
+	public static ComponentDbo dboCalciumComponent(final boolean withId) {
 		final ComponentDbo component = new ComponentDbo();
-		component.setId(1L);
+		if (withId) {
+			component.setId(1L);
+		}
 		component.setName("Кальций");
 		return component;
 	}
 	
-	public static ComponentDbo dboIronComponent() {
+	public static ComponentDbo dboIronComponent(final boolean withId) {
 		final ComponentDbo component = new ComponentDbo();
-		component.setId(2L);
+		if (withId) {
+			component.setId(2L);
+		}
 		component.setName("Магний");
 		return component;
 	}

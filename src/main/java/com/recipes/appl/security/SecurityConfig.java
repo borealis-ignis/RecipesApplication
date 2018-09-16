@@ -26,6 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Value("${security.admin.password}")
 	private String adminPassword;
 	
+	
 	@Autowired
 	public SecurityConfig(final AccessDeniedHandler accessDeniedHandler, final AuthenticationSuccessHandler successHandler) {
 		super();
@@ -37,9 +38,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(final HttpSecurity http) throws Exception {
 		http.csrf().disable()
 				.authorizeRequests()
-					.antMatchers("/css/**", "/js/**").permitAll()
-					.antMatchers("/recipes", "/recipe", "/login", "/403").permitAll()
-					.antMatchers("/admin/ingredients", "/admin/recipes").hasAnyRole("ADMIN")
+					.antMatchers("/css/**", "/js/**", "/recipes", "/recipe", "/login", "/403").permitAll()
+					.antMatchers("/admin/ingredients", "/admin/recipes").hasAnyRole(RolesEnum.ADMIN_ROLE.getValue())
 					.anyRequest().authenticated()
 				.and()
 				.formLogin().successHandler(successHandler)
@@ -57,6 +57,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	public void configureGlobal(final AuthenticationManagerBuilder auth) throws Exception {
 		final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		auth.inMemoryAuthentication().passwordEncoder(encoder).withUser(adminLogin).password(adminPassword).roles("ADMIN");
+		auth.inMemoryAuthentication().passwordEncoder(encoder).withUser(adminLogin).password(adminPassword).roles(RolesEnum.ADMIN_ROLE.getValue());
 	}
 }
