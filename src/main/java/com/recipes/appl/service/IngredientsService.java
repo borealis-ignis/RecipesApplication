@@ -1,10 +1,15 @@
 package com.recipes.appl.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import com.recipes.appl.model.dbo.IngredientDbo;
@@ -45,7 +50,27 @@ public class IngredientsService extends AbstractService {
 		return ComponentsConverter.convertDboToDto(ingredientsDAO.findById(id).orElse(new IngredientDbo()).getComponents());
 	}
 	
+	@Transactional
 	public IngredientDto saveIngredient(final IngredientDto ingredient) {
+		final List<ComponentDto> allComponents = ingredient.getComponents();
+		if (!CollectionUtils.isEmpty(allComponents)) {
+			final Predicate<ComponentDto> componentIdNull = c -> c.getId() == null;
+			final List<ComponentDto> newComponents = allComponents.stream().filter(componentIdNull).collect(Collectors.toList());
+			if (!CollectionUtils.isEmpty(newComponents)) {
+				final List<ComponentDto> savedComponents = ComponentsConverter.convertDboToDto(componentsDAO.saveAll(ComponentsConverter.convertDtoToDbo(newComponents)));
+				allComponents.removeIf(componentIdNull);
+				allComponents.addAll(savedComponents);
+			}
+			
+			if (ingredient.getId() == null) {
+				ingredient.setComponents(new ArrayList<>());
+				final IngredientDto savedIngredient = IngredientsConverter.convertDboToDto(ingredientsDAO.saveAndFlush(IngredientsConverter.convertDtoToDbo(ingredient)));
+				ingredient.setId(savedIngredient.getId());
+			}
+			
+			ingredient.setComponents(allComponents);
+		}
+		
 		return IngredientsConverter.convertDboToDto(ingredientsDAO.saveAndFlush(IngredientsConverter.convertDtoToDbo(ingredient)));
 	}
 	

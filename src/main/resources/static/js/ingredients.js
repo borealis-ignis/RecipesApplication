@@ -105,7 +105,9 @@ function saveIngredient() {
 		success: function (response) {
 			updateIngredients(response);
 		},
-		error: errorsHandlerEvent
+		error: errorsHandlerEvent,
+	}).always(function() {
+		refreshComponentsItems();
 	});
 }
 
@@ -134,7 +136,15 @@ function updateIngredients(ingredient) {
 		$("div.right-inputs-column input[name = 'ingredient_id']").val(id);
 	}
 	
-	refreshComponentsItems();
+	// update components
+	var $container = $("div.right-inputs-column div#components-list");
+	$container.children().remove();
+	var componentsList = ingredient.components;
+	for (var i in componentsList) {
+		var component = componentsList[i];
+		var $newItem = createComponentItem(component.id, component.name);
+		$container.prepend($newItem);
+	}
 }
 
 function refreshComponentsItems() {
@@ -175,6 +185,10 @@ function addComponent() {
 		return;
 	}
 	
+	if (componentNameAlreadyExists(name)) {
+		return;
+	}
+	
 	var id = $foundItems.attr("id");
 	
 	var $container = $("div.right-inputs-column div#components-list");
@@ -182,6 +196,19 @@ function addComponent() {
 	$container.prepend($newItem);
 	
 	$nameInput.val("");
+}
+
+function componentNameAlreadyExists(name) {
+	var result = false;
+	var $componentsInputs = $("div.right-inputs-column fieldset.inputs-set div#components-list div.item input.component-item");
+	$componentsInputs.each(function(index, item) {
+		var $componentInput = $(item);
+		if ($componentInput.val() == name) {
+			result = true;
+		}
+	});
+	
+	return result;
 }
 
 function createComponentItem(id, name) {

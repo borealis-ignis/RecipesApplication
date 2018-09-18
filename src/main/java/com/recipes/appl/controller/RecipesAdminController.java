@@ -2,6 +2,8 @@ package com.recipes.appl.controller;
 
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,8 @@ import com.recipes.appl.service.RecipesService;
 @Controller
 @RequestMapping("/admin")
 public class RecipesAdminController {
+	
+	private static Logger logger = LoggerFactory.getLogger(RecipesAdminController.class);
 	
 	private IngredientsService ingredientsService;
 	
@@ -68,6 +72,7 @@ public class RecipesAdminController {
 	
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<RecipeError> handleError(final Exception ex) {
+		logger.error("Internal server error", ex);
 		return new ResponseEntity<RecipeError>(new RecipeError(ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }

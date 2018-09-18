@@ -200,6 +200,7 @@ public class MockData {
 			ingredient.setId(1L);
 		}
 		ingredient.setName("Миндаль");
+		ingredient.setComponents(new ArrayList<>());
 		return ingredient;
 	}
 	

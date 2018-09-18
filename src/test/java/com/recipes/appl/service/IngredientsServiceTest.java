@@ -112,14 +112,16 @@ public class IngredientsServiceTest {
 	
 	@Test
 	public void saveNewIngredient() {
-		final IngredientDbo dboIngredient = MockData.dboAlmondIngredientWithComponents(true);
+		final IngredientDbo savedDboIngredient = MockData.dboAlmondIngredientWithoutComponents(true);
+		final IngredientDbo resultDboIngredient = MockData.dboAlmondIngredientWithComponents(true);
 		
-		when(ingredientsDAO.saveAndFlush(MockData.dboAlmondIngredientWithComponents(false))).thenReturn(dboIngredient);
+		when(ingredientsDAO.saveAndFlush(MockData.dboAlmondIngredientWithoutComponents(false))).thenReturn(savedDboIngredient);
+		when(ingredientsDAO.saveAndFlush(resultDboIngredient)).thenReturn(resultDboIngredient);
 		
 		final IngredientDto dtoIngredient = ingredientsService.saveIngredient(MockData.dtoAlmondIngredient(true, false));
 		
-		assertEquals(dboIngredient.getId(), dtoIngredient.getId());
-		assertEquals(dboIngredient.getName(), dtoIngredient.getName());
+		assertEquals(savedDboIngredient.getId(), dtoIngredient.getId());
+		assertEquals(savedDboIngredient.getName(), dtoIngredient.getName());
 		assertNull(dtoIngredient.getIngredientNameId());
 		assertNull(dtoIngredient.getCount());
 		assertNull(dtoIngredient.getMeasure());
