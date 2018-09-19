@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import com.recipes.appl.converter.impl.DishTypeConverter;
+import com.recipes.appl.converter.impl.IngredientMeasureConverter;
+import com.recipes.appl.converter.impl.RecipeConverter;
 import com.recipes.appl.model.dbo.RecipeDbo;
 import com.recipes.appl.model.dto.DishTypeDto;
 import com.recipes.appl.model.dto.IngredientMeasureDto;
@@ -18,9 +21,6 @@ import com.recipes.appl.model.dto.errors.RecipeError;
 import com.recipes.appl.repository.DishTypesDAO;
 import com.recipes.appl.repository.IngredientMeasuresDAO;
 import com.recipes.appl.repository.RecipesDAO;
-import com.recipes.appl.utils.converters.DishTypesConverter;
-import com.recipes.appl.utils.converters.IngredientMeasuresConverter;
-import com.recipes.appl.utils.converters.RecipesConverter;
 
 /**
  * @author Kastalski Sergey
@@ -34,37 +34,52 @@ public class RecipesService extends AbstractService {
 	
 	private RecipesDAO recipesDAO;
 	
+	private DishTypeConverter dishTypeConverter;
+	
+	private RecipeConverter recipeConverter;
+	
+	private IngredientMeasureConverter ingredientMeasureConverter;
+	
 	@Autowired
-	public RecipesService(final DishTypesDAO dishTypesDAO, final IngredientMeasuresDAO ingredientMeasuresDAO, final RecipesDAO recipesDAO) {
+	public RecipesService(
+			final DishTypesDAO dishTypesDAO, 
+			final IngredientMeasuresDAO ingredientMeasuresDAO, 
+			final RecipesDAO recipesDAO, 
+			final DishTypeConverter dishTypeConverter,
+			final RecipeConverter recipeConverter,
+			final IngredientMeasureConverter ingredientMeasureConverter) {
 		this.dishTypesDAO = dishTypesDAO;
 		this.ingredientMeasuresDAO = ingredientMeasuresDAO;
 		this.recipesDAO = recipesDAO;
+		this.dishTypeConverter = dishTypeConverter;
+		this.recipeConverter = recipeConverter;
+		this.ingredientMeasureConverter = ingredientMeasureConverter;
 	}
 	
 	
 	public List<DishTypeDto> getDishTypes() {
-		return DishTypesConverter.convertDboToDto(dishTypesDAO.findAllByOrderByIdAsc());
+		return dishTypeConverter.convertDboToDto(dishTypesDAO.findAllByOrderByIdAsc());
 	}
 	
 	public List<IngredientMeasureDto> getIngredientMeasures() {
-		return IngredientMeasuresConverter.convertDboToDto(ingredientMeasuresDAO.findAllByOrderByIdAsc());
+		return ingredientMeasureConverter.convertDboToDto(ingredientMeasuresDAO.findAllByOrderByIdAsc());
 	}
 	
 	public List<RecipeDto> getRecipes() {
-		return RecipesConverter.convertDboToDto(recipesDAO.findAll());
+		return recipeConverter.convertDboToDto(recipesDAO.findAll());
 	}
 	
-	public List<RecipeDto> searchRecipes(Map<String, Object> params) {
+	public List<RecipeDto> searchRecipes(final Map<String, Object> params) {
 		//TODO
 		return new ArrayList<>();
 	}
 
 	public RecipeDto getRecipe(final Long id) {
-		return RecipesConverter.convertDboToDto(recipesDAO.findById(id).orElse(new RecipeDbo()));
+		return recipeConverter.convertDboToDto(recipesDAO.findById(id).orElse(new RecipeDbo()));
 	}
 	
-	public RecipeDto saveRecipe(RecipeDto recipe) {
-		return RecipesConverter.convertDboToDto(recipesDAO.saveAndFlush(RecipesConverter.convertDtoToDbo(recipe)));
+	public RecipeDto saveRecipe(final RecipeDto recipe) {
+		return recipeConverter.convertDboToDto(recipesDAO.saveAndFlush(recipeConverter.convertDtoToDbo(recipe)));
 	}
 	
 	public RecipeDto deleteRecipe(final Long id) {

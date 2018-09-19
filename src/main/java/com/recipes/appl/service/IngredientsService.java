@@ -12,14 +12,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import com.recipes.appl.converter.impl.ComponentConverter;
+import com.recipes.appl.converter.impl.IngredientConverter;
 import com.recipes.appl.model.dbo.IngredientDbo;
 import com.recipes.appl.model.dto.ComponentDto;
 import com.recipes.appl.model.dto.IngredientDto;
 import com.recipes.appl.model.dto.errors.IngredientError;
 import com.recipes.appl.repository.ComponentsDAO;
 import com.recipes.appl.repository.IngredientsDAO;
-import com.recipes.appl.utils.converters.ComponentsConverter;
-import com.recipes.appl.utils.converters.IngredientsConverter;
 
 /**
  * @author Kastalski Sergey
@@ -31,23 +31,34 @@ public class IngredientsService extends AbstractService {
 	
 	private ComponentsDAO componentsDAO;
 	
+	private ComponentConverter componentConverter;
+	
+	private IngredientConverter ingredientConverter;
+	
+	
 	@Autowired
-	public IngredientsService(final IngredientsDAO ingredientsDAO, final ComponentsDAO componentsDAO) {
+	public IngredientsService(
+			final IngredientsDAO ingredientsDAO, 
+			final ComponentsDAO componentsDAO, 
+			final ComponentConverter componentConverter, 
+			final IngredientConverter ingredientConverter) {
 		this.ingredientsDAO = ingredientsDAO;
 		this.componentsDAO = componentsDAO;
+		this.componentConverter = componentConverter;
+		this.ingredientConverter = ingredientConverter;
 	}
 	
 	
 	public List<IngredientDto> getIngredients() {
-		return IngredientsConverter.convertDboToDto(ingredientsDAO.selectIngredients());
+		return ingredientConverter.convertDboToDto(ingredientsDAO.selectIngredients());
 	}
 	
 	public List<ComponentDto> getComponents() {
-		return ComponentsConverter.convertDboToDto(componentsDAO.findAll());
+		return componentConverter.convertDboToDto(componentsDAO.findAll());
 	}
 	
 	public List<ComponentDto> getComponents(final Long id) {
-		return ComponentsConverter.convertDboToDto(ingredientsDAO.findById(id).orElse(new IngredientDbo()).getComponents());
+		return componentConverter.convertDboToDto(ingredientsDAO.findById(id).orElse(new IngredientDbo()).getComponents());
 	}
 	
 	@Transactional
@@ -57,21 +68,21 @@ public class IngredientsService extends AbstractService {
 			final Predicate<ComponentDto> componentIdNull = c -> c.getId() == null;
 			final List<ComponentDto> newComponents = allComponents.stream().filter(componentIdNull).collect(Collectors.toList());
 			if (!CollectionUtils.isEmpty(newComponents)) {
-				final List<ComponentDto> savedComponents = ComponentsConverter.convertDboToDto(componentsDAO.saveAll(ComponentsConverter.convertDtoToDbo(newComponents)));
+				final List<ComponentDto> savedComponents = componentConverter.convertDboToDto(componentsDAO.saveAll(componentConverter.convertDtoToDbo(newComponents)));
 				allComponents.removeIf(componentIdNull);
 				allComponents.addAll(savedComponents);
 			}
 			
 			if (ingredient.getId() == null) {
 				ingredient.setComponents(new ArrayList<>());
-				final IngredientDto savedIngredient = IngredientsConverter.convertDboToDto(ingredientsDAO.saveAndFlush(IngredientsConverter.convertDtoToDbo(ingredient)));
+				final IngredientDto savedIngredient = ingredientConverter.convertDboToDto(ingredientsDAO.saveAndFlush(ingredientConverter.convertDtoToDbo(ingredient)));
 				ingredient.setId(savedIngredient.getId());
 			}
 			
 			ingredient.setComponents(allComponents);
 		}
 		
-		return IngredientsConverter.convertDboToDto(ingredientsDAO.saveAndFlush(IngredientsConverter.convertDtoToDbo(ingredient)));
+		return ingredientConverter.convertDboToDto(ingredientsDAO.saveAndFlush(ingredientConverter.convertDtoToDbo(ingredient)));
 	}
 	
 	public IngredientDto deleteIngredient(final Long id) {
