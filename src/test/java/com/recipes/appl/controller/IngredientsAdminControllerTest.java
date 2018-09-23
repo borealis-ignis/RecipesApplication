@@ -31,11 +31,11 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.recipes.appl.ConvertersUtil;
 import com.recipes.appl.MockData;
 import com.recipes.appl.model.dto.IngredientDto;
 import com.recipes.appl.model.dto.errors.IngredientError;
 import com.recipes.appl.service.IngredientsService;
-import com.recipes.appl.utils.ConvertersUtil;
 
 import net.minidev.json.JSONArray;
 
@@ -222,6 +222,7 @@ public class IngredientsAdminControllerTest {
 	@WithMockUser(username="admin", password="admin", roles="ADMIN")
 	public void updateIngredientBadRequest() throws Exception {
 		final IngredientDto ingredient = MockData.dtoAlmondIngredient(false, true);
+		
 		when(ingredientsService.validateIngredient(ingredient)).thenReturn(new ResponseEntity<IngredientDto>(new IngredientError("Validation error message"), HttpStatus.BAD_REQUEST));
 		
 		mvc.perform(post("/admin/ingredient")
@@ -241,6 +242,7 @@ public class IngredientsAdminControllerTest {
 		final IngredientDto dto = new IngredientDto();
 		dto.setId(ingredientId);
 		
+		when(ingredientsService.validateIngredientBeforeDelete(ingredientId)).thenReturn(null);
 		when(ingredientsService.deleteIngredient(ingredientId)).thenReturn(dto);
 		
 		mvc.perform(delete("/admin/ingredient").param("id", ingredientId.toString()).with(csrf()))
@@ -248,6 +250,21 @@ public class IngredientsAdminControllerTest {
 			.andExpect(status().isAccepted())
 			.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
 			.andExpect(jsonPath("$.id", is(1)));
+	}
+	
+	@Test
+	@WithMockUser(username="admin", password="admin", roles="ADMIN")
+	public void deleteIngredientValidationError() throws Exception {
+		final Long ingredientId = 1L;
+		
+		when(ingredientsService.validateIngredientBeforeDelete(ingredientId)).thenReturn(new ResponseEntity<IngredientDto>(new IngredientError("Validation error message"), HttpStatus.BAD_REQUEST));
+		
+		mvc.perform(delete("/admin/ingredient").param("id", ingredientId.toString())
+			.with(csrf()))
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+			.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
+			.andExpect(jsonPath("$.errorMessage", is("Validation error message")));
 	}
 	
 	@Test

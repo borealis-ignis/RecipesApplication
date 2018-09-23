@@ -15,11 +15,13 @@ import org.springframework.util.StringUtils;
 import com.recipes.appl.converter.impl.ComponentConverter;
 import com.recipes.appl.converter.impl.IngredientConverter;
 import com.recipes.appl.model.dbo.IngredientDbo;
+import com.recipes.appl.model.dbo.RecipeDbo;
 import com.recipes.appl.model.dto.ComponentDto;
 import com.recipes.appl.model.dto.IngredientDto;
 import com.recipes.appl.model.dto.errors.IngredientError;
 import com.recipes.appl.repository.ComponentsDAO;
 import com.recipes.appl.repository.IngredientsDAO;
+import com.recipes.appl.repository.RecipesDAO;
 
 /**
  * @author Kastalski Sergey
@@ -31,6 +33,8 @@ public class IngredientsService extends AbstractService {
 	
 	private ComponentsDAO componentsDAO;
 	
+	private RecipesDAO recipesDAO;
+	
 	private ComponentConverter componentConverter;
 	
 	private IngredientConverter ingredientConverter;
@@ -40,10 +44,12 @@ public class IngredientsService extends AbstractService {
 	public IngredientsService(
 			final IngredientsDAO ingredientsDAO, 
 			final ComponentsDAO componentsDAO, 
+			final RecipesDAO recipesDAO,
 			final ComponentConverter componentConverter, 
 			final IngredientConverter ingredientConverter) {
 		this.ingredientsDAO = ingredientsDAO;
 		this.componentsDAO = componentsDAO;
+		this.recipesDAO = recipesDAO;
 		this.componentConverter = componentConverter;
 		this.ingredientConverter = ingredientConverter;
 	}
@@ -105,6 +111,15 @@ public class IngredientsService extends AbstractService {
 			if (!foundIngredients.isEmpty()) {
 				return getErrorResponseMessage("admin.ingredient.error.notunique.name", IngredientError.class);
 			}
+		}
+		
+		return null;
+	}
+	
+	public ResponseEntity<IngredientDto> validateIngredientBeforeDelete(final Long ingredientId) {
+		final List<RecipeDbo> recipesList = recipesDAO.findAllByIngredientId(ingredientId);
+		if (!recipesList.isEmpty()) {
+			return getErrorResponseMessage("admin.ingredient.error.part.of.recipe", IngredientError.class);
 		}
 		
 		return null;

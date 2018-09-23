@@ -27,6 +27,7 @@ import com.recipes.appl.model.dto.IngredientDto;
 import com.recipes.appl.model.dto.errors.IngredientError;
 import com.recipes.appl.repository.ComponentsDAO;
 import com.recipes.appl.repository.IngredientsDAO;
+import com.recipes.appl.repository.RecipesDAO;
 
 /**
  * @author Kastalski Sergey
@@ -40,6 +41,9 @@ public class IngredientsServiceTest {
 	
 	@MockBean
 	private ComponentsDAO componentsDAO;
+	
+	@MockBean
+	private RecipesDAO recipesDAO;
 	
 	@Autowired
 	private IngredientsService ingredientsService;
@@ -153,6 +157,17 @@ public class IngredientsServiceTest {
 		assertNull(dtoIngredient.getIngredientNameId());
 		assertNull(dtoIngredient.getCount());
 		assertNull(dtoIngredient.getMeasure());
+	}
+	
+	@Test
+	public void deleteIngredientValidationError() {
+		final Long ingredientId = 1L;
+		
+		when(recipesDAO.findAllByIngredientId(ingredientId)).thenReturn(MockData.listDboRecipes());
+		
+		final ResponseEntity<IngredientDto> responseEntity = ingredientsService.validateIngredientBeforeDelete(ingredientId);
+		
+		assertNotNull(responseEntity);
 	}
 	
 	@Test

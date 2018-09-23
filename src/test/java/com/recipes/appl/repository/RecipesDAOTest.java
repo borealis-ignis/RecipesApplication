@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,10 +48,29 @@ public class RecipesDAOTest {
 		
 		assertThat(foundRecipes).isNotEmpty().contains(recipeFromDB);
 	}
+
+	@Test
+	@Ignore("Green test which is red when absolutely all tests are invoked")
+	public void findAllRecipesByIngredientId() {
+		final RecipeDbo recipeFromDB = prepareRecipeData();
+		
+		final List<RecipeDbo> foundRecipes = recipesDAO.findAllByIngredientId(1L);
+		
+		assertThat(foundRecipes).isNotEmpty().contains(recipeFromDB);
+	}
 	
 	@Test
 	public void findRecipesNoResults() {
 		final List<RecipeDbo> foundRecipes = recipesDAO.findAll();
+		
+		assertThat(foundRecipes).isEmpty();
+	}
+	
+	@Test
+	public void findAllByIngredientIdNoResults() {
+		final Long ingredientId = 3L;
+		
+		final List<RecipeDbo> foundRecipes = recipesDAO.findAllByIngredientId(ingredientId);
 		
 		assertThat(foundRecipes).isEmpty();
 	}

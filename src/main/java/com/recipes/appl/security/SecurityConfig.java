@@ -20,20 +20,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	private AuthenticationSuccessHandler successHandler;
 	
-	@Value("${security.admin.login}")
 	private String adminLogin;
 	
-	@Value("${security.admin.password}")
 	private String adminPassword;
 	
-	
 	@Autowired
-	public SecurityConfig(final AccessDeniedHandler accessDeniedHandler, final AuthenticationSuccessHandler successHandler) {
+	public SecurityConfig(
+			final AccessDeniedHandler accessDeniedHandler, 
+			final AuthenticationSuccessHandler successHandler,
+			@Value("${security.admin.login}") final String adminLogin,
+			@Value("${security.admin.password}") final String adminPassword) {
 		super();
 		this.accessDeniedHandler = accessDeniedHandler;
 		this.successHandler = successHandler;
+		this.adminLogin = adminLogin;
+		this.adminPassword = adminPassword;
 	}
-
+	
+	
 	@Override
 	protected void configure(final HttpSecurity http) throws Exception {
 		http.csrf().disable()

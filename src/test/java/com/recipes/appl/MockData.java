@@ -19,7 +19,7 @@ import com.recipes.appl.model.dto.RecipeDto;
 /**
  * @author Kastalski Sergey
  */
-public class MockData {
+public abstract class MockData {
 	
 	// dto data
 	public static List<IngredientDto> listDtoIngredients(final boolean withComponents) {

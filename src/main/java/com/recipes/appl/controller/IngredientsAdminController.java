@@ -68,6 +68,11 @@ public class IngredientsAdminController {
 	
 	@DeleteMapping(path="/ingredient")
 	public ResponseEntity<IngredientDto> deleteIngredient(@RequestParam(required = true, name = "id") final Long id) {
+		final ResponseEntity<IngredientDto> ingredientError = ingredientsService.validateIngredientBeforeDelete(id);
+		if (ingredientError != null) {
+			return ingredientError;
+		}
+		
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(ingredientsService.deleteIngredient(id));
 	}
 	

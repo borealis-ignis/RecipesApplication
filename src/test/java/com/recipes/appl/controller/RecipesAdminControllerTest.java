@@ -31,12 +31,12 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.recipes.appl.ConvertersUtil;
 import com.recipes.appl.MockData;
 import com.recipes.appl.model.dto.RecipeDto;
 import com.recipes.appl.model.dto.errors.RecipeError;
 import com.recipes.appl.service.IngredientsService;
 import com.recipes.appl.service.RecipesService;
-import com.recipes.appl.utils.ConvertersUtil;
 
 import net.minidev.json.JSONArray;
 

@@ -35,9 +35,9 @@ public class RecipesAdminController {
 	private RecipesService recipesService;
 	
 	@Autowired
-	public RecipesAdminController(final IngredientsService ingredientsService, final RecipesService recipesService) {
-		this.ingredientsService = ingredientsService;
+	public RecipesAdminController(final RecipesService recipesService, final IngredientsService ingredientsService) {
 		this.recipesService = recipesService;
+		this.ingredientsService = ingredientsService;
 	}
 	
 	

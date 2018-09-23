@@ -6,19 +6,7 @@
 	<div th:replace="~{fragments/common.html :: common-css}"></div>
 	<link rel="stylesheet" th:href="@{/css/recipes.css}" />
 	<div th:replace="~{fragments/common.html :: common-js}"></div>
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$("div.filters-column input#search-button").click(function() {
-				// TODO
-				/* var name = "Recipe#1";
-				
-				var uri = "/recipes?name=" + encodeURIComponent(name);
-				
-				console.log("aaaaaaaaaaa" + uri); */
-				
-				//window.location = uri;
-			});
-		});
+	<script th:src="@{/js/recipes.js}">
 	</script>
 </head>
 <body>
@@ -28,40 +16,46 @@
 		
 		<div class="content-wrap">
 			<div class="filters-column">
-				<input type="text" name="name" class="recipename" th:placeholder="#{filters.input.recipename.caption}" />
+				<input type="text" name="name" class="recipename" th:placeholder="#{filters.input.recipename.caption}" th:value="${enteredNamePart}" />
 				<p/>
 				<select name="dishtype" class="select-input">
-					<option value="0" th:text="#{filters.select.dishtype.caption}"></option>
-					<option value="1">Суп</option>
-					<option value="2">Салат</option>
+					<option value="null" th:text="#{filters.select.dishtype.caption}"></option>
+					<option th:each="dishType : ${dishTypes}" th:value="${dishType.id}" th:text="${dishType.name}"
+								th:selected="${selectedDishTypeId != null && dishType.id == selectedDishTypeId}"></option>
 				</select>
 				<p/>
 				<fieldset class="inputs-set">
 					<legend th:text="#{filters.fieldset.ingredients.caption}"></legend>
-					<select class="fieldset-select-input" name="ingredients">
-						<option value="0" th:text="#{filters.select.ingredients.caption}"></option>
-						<option value="1">Капуста</option>
-						<option value="2">Морковь</option>
+					<select class="fieldset-select-input" name="ingredients" id="ingredients">
+						<option value="null" selected="selected" disabled="disabled" th:text="#{filters.select.ingredients.caption}"></option>
+						<option th:each="ingredient : ${ingredients}" th:value="${ingredient.id}" th:text="${ingredient.name}"></option>
 					</select>
 					<br/>
 					<div id="ingredients-list" class="selected-list">
-						<div class="item"><span>Картофель</span><span class="remove-from-list">x</span></div>
-						<div class="item"><span>Сметана</span><span class="remove-from-list">x</span></div>
+						<th:block th:each="ingredient : ${ingredients}">
+							<div th:if="${#lists.contains(selectedIngredientsIds, ingredient.id) == true}" class="item" th:id="${ingredient.id}">
+								<span th:text="${ingredient.name}"></span>
+								<span class="remove-from-list">x</span>
+							</div>
+						</th:block>
 						<br clear="all"/>
 					</div>
 				</fieldset>
 				<p/>
 				<fieldset class="inputs-set">
 					<legend th:text="#{filters.fieldset.components.caption}"></legend>
-					<select class="fieldset-select-input" name="components">
-						<option value="0" th:text="#{filters.select.components.caption}"></option>
-						<option value="1">Калий</option>
-						<option value="2">Фосфор</option>
+					<select class="fieldset-select-input" name="components" id="components">
+						<option value="null" selected="selected" disabled="disabled" th:text="#{filters.select.components.caption}"></option>
+						<option th:each="component : ${components}" th:value="${component.id}" th:text="${component.name}"></option>
 					</select>
 					<br/>
 					<div id="components-list" class="selected-list">
-						<div class="item"><span>Железо</span><span class="remove-from-list">x</span></div>
-						<div class="item"><span>Кальций</span><span class="remove-from-list">x</span></div>
+						<th:block th:each="component : ${components}">
+							<div th:if="${#lists.contains(selectedComponentsIds, component.id) == true}" class="item" th:id="${component.id}">
+								<span th:text="${component.name}"></span>
+								<span class="remove-from-list">x</span>
+							</div>
+						</th:block>
 						<br clear="all"/>
 					</div>
 				</fieldset>
