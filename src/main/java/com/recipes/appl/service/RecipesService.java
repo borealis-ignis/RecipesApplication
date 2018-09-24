@@ -2,15 +2,7 @@ package com.recipes.appl.service;
 
 import java.util.List;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -20,7 +12,6 @@ import com.recipes.appl.converter.impl.DishTypeConverter;
 import com.recipes.appl.converter.impl.IngredientMeasureConverter;
 import com.recipes.appl.converter.impl.RecipeConverter;
 import com.recipes.appl.model.dbo.RecipeDbo;
-import com.recipes.appl.model.dbo.RecipeIngredientDbo;
 import com.recipes.appl.model.dto.DishTypeDto;
 import com.recipes.appl.model.dto.IngredientMeasureDto;
 import com.recipes.appl.model.dto.RecipeDto;
@@ -77,37 +68,7 @@ public class RecipesService extends AbstractService {
 	}
 	
 	public List<RecipeDto> searchRecipes(final String namePart, final Long dishTypeId, final List<Long> ingredientIdList, final List<Long> componentIdList) {
-		final Specification<RecipeDbo> recipeSpecification = new Specification<RecipeDbo>() {
-			
-			private static final long serialVersionUID = 9199576284337624784L;
-			
-			@Override
-			public Predicate toPredicate(final Root<RecipeDbo> root, final CriteriaQuery<?> query, final CriteriaBuilder cb) {
-				final Predicate predicate = cb.conjunction();
-				if (namePart != null) {
-		            predicate.getExpressions().add(cb.like(root.get("name"), "%" + namePart + "%"));
-		        }
-				if (dishTypeId != null) {
-		            predicate.getExpressions().add(cb.equal(root.get("dishType").get("id"), dishTypeId));
-		        }
-				
-				final boolean withIngredients = !CollectionUtils.isEmpty(ingredientIdList);
-				final boolean withComponents = !CollectionUtils.isEmpty(componentIdList);
-				if (withIngredients || withComponents) {
-					query.distinct(true);
-					final Join<RecipeDbo, RecipeIngredientDbo> ingredientJoin = root.join("recipeIngredients", JoinType.INNER).join("ingredient", JoinType.INNER);
-					if (withIngredients) {
-						predicate.getExpressions().add(ingredientJoin.get("id").in(ingredientIdList));
-					}
-					if (withComponents) {
-						predicate.getExpressions().add(ingredientJoin.join("components", JoinType.INNER).get("id").in(componentIdList));
-					}
-				}
-				return predicate;
-			}
-		};
-		
-		return recipeConverter.convertDboToDto(recipesDAO.findAll(recipeSpecification));
+		return recipeConverter.convertDboToDto(recipesDAO.findAllByFilterParams(namePart, dishTypeId, ingredientIdList, componentIdList));
 	}
 
 	public RecipeDto getRecipe(final Long id) {

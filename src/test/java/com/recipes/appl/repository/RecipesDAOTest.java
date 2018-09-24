@@ -24,6 +24,7 @@ import com.recipes.appl.model.dbo.IngredientDbo;
 import com.recipes.appl.model.dbo.IngredientMeasureDbo;
 import com.recipes.appl.model.dbo.RecipeDbo;
 import com.recipes.appl.model.dbo.RecipeIngredientDbo;
+import com.recipes.appl.util.StringUtil;
 
 /**
  * @author Kastalski Sergey
@@ -48,7 +49,36 @@ public class RecipesDAOTest {
 		
 		assertThat(foundRecipes).isNotEmpty().contains(recipeFromDB);
 	}
-
+	
+	@Test
+	public void findAllByFilterParamsByName() {
+		final RecipeDbo recipeFromDB = prepareRecipeData();
+		
+		final List<RecipeDbo> foundRecipesByDishType = recipesDAO.findAllByFilterParams("eci", null, StringUtil.toList("", ";"), StringUtil.toList("", ";"));
+		
+		assertThat(foundRecipesByDishType).isNotEmpty().contains(recipeFromDB);
+	}
+	
+	@Test
+	@Ignore("Green test which is red when absolutely all tests are invoked")
+	public void findAllByFilterParams() {
+		final RecipeDbo recipeFromDB = prepareRecipeData();
+		
+		final List<RecipeDbo> foundRecipesByName = recipesDAO.findAllByFilterParams("cip", 1L, StringUtil.toList("1;", ";"), StringUtil.toList("1;", ";"));
+		
+		assertThat(foundRecipesByName).isNotEmpty().contains(recipeFromDB);
+	}
+	
+	@Test
+	@Ignore("Green test which is red when absolutely all tests are invoked")
+	public void findAllByFilterParamsByNameAndDishType() {
+		final RecipeDbo recipeFromDB = prepareRecipeData();
+		
+		final List<RecipeDbo> foundRecipesByNameAndDishType = recipesDAO.findAllByFilterParams("cip", 1L, StringUtil.toList("", ";"), StringUtil.toList("", ";"));
+		
+		assertThat(foundRecipesByNameAndDishType).isNotEmpty().contains(recipeFromDB);
+	}
+	
 	@Test
 	@Ignore("Green test which is red when absolutely all tests are invoked")
 	public void findAllRecipesByIngredientId() {
@@ -185,6 +215,7 @@ public class RecipesDAOTest {
 		
 		final IngredientDbo ingredient = recipeIngredient.getIngredient();
 		ingredient.setId(null);
+		ingredient.getComponents().add(MockData.dboCalciumComponent(false));
 		entityManager.persist(ingredient);
 		
 		final IngredientMeasureDbo ingredientMeasure = recipeIngredient.getIngredientMeasure();
