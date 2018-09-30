@@ -10,6 +10,8 @@ import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import com.recipes.appl.exception.RecipeException;
+
 
 /**
  * @author Kastalski Sergey
@@ -28,7 +30,7 @@ public abstract class AbstractService {
 			final E object = constructor.newInstance(new Object[] { message });
 			return new ResponseEntity<T>(object, HttpStatus.BAD_REQUEST);
 		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			throw new RuntimeException("Error of creating ResponseEntity", e);
+			throw new RecipeException("Error of creating ResponseEntity", e);
 		}
 	}
 }
