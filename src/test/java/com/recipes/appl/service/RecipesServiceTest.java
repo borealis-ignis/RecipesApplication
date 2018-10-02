@@ -339,4 +339,28 @@ public class RecipesServiceTest {
 		assertEquals(validationResult.getStatusCode(), HttpStatus.BAD_REQUEST);
 	}
 	
+	@Test
+	public void validateRecipeWithoutIngredientsMeasureCount() {
+		final RecipeDto dtoRecipe = MockData.dtoSauceRecipe(true);
+		dtoRecipe.getIngredients().forEach(ingredient -> ingredient.setCount(null));
+		
+		ResponseEntity<RecipeDto> validationResult = recipesService.validateRecipe(dtoRecipe);
+		
+		assertNotNull(validationResult);
+		assertTrue(validationResult.getBody() instanceof RecipeError);
+		assertEquals(validationResult.getStatusCode(), HttpStatus.BAD_REQUEST);
+	}
+	
+	@Test
+	public void validateRecipeWithoutIngredientsMeasure() {
+		final RecipeDto dtoRecipe = MockData.dtoSauceRecipe(true);
+		dtoRecipe.getIngredients().forEach(ingredient -> ingredient.getMeasure().setId(null));
+		
+		ResponseEntity<RecipeDto> validationResult = recipesService.validateRecipe(dtoRecipe);
+		
+		assertNotNull(validationResult);
+		assertTrue(validationResult.getBody() instanceof RecipeError);
+		assertEquals(validationResult.getStatusCode(), HttpStatus.BAD_REQUEST);
+	}
+	
 }

@@ -13,6 +13,7 @@ import com.recipes.appl.converter.impl.IngredientMeasureConverter;
 import com.recipes.appl.converter.impl.RecipeConverter;
 import com.recipes.appl.model.dbo.RecipeDbo;
 import com.recipes.appl.model.dto.DishTypeDto;
+import com.recipes.appl.model.dto.IngredientDto;
 import com.recipes.appl.model.dto.IngredientMeasureDto;
 import com.recipes.appl.model.dto.RecipeDto;
 import com.recipes.appl.model.dto.errors.RecipeError;
@@ -98,16 +99,26 @@ public class RecipesService extends AbstractService {
 			return getErrorResponseMessage("admin.recipe.error.nodishtype", RecipeError.class);
 		}
 		
+		final List<IngredientDto> ingredients = recipe.getIngredients();
+		if (CollectionUtils.isEmpty(ingredients)) {
+			return getErrorResponseMessage("admin.recipe.error.noingredients", RecipeError.class);
+		}
+		
+		for (final IngredientDto ingredient : ingredients) {
+			final Double count = ingredient.getCount();
+			final IngredientMeasureDto measure = ingredient.getMeasure();
+			if (count == null || measure == null || measure.getId() == null) {
+				return getErrorResponseMessage("admin.recipe.error.nomeasure", RecipeError.class);
+			}
+		}
+		
+		
 		// add new recipe
 		if (recipe.getId() == null) {
 			final List<RecipeDbo> foundRecipes = recipesDAO.findAllByNameAndDishType(recipeName, dishType.getId());
 			if (!foundRecipes.isEmpty()) {
 				return getErrorResponseMessage("admin.recipe.error.notunique.name", RecipeError.class);
 			}
-		}
-		
-		if (CollectionUtils.isEmpty(recipe.getIngredients())) {
-			return getErrorResponseMessage("admin.recipe.error.noingredients", RecipeError.class);
 		}
 		
 		return null;
