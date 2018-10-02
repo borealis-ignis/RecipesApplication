@@ -10,6 +10,12 @@
 	</head>
 	<body>
 		<div class="top" th:fragment="header">
+			<script type="text/javascript">
+				function getContextPath() {
+					return $("div#urlCtx").text();
+				}
+			</script>
+			<div style="display: none;" id="urlCtx" th:text="@{/}"></div>
 			<div sec:authorize="isAuthenticated()">
 				<form th:action="@{/logout}" method="post">
 					<a sec:authentication="name" th:href="@{/admin/ingredients}"></a>

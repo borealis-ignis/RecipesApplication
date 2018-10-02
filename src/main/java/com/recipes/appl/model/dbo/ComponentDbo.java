@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "component")
+@Table(name = "Component")
 public class ComponentDbo {
 	
 	@Id

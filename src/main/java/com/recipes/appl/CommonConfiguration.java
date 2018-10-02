@@ -9,7 +9,7 @@ import org.springframework.context.annotation.PropertySources;
  */
 @Configuration
 @PropertySources({
-	@PropertySource(value="classpath:application.properties", ignoreResourceNotFound=true),
+	@PropertySource(value="classpath:application-config.properties", ignoreResourceNotFound=true),
 	@PropertySource(value="file:${catalina.home}/conf/application.properties", ignoreResourceNotFound=true)
 })
 public class CommonConfiguration {

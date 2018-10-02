@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "ingredient")
+@Table(name = "Ingredient")
 public class IngredientDbo {
 	
 	@Id
@@ -39,7 +39,7 @@ public class IngredientDbo {
 	
 	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH}, fetch=FetchType.LAZY)
 	@JoinTable(
-		name = "ingredientcomponent", 
+		name = "IngredientComponent", 
 		joinColumns = { @JoinColumn(name = "Ingredient_ID") }, 
 		inverseJoinColumns = { @JoinColumn(name = "Component_ID") }
 	)

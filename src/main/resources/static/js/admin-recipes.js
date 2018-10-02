@@ -12,7 +12,7 @@ var removeRecipeEvent = function() {
 	var id = $this.parent().find("span.item-link").attr("id");
 	
 	$.ajax({
-		url: '/admin/recipe?' + $.param( {"id": id} ),
+		url: getContextPath() + 'admin/recipe?' + $.param( {"id": id} ),
 		method: 'delete',
 		success: function (response) {
 			var $foundItem = $("div.left-items-container div.item span.item-link[id = " + id + "]").parent();
@@ -33,7 +33,7 @@ var fillRecipeInputsEvent = function() {
 	var recipeId = $this.attr('id');
 	
 	$.ajax({
-		url: '/admin/recipe?' + $.param( {"id": recipeId} ),
+		url: getContextPath() + 'admin/recipe?' + $.param( {"id": recipeId} ),
 		method: 'get',
 		success: function (response) {
 			var recipeName = response.name;
@@ -137,7 +137,7 @@ function saveRecipe() {
 	});
 	
 	$.ajax({
-		url: '/admin/recipe',
+		url: getContextPath() + 'admin/recipe',
 		method: 'post',
 		data: JSON.stringify(data),
 		contentType: 'application/json; charset=utf-8',

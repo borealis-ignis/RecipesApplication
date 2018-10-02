@@ -21,12 +21,12 @@ var searchRecipesEvent = function() {
 	var $componentItems = $("div.filters-column div#components-list div.item");
 	var componentIdsString = prepareIdsString($componentItems);
 	
-	var uri = "/recipes?name=" + encodeURIComponent(recipePartName) + 
+	var uri = "recipes?name=" + encodeURIComponent(recipePartName) + 
 					"&dishtype=" + recipeDishTypeId + 
 					"&ingredients=" + encodeURIComponent(ingredientIdsString) + 
 					"&components=" + encodeURIComponent(componentIdsString);
 	
-	window.location = uri;
+	window.location = getContextPath() + uri;
 }
 
 var selectIngredientEvent = function() {

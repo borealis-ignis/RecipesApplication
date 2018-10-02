@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "dishtype")
+@Table(name = "DishType")
 public class DishTypeDbo {
 	
 	@Id

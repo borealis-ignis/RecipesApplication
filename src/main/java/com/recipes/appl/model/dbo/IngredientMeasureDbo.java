@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "ingredientmeasure")
+@Table(name = "IngredientMeasure")
 public class IngredientMeasureDbo {
 	
 	@Id

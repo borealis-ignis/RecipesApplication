@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "recipe")
+@Table(name = "Recipe")
 public class RecipeDbo {
 	
 	@Id
@@ -35,7 +35,7 @@ public class RecipeDbo {
 	
 	@NotNull
 	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "Dishtype_ID", unique=true, nullable=false)
+	@JoinColumn(name = "DishType_ID", unique=true, nullable=false)
 	private DishTypeDbo dishType;
 	
 	@NotNull

@@ -12,6 +12,12 @@
 	</head>
 	<body>
 		<div class="top" th:fragment="header">
+			<script type="text/javascript">
+				function getContextPath() {
+					return $("div#urlCtx").text();
+				}
+			</script>
+			<div style="display: none;" id="urlCtx" th:text="@{/}"></div>
 			<form th:action="@{/logout}" method="post">
 				<span sec:authentication="name"></span>
 				<input type="submit" th:value="#{button.logout}" />

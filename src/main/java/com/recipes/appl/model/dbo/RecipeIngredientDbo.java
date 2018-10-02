@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "recipeingredient")
+@Table(name = "RecipeIngredient")
 public class RecipeIngredientDbo {
 	
 	@Id
@@ -31,7 +31,7 @@ public class RecipeIngredientDbo {
 	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH})
-    @JoinColumn(name = "recipe_ID", nullable = false)
+    @JoinColumn(name = "Recipe_ID", nullable = false)
 	private RecipeDbo recipe;
 	
 	@NotNull
@@ -45,7 +45,7 @@ public class RecipeIngredientDbo {
 	
 	@NotNull
 	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "Ingredientmeasure_ID", unique=true, nullable=false)
+	@JoinColumn(name = "IngredientMeasure_ID", unique=true, nullable=false)
 	private IngredientMeasureDbo ingredientMeasure;
 	
 }

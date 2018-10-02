@@ -5,10 +5,10 @@ function makeActiveTab(id_tab) {
 function selectTab(selectedTab) {
 	switch (selectedTab.id) {
 		case 'ingredients':
-			window.location = '/admin/ingredients';
+			window.location = getContextPath() + 'admin/ingredients';
 			break;
 		case 'recipes':
-			window.location = '/admin/recipes';
+			window.location = getContextPath() + 'admin/recipes';
 			break;
 	}
 }

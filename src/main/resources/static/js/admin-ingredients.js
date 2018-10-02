@@ -32,7 +32,7 @@ var fillIngredientInputsEvent = function() {
 	
 	var $container = $("div.right-inputs-column div#components-list");
 	$.ajax({
-		url: '/admin/ingredient/components?' + $.param( {"id": ingredientId} ),
+		url: getContextPath() + 'admin/ingredient/components?' + $.param( {"id": ingredientId} ),
 		method: 'get',
 		success: function (response) {
 			if (Array.isArray(response)) {
@@ -54,7 +54,7 @@ var removeIngredientEvent = function() {
 	var id = $this.parent().find("span.item-link").attr("id");
 	
 	$.ajax({
-		url: '/admin/ingredient?' + $.param( {"id": id} ),
+		url: getContextPath() + 'admin/ingredient?' + $.param( {"id": id} ),
 		method: 'delete',
 		success: function (response) {
 			var $foundItem = $("div.left-items-container div.item span.item-link[id = " + id + "]").parent();
@@ -98,7 +98,7 @@ function saveIngredient() {
 	});
 	
 	$.ajax({
-		url: '/admin/ingredient',
+		url: getContextPath() + 'admin/ingredient',
 		method: 'post',
 		data: JSON.stringify(data),
 		contentType: 'application/json; charset=utf-8',
@@ -149,7 +149,7 @@ function updateIngredients(ingredient) {
 
 function refreshComponentsItems() {
 	$.ajax({
-		url: '/admin/ingredient/allcomponents',
+		url: getContextPath() + 'admin/ingredient/allcomponents',
 		method: 'get',
 		success: function (response) {
 			var availableComponents = [];
