@@ -14,6 +14,10 @@
 	<script th:src="@{/js/underscore-min.js}">
 	</script>
 	<script type="text/javascript">
+		bkLib.onDomLoaded(function() {
+			new nicEditor({iconsPath : getContextPath() + 'js/editor/nicEditorIcons.gif'}).panelInstance('html-editor');
+		});
+		
 		$(document).ready(function() {
 			loadRecipesPage();
 		});
@@ -78,7 +82,7 @@
 				<br/>
 				<div class="html-editor">
 					<div class="inner-area">
-						<textarea name="html-editor" style="width: 749px;" rows="21"></textarea>
+						<textarea id="html-editor" name="html-editor" style="width: 749px;" rows="21"></textarea>
 					</div>
 					<br clear="all"/>
 				</div>

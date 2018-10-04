@@ -99,8 +99,3 @@ var nicSaveOptions = {
 };
 
 var nicEditorSaveButton=nicEditorButton.extend({init:function(){if(!this.ne.options.onSave){this.margin.setStyle({display:"none"})}},mouseClick:function(){var B=this.ne.options.onSave;var A=this.ne.selectedInstance;B(A.getContent(),A.elm.id,A)}});nicEditors.registerPlugin(nicPlugin,nicSaveOptions);
-
-// load editors WYSIWYG !!!
-bkLib.onDomLoaded(function() {
-	nicEditors.allTextAreas();
-});
