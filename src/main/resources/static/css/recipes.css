@@ -18,6 +18,19 @@ div.recipes-column div.recipe-container {
 	border: 1px solid #008;
 	padding: 10px;
 }
+div.recipes-column div.recipe-container div.recipe-image-container {
+	float: left;
+	width: 180px;
+	height: 140px;
+}
+div.recipes-column div.recipe-container div.recipe-image-container img.recipe-image {
+	max-width: 180px;
+	max-height: 140px;
+}
+div.recipes-column div.recipe-container div.recipe-data {
+	float: left;
+	margin-left: 10px;
+}
 input.recipename {
 	width: 300px;
 }

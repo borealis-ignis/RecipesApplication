@@ -106,6 +106,7 @@ CREATE TABLE IF NOT EXISTS `recipes_db`.`Recipe` (
   `ID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `DishType_ID` INT UNSIGNED NOT NULL,
   `Name` VARCHAR(45) NOT NULL,
+  `Image` longtext NULL,
   `Description` text NULL,
   PRIMARY KEY (`ID`),
   INDEX `fk_Recipe_DishType_idx` (`DishType_ID` ASC),

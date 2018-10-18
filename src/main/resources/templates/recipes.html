@@ -65,13 +65,19 @@
 			</div>
 			<div class="recipes-column">
 				<div th:each="recipe : ${recipes}" class="recipe-container">
-					<div class="recipe-name">
-						<a th:href="@{'/recipe?id=' + ${recipe.id}}" target="_blank" th:text="${recipe.dishType.name + ' ' + recipe.name}"></a>
+					<th:block th:with="imageUrl=${someValue}" />
+					<div class="recipe-image-container">
+						<img class="recipe-image" th:src="(${#strings.isEmpty(recipe.image)})? @{/images/no_image.png} : ${recipe.image}"/>
 					</div>
-					<p></p>
-					<div class="recipe-ingredients">
-						<th:block th:each="ingredient,status : ${recipe.ingredients}" 
-								  th:text="${ingredient.name} + ((${#lists.size(recipe.ingredients)} == ${status.index + 1})? '' : ', ')"/>
+					<div class="recipe-data">
+						<div class="recipe-name">
+							<a th:href="@{'/recipe?id=' + ${recipe.id}}" target="_blank" th:text="${recipe.dishType.name + ' ' + recipe.name}"></a>
+						</div>
+						<p></p>
+						<div class="recipe-ingredients">
+							<th:block th:each="ingredient,status : ${recipe.ingredients}" 
+									  th:text="${ingredient.name} + ((${#lists.size(recipe.ingredients)} == ${status.index + 1})? '' : ', ')"/>
+						</div>
 					</div>
 					<br clear="all"/>
 				</div>

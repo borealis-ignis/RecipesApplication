@@ -1,12 +1,16 @@
 package com.recipes.appl.service;
 
+import java.io.IOException;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 import com.recipes.appl.converter.impl.DishTypeConverter;
 import com.recipes.appl.converter.impl.IngredientMeasureConverter;
@@ -20,12 +24,15 @@ import com.recipes.appl.model.dto.errors.RecipeError;
 import com.recipes.appl.repository.DishTypesDAO;
 import com.recipes.appl.repository.IngredientMeasuresDAO;
 import com.recipes.appl.repository.RecipesDAO;
+import com.recipes.appl.util.ImagesUtil;
 
 /**
  * @author Kastalski Sergey
  */
 @Service
 public class RecipesService extends AbstractService {
+	
+	private static Logger logger = LoggerFactory.getLogger(RecipesService.class);
 	
 	private DishTypesDAO dishTypesDAO;
 	
@@ -39,6 +46,9 @@ public class RecipesService extends AbstractService {
 	
 	private IngredientMeasureConverter ingredientMeasureConverter;
 	
+	private final int maxWidth;
+	private final int maxHeight;
+	
 	@Autowired
 	public RecipesService(
 			final DishTypesDAO dishTypesDAO, 
@@ -46,13 +56,17 @@ public class RecipesService extends AbstractService {
 			final RecipesDAO recipesDAO, 
 			final DishTypeConverter dishTypeConverter,
 			final RecipeConverter recipeConverter,
-			final IngredientMeasureConverter ingredientMeasureConverter) {
+			final IngredientMeasureConverter ingredientMeasureConverter,
+			@Value("${uploading.image.max.width:500}") final Integer maxWidth,
+			@Value("${uploading.image.max.height:350}") final Integer maxHeight) {
 		this.dishTypesDAO = dishTypesDAO;
 		this.ingredientMeasuresDAO = ingredientMeasuresDAO;
 		this.recipesDAO = recipesDAO;
 		this.dishTypeConverter = dishTypeConverter;
 		this.recipeConverter = recipeConverter;
 		this.ingredientMeasureConverter = ingredientMeasureConverter;
+		this.maxWidth = maxWidth;
+		this.maxHeight = maxHeight;
 	}
 	
 	
@@ -90,7 +104,7 @@ public class RecipesService extends AbstractService {
 	
 	public ResponseEntity<RecipeDto> validateRecipe(final RecipeDto recipe) {
 		final String recipeName = recipe.getName();
-		if (StringUtils.isEmpty(recipeName)) {
+		if (StringUtils.isBlank(recipeName)) {
 			return getErrorResponseMessage("admin.recipe.error.noname", RecipeError.class);
 		}
 		
@@ -119,6 +133,13 @@ public class RecipesService extends AbstractService {
 			if (!foundRecipes.isEmpty()) {
 				return getErrorResponseMessage("admin.recipe.error.notunique.name", RecipeError.class);
 			}
+		}
+		
+		try {
+			recipe.setImage(ImagesUtil.compressImage(recipe.getImage(), maxWidth, maxHeight));
+		} catch (final IOException e) {
+			logger.error("Error image compression", e);
+			return getErrorResponseMessage("admin.recipe.error.image.processing", RecipeError.class);
 		}
 		
 		return null;

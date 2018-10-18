@@ -49,13 +49,25 @@
 				<br clear="all"/>
 			</div>
 			<div class="right-inputs-column">
-				<input type="hidden" name="recipe_id" value=""/>
-				<input type="text" name="recipe_name" class="item-name" th:placeholder="#{admin.input.recipename.caption}" />
-				<p></p>
-				<select name="dishtype" class="select-input">
-					<option value="null" selected="selected" disabled="disabled" th:text="#{admin.select.dishtype.caption}"></option>
-					<option th:each="dishType : ${dishTypes}" th:value="${dishType.id}" th:text="${dishType.name}"></option>
-				</select>
+				<div>
+					<div class="recipe-image-pod">
+						<form id="fileImageForm">
+							<input id="image-file-upload" type="file" accept="image/png, image/jpeg" name="file_image" />
+						</form>
+						<div id="image-container"></div>
+					</div>
+					<div class="recipe-name-pod">
+						<input type="hidden" name="recipe_id" value=""/>
+						<input type="text" name="recipe_name" class="item-name" th:placeholder="#{admin.input.recipename.caption}" />
+						<p></p>
+						<select name="dishtype" class="select-input">
+							<option value="null" selected="selected" disabled="disabled" th:text="#{admin.select.dishtype.caption}"></option>
+							<option th:each="dishType : ${dishTypes}" th:value="${dishType.id}" th:text="${dishType.name}"></option>
+						</select>
+					</div>
+					<br clear="all"/>
+				</div>
+				
 				<p></p>
 				
 				<fieldset class="inputs-set">

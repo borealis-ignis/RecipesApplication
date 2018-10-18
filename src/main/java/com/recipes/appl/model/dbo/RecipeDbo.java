@@ -42,6 +42,9 @@ public class RecipeDbo {
 	@Column(name = "Name")
 	private String name;
 	
+	@Column(name = "Image")
+	private String image;
+	
 	@NotNull
 	@EqualsAndHashCode.Exclude
 	@OneToMany(mappedBy = "recipe", orphanRemoval = true, fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH})

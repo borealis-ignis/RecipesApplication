@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.recipes.appl.converter.DtoDboConverter;
 import com.recipes.appl.model.dbo.RecipeDbo;
@@ -33,6 +34,7 @@ public class RecipeConverter implements DtoDboConverter<RecipeDto, RecipeDbo> {
 		dto.setId(dbo.getId());
 		dto.setDishType(dishTypeConverter.convertDboToDto(dbo.getDishType()));
 		dto.setName(dbo.getName());
+		dto.setImage(dbo.getImage());
 		dto.setIngredients(recipeIngredientConverter.convertDboToDto(dbo.getRecipeIngredients()));
 		dto.setDescription(dbo.getDescription());
 		return dto;
@@ -44,6 +46,9 @@ public class RecipeConverter implements DtoDboConverter<RecipeDto, RecipeDbo> {
 		dbo.setId(dto.getId());
 		dbo.setDishType(dishTypeConverter.convertDtoToDbo(dto.getDishType()));
 		dbo.setName(dto.getName());
+		if (!StringUtils.isEmpty(dto.getImage())) {
+			dbo.setImage(dto.getImage());
+		}
 		dbo.setDescription(dto.getDescription());
 		
 		final List<RecipeIngredientDbo> recipeIngredients = recipeIngredientConverter.convertDtoToDbo(dto.getIngredients());

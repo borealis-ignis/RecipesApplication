@@ -1,6 +1,25 @@
 div.right-inputs-column select.select-input {
 	width: 305px;
 }
+div.right-inputs-column div.recipe-image-pod {
+	float: left;
+	width: 45%;
+}
+div.right-inputs-column div.recipe-image-pod div#image-container {
+	width: 200px;
+	height: 150px;
+	max-width: 200px;
+	max-height: 150px;
+	border: 1px solid #555;
+}
+div.right-inputs-column div.recipe-image-pod div#image-container img {
+	max-width: 200px;
+	max-height: 150px;
+}
+div.right-inputs-column div.recipe-name-pod {
+	float: left;
+	width: 55%;
+}
 div.selected-list div.item {
 	width: 600px;
 	background-color: #fcc26d;

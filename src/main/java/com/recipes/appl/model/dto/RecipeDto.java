@@ -14,6 +14,7 @@ public class RecipeDto {
 	private Long id;
 	private DishTypeDto dishType;
 	private String name;
+	private String image;
 	private List<IngredientDto> ingredients;
 	private String description;
 }

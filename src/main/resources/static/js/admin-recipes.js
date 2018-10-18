@@ -3,6 +3,25 @@ function loadRecipesPage() {
 	
 	$("div.left-items-container div.item span.item-link").click(fillRecipeInputsEvent);
 	$("div.left-items-container div.item span.remove-from-list").click(removeRecipeEvent);
+	
+	loadImageProcessing();
+}
+
+function loadImageProcessing() {
+	var encodeImageFileAsURL = function (createImage) {
+		return function() {
+			var file = this.files[0];
+			var reader  = new FileReader();
+			reader.onloadend = function () {
+				createImage(reader.result);
+			}
+			reader.readAsDataURL(file);
+		}
+	}
+	
+	$("div.right-inputs-column div.recipe-image-pod input#image-file-upload").change(encodeImageFileAsURL(function(base64Img) {
+		createRecipeImage(base64Img);
+	}));
 }
 
 var removeRecipeEvent = function() {
@@ -37,6 +56,7 @@ var fillRecipeInputsEvent = function() {
 		method: 'get',
 		success: function (response) {
 			var recipeName = response.name;
+			var recipeImage = response.image;
 			var dishType = response.dishType;
 			var description = response.description;
 			var unescapedDescription = _.unescape(description);
@@ -44,6 +64,9 @@ var fillRecipeInputsEvent = function() {
 			$("div.right-inputs-column input[name = 'recipe_id']").val(recipeId);
 			$("div.right-inputs-column input[name = 'recipe_name']").val(recipeName);
 			$("div.right-inputs-column select[name = 'dishtype']").find("option[value = " + dishType.id + "]").prop("selected", "selected");
+			if (recipeImage) {
+				createRecipeImage(recipeImage);
+			}
 			
 			var $ingredientMeasureSelect = $("div.right-inputs-column fieldset.inputs-set div.hidden select#ingredient_count_measure");
 			var $container = $("div.right-inputs-column div#ingredients-list");
@@ -81,6 +104,7 @@ function cleanInputs() {
 	
 	$("div.right-inputs-column input[name = 'recipe_id']").val("");
 	$("div.right-inputs-column input[name = 'recipe_name']").val("");
+	$("div.right-inputs-column div.recipe-image-pod div#image-container").html("");
 	$("div.right-inputs-column select[name = 'dishtype']").prop('selectedIndex', 0);
 	
 	$("div.right-inputs-column fieldset.inputs-set select#ingredients").prop('selectedIndex', 0);
@@ -105,6 +129,12 @@ function saveRecipe() {
 	var description = $("div.right-inputs-column div.html-editor div.nicEdit-main").html();
 	var escapedDescription = _.escape(description);
 	
+	var $imageContainer = $("div.right-inputs-column div.recipe-image-pod div#image-container img#recipe-image");
+	var image = "";
+	if ($imageContainer.attr("src") !== undefined) {
+		image = $imageContainer.attr("src");
+	}
+	
 	var data = {
 		"id": recipeId, 
 		"dishType": { 
@@ -112,6 +142,7 @@ function saveRecipe() {
 			"name": dishtypeName 
 		}, 
 		"name": recipeName, 
+		"image": image,
 		"ingredients": [], 
 		"description": escapedDescription
 	};
@@ -217,4 +248,11 @@ function updateRecipes(recipe) {
 		
 		$("div.right-inputs-column input[name = 'recipe_id']").val(id);
 	}
+}
+
+function createRecipeImage(base64Img) {
+	var $imageContainer = $("div.right-inputs-column div.recipe-image-pod div#image-container");
+	$imageContainer.html("");
+	var $recipeImage = $('<img/>', { 'id': "recipe-image", "src": base64Img });
+	$imageContainer.append($recipeImage);
 }

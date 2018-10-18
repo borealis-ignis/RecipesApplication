@@ -3,3 +3,7 @@ div.recipe-steps {
 	background-color: #fff;
 	padding: 10px;
 }
+div.recipe-image-container img.recipe-image {
+	max-width: 500px;
+	max-height: 350px;
+}
