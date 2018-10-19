@@ -30,6 +30,7 @@ div.recipes-column div.recipe-container div.recipe-image-container img.recipe-im
 div.recipes-column div.recipe-container div.recipe-data {
 	float: left;
 	margin-left: 10px;
+	width: 640px;
 }
 input.recipename {
 	width: 300px;
