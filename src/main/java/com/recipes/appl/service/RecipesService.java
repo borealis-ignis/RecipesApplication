@@ -135,11 +135,13 @@ public class RecipesService extends AbstractService {
 			}
 		}
 		
-		try {
-			recipe.setImage(ImagesUtil.compressImage(recipe.getImage(), maxWidth, maxHeight));
-		} catch (final IOException e) {
-			logger.error("Error image compression", e);
-			return getErrorResponseMessage("admin.recipe.error.image.processing", RecipeError.class);
+		if (StringUtils.isNotBlank(recipe.getImage())) {
+			try {
+				recipe.setImage(ImagesUtil.compressImage(recipe.getImage(), maxWidth, maxHeight));
+			} catch (final IOException e) {
+				logger.error("Error image compression", e);
+				return getErrorResponseMessage("admin.recipe.error.image.processing", RecipeError.class);
+			}
 		}
 		
 		return null;
