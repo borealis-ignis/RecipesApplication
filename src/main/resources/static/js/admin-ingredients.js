@@ -59,6 +59,7 @@ var removeIngredientEvent = function() {
 		success: function (response) {
 			var $foundItem = $("div.left-items-container div.item span.item-link[id = " + id + "]").parent();
 			$foundItem.remove();
+			successfulMessage();
 		},
 		error: errorsHandlerEvent
 	});
@@ -71,6 +72,7 @@ var removeComponentEvent = function() {
 
 function cleanInputs() {
 	cleanErrorsArea();
+	cleanSuccessMessagesArea();
 	
 	cleanActiveness();
 	
@@ -104,6 +106,7 @@ function saveIngredient() {
 		contentType: 'application/json; charset=utf-8',
 		success: function (response) {
 			updateIngredients(response);
+			successfulMessage();
 		},
 		error: errorsHandlerEvent,
 	}).always(function() {

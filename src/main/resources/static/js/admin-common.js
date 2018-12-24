@@ -22,6 +22,14 @@ function cleanErrorsArea() {
 	$("div.errors-column").text("");
 }
 
+function successfulMessage() {
+	$("div.info-column").show();
+}
+
+function cleanSuccessMessagesArea() {
+	$("div.info-column").hide();
+}
+
 function cleanActiveness() {
 	$("div.left-items-container div.item").removeClass("active");
 }

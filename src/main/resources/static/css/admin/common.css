@@ -7,8 +7,14 @@ div.left-column-top {
 }
 div.errors-column {
 	width: 780px;
-	padding-bottom: 10px;
+	/*padding-bottom: 10px;*/
 	color: #d10000;
+}
+div.info-column {
+	width: 780px;
+	/*padding-bottom: 10px;*/
+	color: #008b05;
+	display: none;
 }
 div.left-column {
 	width: 420px;
