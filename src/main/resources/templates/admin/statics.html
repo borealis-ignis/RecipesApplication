@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title th:text="#{title.admin.statics}"></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<div th:replace="~{admin/fragments/common.html :: common-css}"/>
+	<link rel="stylesheet" th:href="@{/css/admin/common.css}" />
+	<link rel="stylesheet" th:href="@{/css/admin/statics.css}" />
+	<link rel="stylesheet" th:href="@{/js/jquery/jquery-ui.1.12.1.css}" />
+	<div th:replace="~{admin/fragments/common.html :: common-js}"/>
+	<script th:src="@{/js/jquery/jquery-ui.1.12.1.js}">
+	</script>
+	<script th:src="@{/js/admin-statics.js}">
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			loadStaticsPage();
+		});
+	</script>
+</head>
+<body>
+	<div class="container">
+		
+		<div th:replace="~{admin/fragments/common.html :: header}"></div>
+		
+		<div class="content-wrap">
+			<div>
+				<div class="left-column-top">
+					<a th:href="@{/recipes}" th:text="#{back.to.recipes.page}"></a>
+				</div>
+				<div class="errors-column">
+				</div>
+				<div class="info-column" th:text="#{admin.statics.successful.done}">
+				</div>
+				<br clear="all"/>
+			</div>
+			<div class="static-container">
+				<div class="editor" id="dishtype-editor">
+					<input type="text" class="item-input" />
+					<input type="button" class="save" th:value="#{admin.static.save}"/>
+					<input type="button" class="reset" th:value="#{admin.static.reset}"/>
+					<input type="hidden" class="hiddenId" value=""/>
+				</div>
+				<div class="static-items">
+					<th:block th:each="dishType : ${dishTypes}">
+						<div class="item">
+							<span class="item" th:value="${dishType.id}" th:text="${dishType.name}"></span>
+							<span class="remove-from-list">x</span>
+						</div>
+					</th:block>
+				</div>
+			</div>
+			<div class="static-container">
+				<div class="editor" id="measure-editor">
+					<input type="text" class="item-input" />
+					<input type="button" class="save" th:value="#{admin.static.save}"/>
+					<input type="button" class="reset" th:value="#{admin.static.reset}"/>
+					<input type="hidden" class="hiddenId" value=""/>
+				</div>
+				<div class="static-items">
+					<th:block th:each="ingredientMeasure : ${ingredientMeasures}">
+						<div class="item">
+							<span class="item" th:value="${ingredientMeasure.id}" th:text="${ingredientMeasure.name}"></span>
+							<span class="remove-from-list">x</span>
+						</div>
+					</th:block>
+				</div>
+			</div>
+			<br clear="all"/>
+		</div>
+	</div>
+</body>
+</html>

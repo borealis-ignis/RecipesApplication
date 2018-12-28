@@ -32,7 +32,7 @@ public class RecipesApplSuccessHandler implements AuthenticationSuccessHandler {
 		authorities.forEach(authority -> {
 			if (authority.getAuthority().equals("ROLE_ADMIN")) {
 				try {
-					redirectStrategy.sendRedirect(requestServlet, responseServlet, "/admin/ingredients"); 
+					redirectStrategy.sendRedirect(requestServlet, responseServlet, "/admin/statics"); 
 				} catch (Exception e) {
 					logger.error("Redirection is failed after authorization", e);
 				} 

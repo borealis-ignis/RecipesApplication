@@ -23,6 +23,7 @@
 				<input type="submit" th:value="#{button.logout}" />
 			</form>
 			<div class="tabs-wrap">
+				<div class="tab" id="statics" onclick="selectTab(this);" th:text="#{tab.statics}"></div>
 				<div class="tab" id="ingredients" onclick="selectTab(this);" th:text="#{tab.ingredients}"></div>
 				<div class="tab" id="recipes" onclick="selectTab(this);" th:text="#{tab.recipes}"></div>
 			</div>

@@ -4,6 +4,9 @@ function makeActiveTab(id_tab) {
 
 function selectTab(selectedTab) {
 	switch (selectedTab.id) {
+		case 'statics':
+			window.location = getContextPath() + 'admin/statics';
+			break;
 		case 'ingredients':
 			window.location = getContextPath() + 'admin/ingredients';
 			break;

@@ -16,15 +16,21 @@ import com.recipes.appl.converter.impl.DishTypeConverter;
 import com.recipes.appl.converter.impl.IngredientMeasureConverter;
 import com.recipes.appl.converter.impl.RecipeConverter;
 import com.recipes.appl.model.dbo.RecipeDbo;
+import com.recipes.appl.model.dbo.RecipeIngredientDbo;
 import com.recipes.appl.model.dto.DishTypeDto;
 import com.recipes.appl.model.dto.IngredientDto;
 import com.recipes.appl.model.dto.IngredientMeasureDto;
 import com.recipes.appl.model.dto.RecipeDto;
+import com.recipes.appl.model.dto.errors.DishTypeError;
+import com.recipes.appl.model.dto.errors.IngredientError;
+import com.recipes.appl.model.dto.errors.MeasureError;
 import com.recipes.appl.model.dto.errors.RecipeError;
 import com.recipes.appl.repository.DishTypesDAO;
 import com.recipes.appl.repository.IngredientMeasuresDAO;
+import com.recipes.appl.repository.RecipeIngredientDAO;
 import com.recipes.appl.repository.RecipesDAO;
 import com.recipes.appl.util.ImagesUtil;
+
 
 /**
  * @author Kastalski Sergey
@@ -40,6 +46,8 @@ public class RecipesService extends AbstractService {
 	
 	private RecipesDAO recipesDAO;
 	
+	private RecipeIngredientDAO recipeIngredientDAO;
+	
 	private DishTypeConverter dishTypeConverter;
 	
 	private RecipeConverter recipeConverter;
@@ -51,9 +59,10 @@ public class RecipesService extends AbstractService {
 	
 	@Autowired
 	public RecipesService(
-			final DishTypesDAO dishTypesDAO, 
-			final IngredientMeasuresDAO ingredientMeasuresDAO, 
-			final RecipesDAO recipesDAO, 
+			final DishTypesDAO dishTypesDAO,
+			final IngredientMeasuresDAO ingredientMeasuresDAO,
+			final RecipesDAO recipesDAO,
+			final RecipeIngredientDAO recipeIngredientDAO,
 			final DishTypeConverter dishTypeConverter,
 			final RecipeConverter recipeConverter,
 			final IngredientMeasureConverter ingredientMeasureConverter,
@@ -62,6 +71,7 @@ public class RecipesService extends AbstractService {
 		this.dishTypesDAO = dishTypesDAO;
 		this.ingredientMeasuresDAO = ingredientMeasuresDAO;
 		this.recipesDAO = recipesDAO;
+		this.recipeIngredientDAO = recipeIngredientDAO;
 		this.dishTypeConverter = dishTypeConverter;
 		this.recipeConverter = recipeConverter;
 		this.ingredientMeasureConverter = ingredientMeasureConverter;
@@ -98,6 +108,30 @@ public class RecipesService extends AbstractService {
 		recipesDAO.deleteById(id);
 		
 		final RecipeDto dto = new RecipeDto();
+		dto.setId(id);
+		return dto;
+	}
+	
+	public DishTypeDto saveDishType(final DishTypeDto dishType) {
+		return dishTypeConverter.convertDboToDto(dishTypesDAO.saveAndFlush(dishTypeConverter.convertDtoToDbo(dishType)));
+	}
+	
+	public IngredientMeasureDto saveIngredientMeasure(final IngredientMeasureDto measure) {
+		return ingredientMeasureConverter.convertDboToDto(ingredientMeasuresDAO.saveAndFlush(ingredientMeasureConverter.convertDtoToDbo(measure)));
+	}
+	
+	public DishTypeDto deleteDishType(final Long id) {
+		dishTypesDAO.deleteById(id);
+		
+		final DishTypeDto dto = new DishTypeDto();
+		dto.setId(id);
+		return dto;
+	}
+	
+	public IngredientMeasureDto deleteMeasure(final Long id) {
+		ingredientMeasuresDAO.deleteById(id);
+		
+		final IngredientMeasureDto dto = new IngredientMeasureDto();
 		dto.setId(id);
 		return dto;
 	}
@@ -142,6 +176,44 @@ public class RecipesService extends AbstractService {
 				logger.error("Error image compression", e);
 				return getErrorResponseMessage("admin.recipe.error.image.processing", RecipeError.class);
 			}
+		}
+		
+		return null;
+	}
+
+
+	public ResponseEntity<DishTypeDto> validateDishType(final DishTypeDto dishType) {
+		if (StringUtils.isBlank(dishType.getName())) {
+			return getErrorResponseMessage("admin.statics.error.blank.dishtype", DishTypeError.class);
+		}
+		
+		return null;
+	}
+
+
+	public ResponseEntity<IngredientMeasureDto> validateMeasure(final IngredientMeasureDto measure) {
+		if (StringUtils.isBlank(measure.getName())) {
+			return getErrorResponseMessage("admin.statics.error.blank.measure", MeasureError.class);
+		}
+		
+		return null;
+	}
+
+
+	public ResponseEntity<DishTypeDto> validateDishtypeBeforeDelete(final Long id) {
+		final List<RecipeDbo> recipesList = recipesDAO.findAllByDishTypeId(id);
+		if (!recipesList.isEmpty()) {
+			return getErrorResponseMessage("admin.dishtype.error.part.of.recipe", DishTypeError.class);
+		}
+		
+		return null;
+	}
+
+
+	public ResponseEntity<IngredientMeasureDto> validateMeasureBeforeDelete(final Long id) {
+		final List<RecipeIngredientDbo> recipeIngredientsList = recipeIngredientDAO.findAllByMeasureId(id);
+		if (!recipeIngredientsList.isEmpty()) {
+			return getErrorResponseMessage("admin.measure.error.part.of.recipe", MeasureError.class);
 		}
 		
 		return null;

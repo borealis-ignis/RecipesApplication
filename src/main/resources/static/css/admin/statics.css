@@ -1,0 +1,26 @@
+div.static-container {
+	float: left;
+	width: 600px;
+}
+div.static-container div.editor {
+	padding: 10px;
+	padding-left: 5px;
+}
+div.static-container div.editor input.item-input {
+	width: 230px;
+}
+div.static-container div.static-items div.item {
+	width: 400px;
+	background-color: #fcc26d;
+	border: 1px solid #aaa;
+	border-radius: 5px;
+	margin-top: 1px;
+	padding: 2px;
+	padding-left: 10px;
+}
+div.static-container div.static-items div.item span.item {
+	cursor: pointer;
+}
+div.static-container div.static-items span.remove-from-list {
+	float: right;
+}

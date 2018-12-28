@@ -25,6 +25,7 @@ public class I18nConfiguration implements WebMvcConfigurer {
 				"classpath:i18n/recipes/messages",
 				"classpath:i18n/singlerecipe/messages",
 				"classpath:i18n/login/messages",
+				"classpath:i18n/admin/statics/messages",
 				"classpath:i18n/admin/ingredients/messages",
 				"classpath:i18n/admin/recipes/messages");
 				resource.setDefaultEncoding("UTF-8");

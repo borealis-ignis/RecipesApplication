@@ -64,4 +64,7 @@ public interface RecipesDAO extends JpaRepository<RecipeDbo, Long>, JpaSpecifica
 		return findAll(filteringSpecification);
 	}
 	
+	@Query("select distinct r from RecipeDbo r inner join r.dishType d where d.id = :dishTypeId")
+	List<RecipeDbo> findAllByDishTypeId(@Param("dishTypeId") Long id);
+	
 }
