@@ -43,7 +43,7 @@
 				<input type="button" onclick="cleanInputs(); return false;" th:title="#{admin.ingredients.new.recipe.title}" th:value="#{admin.ingredients.new.recipe}">
 				<div class="left-items-container">
 					<div th:each="recipe : ${recipes}" class="item">
-						<span class="item-link" th:id="${recipe.id}" th:text="${recipe.dishType.name + ' ' + recipe.name}"></span>
+						<span class="item-link" th:id="${recipe.id}" th:text="${recipe.dishType.name + ' «' + recipe.name + '»'}"></span>
 						<span class="remove-from-list">x</span>
 					</div>
 					<br clear="all"/>

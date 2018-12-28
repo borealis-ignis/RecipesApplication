@@ -22,7 +22,6 @@ import com.recipes.appl.model.dto.IngredientDto;
 import com.recipes.appl.model.dto.IngredientMeasureDto;
 import com.recipes.appl.model.dto.RecipeDto;
 import com.recipes.appl.model.dto.errors.DishTypeError;
-import com.recipes.appl.model.dto.errors.IngredientError;
 import com.recipes.appl.model.dto.errors.MeasureError;
 import com.recipes.appl.model.dto.errors.RecipeError;
 import com.recipes.appl.repository.DishTypesDAO;
@@ -180,8 +179,7 @@ public class RecipesService extends AbstractService {
 		
 		return null;
 	}
-
-
+	
 	public ResponseEntity<DishTypeDto> validateDishType(final DishTypeDto dishType) {
 		if (StringUtils.isBlank(dishType.getName())) {
 			return getErrorResponseMessage("admin.statics.error.blank.dishtype", DishTypeError.class);
@@ -189,8 +187,7 @@ public class RecipesService extends AbstractService {
 		
 		return null;
 	}
-
-
+	
 	public ResponseEntity<IngredientMeasureDto> validateMeasure(final IngredientMeasureDto measure) {
 		if (StringUtils.isBlank(measure.getName())) {
 			return getErrorResponseMessage("admin.statics.error.blank.measure", MeasureError.class);
@@ -198,8 +195,7 @@ public class RecipesService extends AbstractService {
 		
 		return null;
 	}
-
-
+	
 	public ResponseEntity<DishTypeDto> validateDishtypeBeforeDelete(final Long id) {
 		final List<RecipeDbo> recipesList = recipesDAO.findAllByDishTypeId(id);
 		if (!recipesList.isEmpty()) {
@@ -208,8 +204,7 @@ public class RecipesService extends AbstractService {
 		
 		return null;
 	}
-
-
+	
 	public ResponseEntity<IngredientMeasureDto> validateMeasureBeforeDelete(final Long id) {
 		final List<RecipeIngredientDbo> recipeIngredientsList = recipeIngredientDAO.findAllByMeasureId(id);
 		if (!recipeIngredientsList.isEmpty()) {

@@ -71,7 +71,7 @@
 					</div>
 					<div class="recipe-data">
 						<div class="recipe-name">
-							<a th:href="@{'/recipe?id=' + ${recipe.id}}" target="_blank" th:text="${recipe.dishType.name + ' ' + recipe.name}"></a>
+							<a th:href="@{'/recipe?id=' + ${recipe.id}}" target="_blank" th:text="${recipe.dishType.name + ' «' + recipe.name + '»'}"></a>
 						</div>
 						<p></p>
 						<div class="recipe-ingredients">
