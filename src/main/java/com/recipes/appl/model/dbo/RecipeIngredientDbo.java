@@ -48,4 +48,8 @@ public class RecipeIngredientDbo {
 	@JoinColumn(name = "IngredientMeasure_ID", unique=true, nullable=false)
 	private IngredientMeasureDbo ingredientMeasure;
 	
+	@Override
+	public String toString() {
+		return id + ". " + ingredient.getName() + ": " + count + " " + ingredientMeasure.getName();
+	}
 }

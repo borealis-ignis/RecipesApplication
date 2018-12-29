@@ -8,23 +8,7 @@ $(document).ready(function() {
 });
 
 var searchRecipesEvent = function() {
-	var recipePartName = $("div.filters-column input.recipename").val();
-	
-	var recipeDishTypeId = $("div.filters-column select[name = 'dishtype']").find(":selected").val();
-	if (recipeDishTypeId == "null") {
-		recipeDishTypeId = "";
-	}
-	
-	var $ingredientItems = $("div.filters-column div#ingredients-list div.item");
-	var ingredientIdsString = prepareIdsString($ingredientItems);
-	
-	var $componentItems = $("div.filters-column div#components-list div.item");
-	var componentIdsString = prepareIdsString($componentItems);
-	
-	var uri = "recipes?name=" + encodeURIComponent(recipePartName) + 
-					"&dishtype=" + recipeDishTypeId + 
-					"&ingredients=" + encodeURIComponent(ingredientIdsString) + 
-					"&components=" + encodeURIComponent(componentIdsString);
+	var uri = createURI(0);
 	
 	window.location = getContextPath() + uri;
 }
@@ -79,4 +63,35 @@ function prepareIdsString($items) {
 		result += id + ";";
 	});
 	return result;
+}
+
+function createURI(pageNumber) {
+	var recipePartName = $("div.filters-column input.recipename").val();
+	
+	var recipeDishTypeId = $("div.filters-column select[name = 'dishtype']").find(":selected").val();
+	if (recipeDishTypeId == "null") {
+		recipeDishTypeId = "";
+	}
+	
+	var $ingredientItems = $("div.filters-column div#ingredients-list div.item");
+	var ingredientIdsString = prepareIdsString($ingredientItems);
+	
+	var $componentItems = $("div.filters-column div#components-list div.item");
+	var componentIdsString = prepareIdsString($componentItems);
+	
+	return "recipes?name=" + encodeURIComponent(recipePartName) + 
+					"&dishtype=" + recipeDishTypeId + 
+					"&ingredients=" + encodeURIComponent(ingredientIdsString) + 
+					"&components=" + encodeURIComponent(componentIdsString) +
+					"&page=" + pageNumber;
+}
+
+function changePage(pageNumber) {
+	if (pageNumber < 0) {
+		return;
+	}
+	
+	var uri = createURI(pageNumber);
+	
+	window.location = getContextPath() + uri;
 }

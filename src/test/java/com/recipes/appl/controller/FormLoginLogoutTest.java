@@ -45,7 +45,7 @@ public class FormLoginLogoutTest {
 		mvc.perform(formLogin("/login").user("admin").password("admin"))
 			.andDo(print())
 			.andExpect(status().is3xxRedirection())
-			.andExpect(redirectedUrl("/admin/ingredients"))
+			.andExpect(redirectedUrl("/admin/statics"))
 			.andExpect(authenticated().withUsername("admin").withRoles(RolesEnum.ADMIN_ROLE.getValue()));
 	}
 	

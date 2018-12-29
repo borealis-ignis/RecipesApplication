@@ -1,6 +1,19 @@
 div.filters-column, div.recipes-column {
 	float:left;
 }
+div.recipes-column div.pagination {
+	width: 880px;
+	text-align: center;
+}
+div.recipes-column div.pagination span.page {
+	cursor: pointer;
+	text-decoration: underline;
+}
+div.recipes-column div.pagination span.page.current {
+	text-decoration: none;
+	cursor: default;
+	font-weight: bold;
+}
 div.filters-column {
 	width: 320px;
 	margin-top: 10px;

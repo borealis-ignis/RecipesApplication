@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -91,10 +92,14 @@ public class RecipesService extends AbstractService {
 		return recipeConverter.convertDboToDto(recipesDAO.findAll());
 	}
 	
-	public List<RecipeDto> searchRecipes(final String namePart, final Long dishTypeId, final List<Long> ingredientIdList, final List<Long> componentIdList) {
-		return recipeConverter.convertDboToDto(recipesDAO.findAllByFilterParams(namePart, dishTypeId, ingredientIdList, componentIdList));
+	public List<RecipeDto> searchRecipes(final String namePart, final Long dishTypeId, final List<Long> ingredientIdList, final List<Long> componentIdList, final Pageable pageable) {
+		return recipeConverter.convertDboToDto(recipesDAO.findAllByFilterParams(namePart, dishTypeId, ingredientIdList, componentIdList, pageable));
 	}
-
+	
+	public long recipesCount(final String namePart, final Long dishTypeId, final List<Long> ingredientIdList, final List<Long> componentIdList) {
+		return recipesDAO.recipesCount(namePart, dishTypeId, ingredientIdList, componentIdList);
+	}
+	
 	public RecipeDto getRecipe(final Long id) {
 		return recipeConverter.convertDboToDto(recipesDAO.findById(id).orElse(new RecipeDbo()));
 	}

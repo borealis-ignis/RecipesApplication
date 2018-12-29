@@ -13,6 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -51,14 +54,26 @@ public class UsersRecipesControllerTest {
 	@MockBean
 	private IngredientsService ingredientsService;
 	
+	private static int ITEMS_PER_PAGE = 0;
+	{
+		final Field field;
+		try {
+			field = UsersRecipesController.class.getDeclaredField("ITEMS_PER_PAGE");
+			field.setAccessible(true);
+			ITEMS_PER_PAGE = field.getInt(null);
+		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	@Test
 	@WithMockUser
 	public void getRecipesPage() throws Exception {
+		final Pageable pageable = PageRequest.of(0, ITEMS_PER_PAGE);
 		
 		when(ingredientsService.getIngredients()).thenReturn(MockData.listDtoIngredients(true));
 		when(recipesService.getDishTypes()).thenReturn(MockData.listDtoDishTypes());
-		when(recipesService.searchRecipes(null, null, StringUtil.toList("", ";"), StringUtil.toList("", ";"))).thenReturn(MockData.listDtoRecipes());
+		when(recipesService.searchRecipes(null, null, StringUtil.toList("", ";"), StringUtil.toList("", ";"), pageable)).thenReturn(MockData.listDtoRecipes());
 		
 		mvc.perform(get("/recipes").with(csrf()))
 			.andDo(print())
@@ -78,6 +93,8 @@ public class UsersRecipesControllerTest {
 	@Test
 	@WithMockUser
 	public void searchRecipesByName() throws Exception {
+		final Pageable pageable = PageRequest.of(0, ITEMS_PER_PAGE);
+		
 		final String recipeName = "Recipe";
 		final String recipePartName = "eci";
 		final List<RecipeDto> resultList = new ArrayList<>();
@@ -87,7 +104,7 @@ public class UsersRecipesControllerTest {
 		
 		when(ingredientsService.getIngredients()).thenReturn(MockData.listDtoIngredients(true));
 		when(recipesService.getDishTypes()).thenReturn(MockData.listDtoDishTypes());
-		when(recipesService.searchRecipes(recipePartName, null, StringUtil.toList("", ";"), StringUtil.toList("", ";"))).thenReturn(resultList);
+		when(recipesService.searchRecipes(recipePartName, null, StringUtil.toList("", ";"), StringUtil.toList("", ";"), pageable)).thenReturn(resultList);
 		
 		mvc.perform(get("/recipes?name=" + recipePartName + "&dishtype=&ingredients=&components=").with(csrf()))
 			.andDo(print())
@@ -122,6 +139,8 @@ public class UsersRecipesControllerTest {
 	@Test
 	@WithMockUser
 	public void searchRecipesByDishType() throws Exception {
+		final Pageable pageable = PageRequest.of(0, ITEMS_PER_PAGE);
+		
 		final Long dishTypeId = 10L;
 		final List<RecipeDto> resultList = new ArrayList<>();
 		final RecipeDto recipe = MockData.dtoSoupRecipe(true);
@@ -130,7 +149,7 @@ public class UsersRecipesControllerTest {
 		
 		when(ingredientsService.getIngredients()).thenReturn(MockData.listDtoIngredients(true));
 		when(recipesService.getDishTypes()).thenReturn(MockData.listDtoDishTypes());
-		when(recipesService.searchRecipes("", dishTypeId, StringUtil.toList("", ";"), StringUtil.toList("", ";"))).thenReturn(resultList);
+		when(recipesService.searchRecipes("", dishTypeId, StringUtil.toList("", ";"), StringUtil.toList("", ";"), pageable)).thenReturn(resultList);
 		
 		mvc.perform(get("/recipes?name=&dishtype=" + dishTypeId + "&ingredients=&components=").with(csrf()))
 			.andDo(print())
@@ -163,6 +182,8 @@ public class UsersRecipesControllerTest {
 	@Test
 	@WithMockUser
 	public void searchRecipesByNameAndDishType() throws Exception {
+		final Pageable pageable = PageRequest.of(0, ITEMS_PER_PAGE);
+		
 		final String recipeName = "Recipe";
 		final String recipePartName = "eci";
 		final Long dishTypeId = 10L;
@@ -174,7 +195,7 @@ public class UsersRecipesControllerTest {
 		
 		when(ingredientsService.getIngredients()).thenReturn(MockData.listDtoIngredients(true));
 		when(recipesService.getDishTypes()).thenReturn(MockData.listDtoDishTypes());
-		when(recipesService.searchRecipes(recipePartName, dishTypeId, StringUtil.toList("", ";"), StringUtil.toList("", ";"))).thenReturn(resultList);
+		when(recipesService.searchRecipes(recipePartName, dishTypeId, StringUtil.toList("", ";"), StringUtil.toList("", ";"), pageable)).thenReturn(resultList);
 		
 		mvc.perform(get("/recipes?name=" + recipePartName + "&dishtype=" + dishTypeId + "&ingredients=&components=").with(csrf()))
 			.andDo(print())
@@ -209,6 +230,8 @@ public class UsersRecipesControllerTest {
 	@Test
 	@WithMockUser
 	public void searchRecipesByComponents() throws Exception {
+		final Pageable pageable = PageRequest.of(0, ITEMS_PER_PAGE);
+		
 		final String componentsString = "10;2;";
 		final List<RecipeDto> resultList = new ArrayList<>();
 		final RecipeDto recipe = MockData.dtoSoupRecipe(true);
@@ -216,7 +239,7 @@ public class UsersRecipesControllerTest {
 		
 		when(ingredientsService.getIngredients()).thenReturn(MockData.listDtoIngredients(true));
 		when(recipesService.getDishTypes()).thenReturn(MockData.listDtoDishTypes());
-		when(recipesService.searchRecipes("", null, StringUtil.toList("", ";"), StringUtil.toList(componentsString, ";"))).thenReturn(resultList);
+		when(recipesService.searchRecipes("", null, StringUtil.toList("", ";"), StringUtil.toList(componentsString, ";"), pageable)).thenReturn(resultList);
 		
 		mvc.perform(get("/recipes?name=&dishtype=&ingredients=&components=" + componentsString).with(csrf()))
 			.andDo(print())
@@ -252,6 +275,8 @@ public class UsersRecipesControllerTest {
 	@Test
 	@WithMockUser
 	public void searchRecipesByIngredients() throws Exception {
+		final Pageable pageable = PageRequest.of(0, ITEMS_PER_PAGE);
+		
 		final String ingredientsString = "2;4;";
 		final List<RecipeDto> resultList = new ArrayList<>();
 		final RecipeDto recipe = MockData.dtoSoupRecipe(true);
@@ -259,7 +284,7 @@ public class UsersRecipesControllerTest {
 		
 		when(ingredientsService.getIngredients()).thenReturn(MockData.listDtoIngredients(true));
 		when(recipesService.getDishTypes()).thenReturn(MockData.listDtoDishTypes());
-		when(recipesService.searchRecipes("", null, StringUtil.toList(ingredientsString, ";"), StringUtil.toList("", ";"))).thenReturn(resultList);
+		when(recipesService.searchRecipes("", null, StringUtil.toList(ingredientsString, ";"), StringUtil.toList("", ";"), pageable)).thenReturn(resultList);
 		
 		mvc.perform(get("/recipes?name=&dishtype=&ingredients=" + ingredientsString + "&components=").with(csrf()))
 			.andDo(print())
@@ -295,6 +320,8 @@ public class UsersRecipesControllerTest {
 	@Test
 	@WithMockUser
 	public void searchRecipesByNameAndDishTypeAndIngredients() throws Exception {
+		final Pageable pageable = PageRequest.of(0, ITEMS_PER_PAGE);
+		
 		final String ingredientsString = "2;4;";
 		final String recipeName = "Recipe";
 		final String recipePartName = "eci";
@@ -307,7 +334,7 @@ public class UsersRecipesControllerTest {
 		
 		when(ingredientsService.getIngredients()).thenReturn(MockData.listDtoIngredients(true));
 		when(recipesService.getDishTypes()).thenReturn(MockData.listDtoDishTypes());
-		when(recipesService.searchRecipes(recipePartName, dishTypeId, StringUtil.toList(ingredientsString, ";"), StringUtil.toList("", ";"))).thenReturn(resultList);
+		when(recipesService.searchRecipes(recipePartName, dishTypeId, StringUtil.toList(ingredientsString, ";"), StringUtil.toList("", ";"), pageable)).thenReturn(resultList);
 		
 		mvc.perform(get("/recipes?name=" + recipePartName + "&dishtype=" + dishTypeId + "&ingredients=" + ingredientsString + "&components=").with(csrf()))
 			.andDo(print())
@@ -343,6 +370,8 @@ public class UsersRecipesControllerTest {
 	@Test
 	@WithMockUser
 	public void searchRecipesByNameAndDishTypeAndComponents() throws Exception {
+		final Pageable pageable = PageRequest.of(0, ITEMS_PER_PAGE);
+		
 		final String componentsString = "10;2;";
 		final String recipeName = "Recipe";
 		final String recipePartName = "eci";
@@ -355,7 +384,7 @@ public class UsersRecipesControllerTest {
 		
 		when(ingredientsService.getIngredients()).thenReturn(MockData.listDtoIngredients(true));
 		when(recipesService.getDishTypes()).thenReturn(MockData.listDtoDishTypes());
-		when(recipesService.searchRecipes(recipePartName, dishTypeId, StringUtil.toList("", ";"), StringUtil.toList(componentsString, ";"))).thenReturn(resultList);
+		when(recipesService.searchRecipes(recipePartName, dishTypeId, StringUtil.toList("", ";"), StringUtil.toList(componentsString, ";"), pageable)).thenReturn(resultList);
 		
 		mvc.perform(get("/recipes?name=" + recipePartName + "&dishtype=" + dishTypeId + "&ingredients=&components=" + componentsString).with(csrf()))
 			.andDo(print())
@@ -391,6 +420,8 @@ public class UsersRecipesControllerTest {
 	@Test
 	@WithMockUser
 	public void searchRecipesByNameAndDishTypeAndIngredientsAndComponents() throws Exception {
+		final Pageable pageable = PageRequest.of(0, ITEMS_PER_PAGE);
+		
 		final String ingredientsString = "2;4;";
 		final String componentsString = "10;2;";
 		final String recipeName = "Recipe";
@@ -404,7 +435,7 @@ public class UsersRecipesControllerTest {
 		
 		when(ingredientsService.getIngredients()).thenReturn(MockData.listDtoIngredients(true));
 		when(recipesService.getDishTypes()).thenReturn(MockData.listDtoDishTypes());
-		when(recipesService.searchRecipes(recipePartName, dishTypeId, StringUtil.toList(ingredientsString, ";"), StringUtil.toList(componentsString, ";"))).thenReturn(resultList);
+		when(recipesService.searchRecipes(recipePartName, dishTypeId, StringUtil.toList(ingredientsString, ";"), StringUtil.toList(componentsString, ";"), pageable)).thenReturn(resultList);
 		
 		mvc.perform(get("/recipes?name=" + recipePartName + "&dishtype=" + dishTypeId + "&ingredients=" + ingredientsString + "&components=" + componentsString).with(csrf()))
 			.andDo(print())

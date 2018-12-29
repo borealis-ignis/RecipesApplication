@@ -16,6 +16,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.recipes.appl.MockData;
@@ -54,7 +56,9 @@ public class RecipesDAOTest {
 	public void findAllByFilterParamsByName() {
 		final RecipeDbo recipeFromDB = prepareRecipeData();
 		
-		final List<RecipeDbo> foundRecipesByDishType = recipesDAO.findAllByFilterParams("eci", null, StringUtil.toList("", ";"), StringUtil.toList("", ";"));
+		final Pageable pageable = PageRequest.of(0, 5);
+		
+		final List<RecipeDbo> foundRecipesByDishType = recipesDAO.findAllByFilterParams("eci", null, StringUtil.toList("", ";"), StringUtil.toList("", ";"), pageable);
 		
 		assertThat(foundRecipesByDishType).isNotEmpty().contains(recipeFromDB);
 	}
@@ -64,7 +68,9 @@ public class RecipesDAOTest {
 	public void findAllByFilterParams() {
 		final RecipeDbo recipeFromDB = prepareRecipeData();
 		
-		final List<RecipeDbo> foundRecipesByName = recipesDAO.findAllByFilterParams("cip", 1L, StringUtil.toList("1;", ";"), StringUtil.toList("1;", ";"));
+		final Pageable pageable = PageRequest.of(0, 5);
+		
+		final List<RecipeDbo> foundRecipesByName = recipesDAO.findAllByFilterParams("cip", 1L, StringUtil.toList("1;", ";"), StringUtil.toList("1;", ";"), pageable);
 		
 		assertThat(foundRecipesByName).isNotEmpty().contains(recipeFromDB);
 	}
@@ -74,7 +80,9 @@ public class RecipesDAOTest {
 	public void findAllByFilterParamsByNameAndDishType() {
 		final RecipeDbo recipeFromDB = prepareRecipeData();
 		
-		final List<RecipeDbo> foundRecipesByNameAndDishType = recipesDAO.findAllByFilterParams("cip", 1L, StringUtil.toList("", ";"), StringUtil.toList("", ";"));
+		final Pageable pageable = PageRequest.of(0, 5);
+		
+		final List<RecipeDbo> foundRecipesByNameAndDishType = recipesDAO.findAllByFilterParams("cip", 1L, StringUtil.toList("", ";"), StringUtil.toList("", ";"), pageable);
 		
 		assertThat(foundRecipesByNameAndDishType).isNotEmpty().contains(recipeFromDB);
 	}
@@ -130,6 +138,7 @@ public class RecipesDAOTest {
 		
 		
 		final RecipeDbo recipeToSave = MockData.dboSauceRecipe(false);
+		recipeToSave.setImage("12323");
 		recipeToSave.getDishType().setId(recipe.getDishType().getId());
 		final RecipeIngredientDbo recipeIngredientToSave = recipeToSave.getRecipeIngredients().get(0);
 		recipeIngredientToSave.setId(null);
@@ -160,6 +169,7 @@ public class RecipesDAOTest {
 		final RecipeDbo recipeToUpdate = MockData.dboSauceRecipe(false);
 		recipeToUpdate.setId(recipe.getId());
 		recipeToUpdate.setName(newRecipeName);
+		recipeToUpdate.setImage("12321");
 		recipeToUpdate.getDishType().setId(recipe.getDishType().getId());
 		final RecipeIngredientDbo recipeIngredientToUpdate = recipeToUpdate.getRecipeIngredients().get(0);
 		recipeIngredientToUpdate.setId(recipeIngredient.getId());
